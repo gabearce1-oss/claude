@@ -102,7 +102,7 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
       chapter_id: {{CHAPTER_ID}}
       chapter_title: {{CHAPTER_TITLE}}
       draft_version: {{DRAFT_VERSION}}
-      time_period_in_story: {{TIME_PERIOD}}
+      time_period: {{TIME_PERIOD}}
       pov_mode: {{POV_MODE}}
       word_count: {{WORD_COUNT}}
       scene_headers: {{SCENE_HEADERS_LIST_OR_TEXT}}
@@ -141,10 +141,12 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     1) Segment by scene. Preserve headers, breaks, and chronology — do NOT alter structure.
     2) Separate text into category datasets:
        Structural | Linguistic | Dialogue_CodeSwitching | Character_Agency |
-       Cultural_Historical_Military | Sensory_Immersion | Reader_Response.
+       Cultural_Historical_Military | Sensory_Immersion | Reader_Response | Accuracy.
     3) Compute raw metrics per METRICS_SPEC. Extract minimal evidence snippets.
     4) Cluster issues within each category by type, frequency, severity, impact.
-    5) Normalize every metric to LOCKED_BENCHMARKS. Compute PASS/FAIL per metric.
+    5) Normalize LOCKED metrics to LOCKED_BENCHMARKS and compute PASS/FAIL.
+       Non-locked metrics (NarrativePct, SwitchEventsPerKWords, FRE, FKGL,
+       reader-response proxies): report as info only — no PASS/FAIL gate.
     6) Cross-category synthesis: systemic failures, cascade effects, leverage points.
     7) Produce Tier 1-4 roadmap: impact, effort, expected Omega gain, clusters resolved.
     8) Run QA matrix. If any benchmark fails, trigger RUN_FAIL_PROTOCOL.
@@ -196,7 +198,8 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     <!-- Accuracy -->
     <metric id="AccuracyPct"
             formula="validated_claims / total_audited_claims * 100"
-            min_audit_sample="20 claims (or all if fewer)" />
+            min_audit_sample="20 claims (or all if fewer)"
+            zero_guard="if total_audited_claims == 0: output N/A and flag NO_AUDITABLE_CLAIMS" />
 
     <!-- Omega -->
     <metric id="OmegaScore" formula="internal_omega_model"
@@ -222,7 +225,8 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     </A_CLUSTER_REPORT_HUMAN>
 
     <B_PIPELINE_DATASETS_MACHINE>
-      <!-- Output these blocks verbatim -->
+      <!-- Populate each block with actual computed data (not placeholders).
+           Use the tag names below as output wrappers. -->
       <!-- Category datasets (one per PROCESSING_STEPS category) -->
       1)  <CSV_METRICS> ... </CSV_METRICS>
       2)  <JSON_STRUCTURAL> ... </JSON_STRUCTURAL>
