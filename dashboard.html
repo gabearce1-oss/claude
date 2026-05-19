@@ -1,0 +1,2736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terminel-Sagasta Case File — Evidence Audit Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ARCHIVAL COLOR SYSTEM
+   Reference points: declassified intelligence files, legal
+   briefs, 19th-century archival ledgers. Deliberately not a
+   "data dashboard" palette.
+   ============================================================ */
+:root {
+  --ink:         #1a1815;
+  --ink-soft:    #3a3530;
+  --paper:       #f4ede0;
+  --paper-dark:  #ebe1ce;
+  --paper-edge:  #d4c9b3;
+  --rule:        #2a2520;
+  --rule-soft:   #b8ad97;
+
+  /* Evidentiary status — semantic, never decorative */
+  --verified:       #4a5d3a;
+  --corroborated:   #5e7048;
+  --plausible:      #7a8a5d;
+  --partial:        #7a8a5d;
+  --circumstantial: #8a6e3c;
+  --oral:           #a08a5d;
+  --inference:      #5a6b7a;
+  --weak-lead:      #9a7a3c;
+  --unverified:     #8a857d;
+  --fabricated:     #6b1f1f;
+  --fabricated-risk:#7a2a2a;
+  --speculation:    #5a5550;
+  --derivative:     #8a4a4a;
+  --tertiary:       #7a7570;
+  --not-evidence:   #9a9590;
+  --rejected:       #4a4540;
+
+  --stamp:    #c44536;
+  --shadow:   rgba(26, 24, 21, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; }
+
+body {
+  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 32px 20px 80px;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(180, 160, 120, 0.08), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(180, 160, 120, 0.06), transparent 50%);
+}
+
+.container { max-width: 1320px; margin: 0 auto; }
+
+/* ============================================================ TYPOGRAPHY */
+h1, h2, h3, .display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 2.6rem; line-height: 1.05; }
+h2 { font-size: 1.5rem; line-height: 1.15; margin-top: 8px; }
+h3 { font-size: 1.1rem; line-height: 1.2; }
+
+.label-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.label-mono.tight { letter-spacing: 0.08em; }
+
+.body-text { font-size: 0.85rem; line-height: 1.55; color: var(--ink-soft); }
+
+.italic-note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+/* ============================================================ CLASSIFICATION STRIP */
+.classification-strip {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -32px -20px 32px;
+  border-bottom: 3px double var(--paper-edge);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.classification-strip .left,
+.classification-strip .right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.classification-strip .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--stamp);
+  border-radius: 50%;
+}
+
+/* ============================================================ HEADER */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+
+.header .title-block .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.header .title-block h1 { font-style: italic; }
+
+.header .meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.header .meta .row { display: flex; gap: 12px; justify-content: flex-end; }
+.header .meta .row .k { letter-spacing: 0.1em; }
+.header .meta .row .v { color: var(--ink); font-weight: 500; }
+
+/* ============================================================ WARNING BANNER */
+.warning-banner {
+  background: var(--paper-dark);
+  border-left: 6px solid var(--stamp);
+  padding: 24px 28px 24px 32px;
+  margin-bottom: 36px;
+  position: relative;
+  box-shadow: 0 2px 0 var(--paper-edge);
+}
+
+.warning-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 4px,
+    rgba(196, 69, 54, 0.025) 4px, rgba(196, 69, 54, 0.025) 8px
+  );
+  pointer-events: none;
+}
+
+.warning-banner .stamp-label {
+  display: inline-block;
+  background: var(--stamp);
+  color: var(--paper);
+  padding: 4px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.warning-banner h2 { font-style: italic; margin-bottom: 8px; color: var(--ink); }
+.warning-banner p {
+  font-size: 0.88rem; line-height: 1.6; color: var(--ink-soft); max-width: 80ch;
+}
+
+/* ============================================================ STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 40px;
+}
+
+.stat {
+  background: var(--paper);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat .label-mono { color: var(--ink-soft); }
+
+.stat .value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ink);
+}
+.stat .value .denom {
+  font-size: 1.2rem; color: var(--ink-soft); font-weight: 400;
+}
+
+.stat .annotation {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  margin-top: 4px;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.stat.readiness .value { color: var(--stamp); font-size: 3rem; }
+
+.stat-bar {
+  height: 6px;
+  background: var(--paper-edge);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--w, 0%);
+  background: var(--stamp);
+}
+
+/* ============================================================ SECTION HEADERS */
+.section { margin-bottom: 56px; }
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+
+.section-header .lead {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+
+.section-header .section-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--ink-soft);
+}
+
+.section-header h2 { font-style: italic; }
+
+.section-header .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ============================================================ BUTTONS */
+button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+button:hover { background: var(--ink); color: var(--paper); }
+button.primary { background: var(--ink); color: var(--paper); }
+button.primary:hover { background: var(--ink-soft); }
+button.ghost {
+  background: transparent;
+  border-color: var(--rule-soft);
+  color: var(--ink-soft);
+}
+button.danger:hover {
+  background: var(--fabricated);
+  color: var(--paper);
+  border-color: var(--fabricated);
+}
+button.small { padding: 4px 8px; font-size: 0.62rem; }
+
+/* ============================================================ FILTER BAR */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+
+.filter-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  background: var(--paper-dark);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  color: var(--ink-soft);
+}
+.filter-chip:hover { border-color: var(--rule); color: var(--ink); }
+.filter-chip.active {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+.filter-chip .count { margin-left: 6px; opacity: 0.6; font-size: 0.62rem; }
+
+/* ============================================================ DOCUMENT TABLE */
+.doc-table-wrap { overflow-x: auto; }
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.doc-table thead { background: var(--ink); color: var(--paper); }
+
+.doc-table th {
+  text-align: left;
+  padding: 11px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.doc-table tbody tr {
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.15s;
+}
+.doc-table tbody tr:hover { background: var(--paper-dark); }
+
+.doc-table td {
+  padding: 12px 12px;
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.doc-table .doc-name {
+  font-weight: 500;
+  color: var(--ink);
+  max-width: 280px;
+}
+
+.doc-table .doc-sub {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  margin-top: 3px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.doc-table .doc-source {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-style: italic;
+}
+
+.doc-table .doc-actions { display: flex; gap: 4px; white-space: nowrap; }
+
+/* Status badges — flat rectangles, ink-stamp not pill */
+.status-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  color: var(--paper);
+  white-space: nowrap;
+  border-radius: 1px;
+}
+
+.status-badge[data-status="verified"]        { background: var(--verified); }
+.status-badge[data-status="corroborated"]    { background: var(--corroborated); }
+.status-badge[data-status="plausible"]       { background: var(--plausible); }
+.status-badge[data-status="partial"]         { background: var(--partial); }
+.status-badge[data-status="circumstantial"]  { background: var(--circumstantial); }
+.status-badge[data-status="oral"]            { background: var(--oral); }
+.status-badge[data-status="inference"]       { background: var(--inference); }
+.status-badge[data-status="weak_lead"]       { background: var(--weak-lead); }
+.status-badge[data-status="unverified"]      { background: var(--unverified); }
+.status-badge[data-status="fabricated"],
+.status-badge[data-status="fabricated_risk"] {
+  background: var(--fabricated);
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 3px,
+    rgba(244, 237, 224, 0.15) 3px, rgba(244, 237, 224, 0.15) 6px
+  );
+}
+.status-badge[data-status="speculation"]    { background: var(--speculation); }
+.status-badge[data-status="derivative"]     { background: var(--derivative); }
+.status-badge[data-status="tertiary"]       { background: var(--tertiary); }
+.status-badge[data-status="not_evidence"]   { background: var(--not-evidence); color: var(--ink); }
+.status-badge[data-status="rejected"]       { background: var(--rejected); }
+
+/* Tiny inline meta badges (chain-of-custody, access-level, review) */
+.meta-pill {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid var(--rule-soft);
+  color: var(--ink-soft);
+  background: var(--paper);
+  margin-right: 4px;
+  margin-top: 2px;
+}
+.meta-pill.sealed   { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.meta-pill.tracked  { background: var(--paper-dark); color: var(--ink); }
+.meta-pill.quarantined { background: var(--fabricated); color: var(--paper); border-color: var(--fabricated); }
+.meta-pill.draft    { color: var(--ink-soft); font-style: italic; }
+.meta-pill.restricted, .meta-pill.access-restricted { background: var(--circumstantial); color: var(--paper); border-color: var(--circumstantial); }
+.meta-pill.access-sealed { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.meta-pill.access-public { background: var(--verified); color: var(--paper); border-color: var(--verified); }
+.meta-pill.access-internal { background: var(--paper-dark); color: var(--ink); }
+
+/* Three-score block (provenance / authenticity / contamination) */
+.tri-score {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  min-width: 180px;
+}
+.tri-score .cell {
+  background: var(--paper-dark);
+  padding: 4px 6px;
+  text-align: center;
+  border: 1px solid var(--rule-soft);
+}
+.tri-score .cell .k {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.55rem;
+  margin-bottom: 1px;
+}
+.tri-score .cell .v {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.tri-score .cell.danger .v { color: var(--fabricated); }
+.tri-score .cell.danger { border-color: var(--fabricated); background: rgba(107, 31, 31, 0.06); }
+.tri-score .cell.good .v { color: var(--verified); }
+
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+}
+
+/* ============================================================ DIMENSION SCORES */
+.dimensions { display: grid; gap: 14px; }
+
+.dimension-row {
+  display: grid;
+  grid-template-columns: 240px 1fr 60px;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.dimension-row:last-child { border-bottom: none; }
+
+.dimension-row .name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.dimension-row .name .note {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dimension-bar {
+  position: relative;
+  height: 24px;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule-soft);
+}
+.dimension-bar .fill {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  background: var(--ink);
+  transition: width 0.6s ease;
+}
+.dimension-bar .fill[data-band="high"]    { background: var(--verified); }
+.dimension-bar .fill[data-band="mid"]     { background: var(--circumstantial); }
+.dimension-bar .fill[data-band="low"]     { background: var(--fabricated); }
+
+.dimension-bar .ticks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  pointer-events: none;
+}
+.dimension-bar .tick { border-right: 1px solid rgba(26, 24, 21, 0.08); }
+.dimension-bar .tick:last-child { border-right: none; }
+.dimension-bar .tick:nth-child(5) { border-right: 1px solid rgba(26, 24, 21, 0.18); }
+
+.dimension-row .score {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: right;
+}
+.dimension-row .score .denom { font-size: 0.85rem; color: var(--ink-soft); }
+
+/* ============================================================ CLAIMS REGISTER */
+.claims-table-wrap { overflow-x: auto; }
+
+.claims-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.claims-table thead { background: var(--ink); color: var(--paper); }
+.claims-table th {
+  text-align: left;
+  padding: 11px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.claims-table tbody tr {
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.15s;
+}
+.claims-table tbody tr:hover { background: var(--paper-dark); }
+.claims-table td { padding: 12px 12px; vertical-align: top; line-height: 1.45; }
+
+.claim-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+.claim-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.35;
+  max-width: 340px;
+}
+
+.claim-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.burden {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.burden .needed {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink-soft);
+  margin-top: 4px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.confidence-cell {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+  text-align: right;
+}
+.confidence-cell .denom { font-size: 0.7rem; color: var(--ink-soft); font-weight: 400; }
+.confidence-cell.low { color: var(--fabricated); }
+.confidence-cell.high { color: var(--verified); }
+
+/* ============================================================ ARCHIVE REQUEST MATRIX */
+.requests {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.request {
+  display: grid;
+  grid-template-columns: 70px 1.4fr 1fr 110px 110px 110px;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: start;
+  font-size: 0.78rem;
+}
+.request:last-child { border-bottom: none; }
+
+.request .req-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  padding-top: 2px;
+}
+
+.request .target .archive {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.request .target .record-target {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.request .query {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  background: var(--paper-dark);
+  padding: 6px 8px;
+  border-left: 2px solid var(--ink-soft);
+  color: var(--ink);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.request .meta-col {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.request .meta-col .k {
+  display: block;
+  font-size: 0.55rem;
+  color: var(--ink-soft);
+  margin-bottom: 2px;
+  opacity: 0.7;
+}
+.request .meta-col .v {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+select.status-select {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+  width: 100%;
+}
+
+/* ============================================================ DISCIPLINE */
+.discipline {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 32px 36px;
+  margin-bottom: 0;
+}
+.discipline h2 { color: var(--paper); font-style: italic; margin-bottom: 18px; }
+.discipline .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+.discipline .col h3 {
+  color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(244, 237, 224, 0.3);
+}
+.discipline .rule-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(244, 237, 224, 0.12);
+}
+.discipline .rule-item:last-child { border-bottom: none; }
+.discipline .rule-item .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0.75;
+  padding-top: 2px;
+}
+.discipline .rule-item .desc { color: var(--paper); opacity: 0.92; }
+
+/* ============================================================ QUARANTINE */
+.quarantine-section { margin-bottom: 56px; }
+
+.quarantine-header {
+  background: var(--paper-dark);
+  padding: 18px 24px;
+  border-top: 3px solid var(--fabricated);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-image: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(107, 31, 31, 0.04) 8px, rgba(107, 31, 31, 0.04) 16px
+  );
+}
+
+.quarantine-header .title { display: flex; align-items: baseline; gap: 16px; }
+.quarantine-header .stamp {
+  background: var(--fabricated);
+  color: var(--paper);
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.quarantine-header h2 { font-style: italic; font-size: 1.4rem; color: var(--ink); }
+.quarantine-header .count-block { text-align: right; }
+.quarantine-header .count-block .count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: var(--fabricated);
+  font-weight: 600;
+  line-height: 1;
+}
+.quarantine-header .count-block .label-mono { display: block; margin-top: 2px; }
+
+.quarantine-grid {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-top: none;
+  background: var(--paper);
+}
+
+.quarantine-card {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 20px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--rule-soft);
+  border-left: 4px solid var(--fabricated);
+  align-items: start;
+  position: relative;
+}
+.quarantine-card:last-child { border-bottom: none; }
+
+.quarantine-card .doc-info .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.quarantine-card .doc-info .type-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.provenance-block {
+  background: var(--paper-dark);
+  border-left: 2px solid var(--fabricated);
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.provenance-block .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fabricated);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.provenance-block .value {
+  color: var(--ink);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.provenance-block.missing .value {
+  color: var(--fabricated);
+  font-weight: 500;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Contamination breakdown bars */
+.contam-breakdown {
+  margin-top: 10px;
+  background: var(--paper-dark);
+  padding: 10px 12px;
+  border-left: 2px solid var(--ink-soft);
+}
+.contam-breakdown .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.contam-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 32px;
+  gap: 8px;
+  align-items: center;
+  margin: 4px 0;
+}
+.contam-row .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.contam-row .bar {
+  height: 6px;
+  background: var(--paper-edge);
+  position: relative;
+  overflow: hidden;
+}
+.contam-row .bar .fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--fabricated);
+}
+.contam-row .v {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink);
+  text-align: right;
+}
+
+.quarantine-card .notes {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 6px;
+}
+
+.quarantine-card .quarantine-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+
+.quarantine-card .do-not-cite {
+  display: inline-block;
+  background: var(--fabricated);
+  color: var(--paper);
+  padding: 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 3px,
+    rgba(244, 237, 224, 0.15) 3px, rgba(244, 237, 224, 0.15) 6px
+  );
+}
+
+.quarantine-card .status-mini {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  padding: 3px 7px;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule-soft);
+}
+
+.quarantine-card .contam-score {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--fabricated);
+  line-height: 1;
+}
+.quarantine-card .contam-score .denom {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.quarantine-card .contam-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: -2px;
+}
+
+.quarantine-empty {
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: none;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+}
+
+/* ============================================================ MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 24, 21, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+
+.modal {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  max-width: 680px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 32px 36px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 { font-style: italic; margin-bottom: 4px; }
+.modal .modal-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: #fffaf0;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.field .field-hint {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.field-row.two { grid-template-columns: 1fr 1fr; }
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* ============================================================ STORAGE INDICATOR */
+.storage-indicator {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 50;
+  opacity: 0.85;
+}
+.storage-indicator .dot {
+  width: 6px; height: 6px;
+  background: var(--verified);
+  border-radius: 50%;
+}
+.storage-indicator.fallback .dot { background: var(--circumstantial); }
+
+/* ============================================================ RESPONSIVE */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .request { grid-template-columns: 60px 1fr 1fr; }
+  .request .query { grid-column: 1 / -1; }
+  .request .meta-col { grid-column: span 1; }
+}
+
+@media (max-width: 900px) {
+  html { font-size: 14px; }
+  body { padding: 24px 14px 80px; }
+  .classification-strip { margin: -24px -14px 24px; font-size: 0.55rem; }
+  .header { grid-template-columns: 1fr; }
+  .header .meta { text-align: left; }
+  .header .meta .row { justify-content: flex-start; }
+  h1 { font-size: 2rem; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .dimension-row { grid-template-columns: 1fr; gap: 8px; }
+  .request { grid-template-columns: 1fr; }
+  .doc-table { font-size: 0.7rem; }
+  .doc-table th, .doc-table td { padding: 8px 10px; }
+  .discipline { padding: 24px; }
+  .discipline .grid { grid-template-columns: 1fr; gap: 20px; }
+  .quarantine-card { grid-template-columns: 1fr; gap: 12px; }
+  .quarantine-card .quarantine-actions {
+    flex-direction: row; align-items: center; justify-content: flex-start; flex-wrap: wrap;
+  }
+  .field-row, .field-row.two { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Classification strip — sets the forensic tone immediately. -->
+<div class="classification-strip">
+  <div class="left">
+    <span>Working File</span><span class="dot"></span>
+    <span>Internal Audit</span><span class="dot"></span>
+    <span>Not for Legal or Formal Proceedings</span>
+  </div>
+  <div class="right">
+    <span>File ID · TS-2026-001</span>
+    <span class="dot"></span>
+    <span id="last-updated">—</span>
+  </div>
+</div>
+
+<!-- Document header -->
+<header class="header">
+  <div class="title-block">
+    <div class="eyebrow">Case File · Evidence Audit · Working Dashboard</div>
+    <h1>Terminel–Sagasta</h1>
+    <div class="body-text" style="margin-top:8px; max-width: 60ch;">
+      Aviana (Avina) Sagasta · Francisco L. Terminel · San Javier, Sonora · c.&nbsp;1878–1932
+    </div>
+  </div>
+  <div class="meta">
+    <div class="row"><span class="k">Audit Standard:</span> <span class="v">TruthEngine360 · Forensic Archival</span></div>
+    <div class="row"><span class="k">Scoring:</span> <span class="v">Provenance · Authenticity · Contamination</span></div>
+    <div class="row"><span class="k">Region:</span> <span class="v">Sonora, MX · NARA, US</span></div>
+  </div>
+</header>
+
+<!-- Critical preliminary notice -->
+<section class="warning-banner">
+  <span class="stamp-label">Critical Preliminary Notice</span>
+  <h2>The most numerically specific documents in this file are AI-generated synthetic narratives.</h2>
+  <p>
+    Wells Fargo transaction timelines, transaction IDs, named employee records, internal memos, and the
+    "Restitution Award" document do not originate from any verified primary archive. Using them as primary
+    evidence in legal, advocacy, or formal historical proceedings would be an evidentiary error with serious
+    consequences. Each item below carries three independent scores — provenance, authenticity, and
+    contamination — and a chain-of-custody state. The historical hypothesis remains plausible. The structural
+    problems are fixable. Discipline is the path between this file and one that can stand up to review.
+  </p>
+</section>
+
+<!-- Stats row -->
+<section class="stats-grid">
+  <div class="stat readiness">
+    <span class="label-mono">Legal Readiness</span>
+    <div class="value"><span id="readiness-score">28</span><span class="denom">/100</span></div>
+    <div class="annotation">Not ready for legal proceedings · Ready for next-phase archival research</div>
+    <div class="stat-bar" id="readiness-bar"></div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Verified Evidence</span>
+    <div class="value"><span id="count-verified">—</span></div>
+    <div class="annotation" id="verified-detail">primary sources in vault</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Claims · Verified</span>
+    <div class="value"><span id="count-claims-verified">—</span><span class="denom">/<span id="count-claims-total">—</span></span></div>
+    <div class="annotation">discrete assertions with proof chain</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">In Quarantine</span>
+    <div class="value" style="color: var(--fabricated)"><span id="count-fabricated">—</span></div>
+    <div class="annotation" id="fabricated-detail">synthetic narratives isolated</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Archive Requests</span>
+    <div class="value"><span id="count-requests-open">—</span><span class="denom">/<span id="count-requests-total">—</span></span></div>
+    <div class="annotation">open · in flight or planned</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Total Inventory</span>
+    <div class="value"><span id="count-total">—</span></div>
+    <div class="annotation">documents tracked in this file</div>
+  </div>
+</section>
+
+<!-- Section I — Document Inventory -->
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">I.</span>
+      <h2>Document Inventory · Evidence Vault</h2>
+    </div>
+    <div class="actions">
+      <button class="ghost small" onclick="exportData()">Export JSON</button>
+      <button class="ghost small" onclick="exportEvidenceMatrix()">Export Evidence Matrix CSV</button>
+      <button class="primary small" onclick="openAddDocModal()">+ Add Document</button>
+    </div>
+  </div>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th style="width: 28%;">Document</th>
+          <th style="width: 14%;">Status</th>
+          <th style="width: 22%;">P / A / C Scores</th>
+          <th style="width: 16%;">Chain · Access</th>
+          <th style="width: 14%;">Source</th>
+          <th style="width: 6%;"></th>
+        </tr>
+      </thead>
+      <tbody id="doc-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section II — Quarantine -->
+<section class="quarantine-section">
+  <div class="quarantine-header">
+    <div class="title">
+      <span class="stamp">Quarantine</span>
+      <h2>AI-Generated Synthetic Material</h2>
+    </div>
+    <div class="count-block">
+      <span class="count" id="quarantine-count">0</span>
+      <span class="label-mono">items isolated · do not cite</span>
+    </div>
+  </div>
+  <div class="quarantine-grid" id="quarantine-grid"></div>
+</section>
+
+<!-- Section III — Claims Register -->
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">III.</span>
+      <h2>Claims Register · Burden of Proof</h2>
+    </div>
+    <div class="actions">
+      <button class="ghost small" onclick="exportClaimsMatrix()">Export Claims Matrix CSV</button>
+      <button class="primary small" onclick="openAddClaimModal()">+ Add Claim</button>
+    </div>
+  </div>
+
+  <div class="claims-table-wrap">
+    <table class="claims-table">
+      <thead>
+        <tr>
+          <th style="width: 7%;">Claim ID</th>
+          <th style="width: 30%;">Assertion</th>
+          <th style="width: 13%;">Status</th>
+          <th style="width: 28%;">Burden of Proof</th>
+          <th style="width: 9%;">Confidence</th>
+          <th style="width: 13%;">Reviewer</th>
+        </tr>
+      </thead>
+      <tbody id="claims-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section IV — Dimension Scores -->
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">IV.</span>
+      <h2>Dimension Scores</h2>
+    </div>
+    <div class="label-mono tight">0 — 10 scale · Composite computed below</div>
+  </div>
+  <div class="dimensions" id="dimensions"></div>
+</section>
+
+<!-- Section V — Archive Request Matrix -->
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">V.</span>
+      <h2>Archive Request Matrix &amp; Next Actions</h2>
+    </div>
+    <div class="actions">
+      <button class="ghost small" onclick="exportRequestsCSV()">Export CSV</button>
+      <button class="primary small" onclick="openAddRequestModal()">+ Add Request</button>
+    </div>
+  </div>
+  <div class="requests" id="requests"></div>
+</section>
+
+<!-- Section VI — Discipline -->
+<section class="section">
+  <div class="discipline">
+    <h2>Working Discipline · Hard Rules</h2>
+    <div class="grid">
+      <div class="col">
+        <h3>Evidentiary Categories (TE360 Aligned)</h3>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--verified); opacity:1; font-weight:600;">Verified</span>
+          <span class="desc">Primary document · named archive · locator-specific · accessible</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--corroborated); opacity:1; font-weight:600;">Corroborated</span>
+          <span class="desc">Two or more independent sources converge on the same fact</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--plausible); opacity:1; font-weight:600;">Plausible</span>
+          <span class="desc">Consistent with verified context; one weak source or oral testimony</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--weak-lead); opacity:1; font-weight:600;">Weak Lead</span>
+          <span class="desc">Worth investigating; insufficient as evidence</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--unverified); opacity:1; font-weight:600;">Unverified</span>
+          <span class="desc">Default state · provenance chain incomplete</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--stamp); opacity:1; font-weight:600;">Fabricated Risk</span>
+          <span class="desc">AI-generated · plausible-sounding · no archival origin · quarantined</span>
+        </div>
+      </div>
+      <div class="col">
+        <h3>Hard Rules</h3>
+        <div class="rule-item">
+          <span class="tag">01</span>
+          <span class="desc">Never treat AI-generated transaction records, dollar figures, or named-employee references as primary evidence.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">02</span>
+          <span class="desc">Never produce new documents that cite the fabricated Wells Fargo ledger.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">03</span>
+          <span class="desc">Documents with unclear provenance default to "unverified" — never guessed-into a higher status.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">04</span>
+          <span class="desc">AI-assisted material must carry provenance metadata: model, prompt date, reviewer. No exceptions.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">05</span>
+          <span class="desc">"Probable" is not "verified." Genealogical chain links require named primary sources at each generation.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">06</span>
+          <span class="desc">Contamination ≥ 60 ⇒ automatic quarantine. Provenance is separate from authenticity; both must clear before promotion.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">07</span>
+          <span class="desc">Chain of custody is one-way: draft → tracked → sealed. Quarantine is terminal until provenance is recovered.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<!-- Modal: Add/Edit Document -->
+<div class="modal-backdrop" id="doc-modal-backdrop" onclick="if(event.target===this)closeDocModal()">
+  <div class="modal">
+    <h2 id="doc-modal-title">Add Document</h2>
+    <div class="modal-sub">All fields support partial entry · Provenance required for AI-authored materials</div>
+
+    <div class="field">
+      <label>Document Name</label>
+      <input type="text" id="f-name" placeholder="e.g., Civil registration entry, Hermosillo 1903" />
+    </div>
+
+    <div class="field">
+      <label>Type / Description</label>
+      <input type="text" id="f-type" placeholder="e.g., baptismal record, notarial deed, AI narrative" />
+    </div>
+
+    <div class="field">
+      <label>Evidentiary Status</label>
+      <select id="f-status">
+        <option value="verified">Verified — primary, archive-located</option>
+        <option value="corroborated">Corroborated — two+ independent sources</option>
+        <option value="plausible">Plausible — consistent, one source</option>
+        <option value="partial">Partially Verified — needs source tracing</option>
+        <option value="circumstantial">Circumstantial — indirect support</option>
+        <option value="oral">Oral History — unverified testimony</option>
+        <option value="inference">Historical Inference</option>
+        <option value="weak_lead">Weak Lead</option>
+        <option value="unverified" selected>Unverified (default)</option>
+        <option value="fabricated">Fabricated — AI-generated synthetic narrative</option>
+        <option value="speculation">Speculation</option>
+        <option value="derivative">Derivative of Fabricated Material</option>
+        <option value="tertiary">Tertiary — Leads Only</option>
+        <option value="not_evidence">Not Evidentiary — Creative / Narrative</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <div class="field-hint">When in doubt, default lower. "Probable" is not "verified."</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Provenance (0–100)</label>
+        <input type="number" id="f-provenance-score" min="0" max="100" placeholder="0" />
+        <div class="field-hint">Chain of custody · locator · originalness</div>
+      </div>
+      <div class="field">
+        <label>Authenticity (0–100)</label>
+        <input type="number" id="f-authenticity-score" min="0" max="100" placeholder="0" />
+        <div class="field-hint">Likely genuine, period-consistent</div>
+      </div>
+      <div class="field">
+        <label>Contamination (0–100)</label>
+        <input type="number" id="f-contamination-score" min="0" max="100" placeholder="0" />
+        <div class="field-hint">≥60 auto-quarantines · AI / fabrication risk</div>
+      </div>
+    </div>
+
+    <div class="field-row two">
+      <div class="field">
+        <label>Chain of Custody</label>
+        <select id="f-custody">
+          <option value="draft">Draft</option>
+          <option value="tracked">Tracked</option>
+          <option value="sealed">Sealed</option>
+          <option value="quarantined">Quarantined</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Access Level</label>
+        <select id="f-access">
+          <option value="public">Public</option>
+          <option value="internal" selected>Internal</option>
+          <option value="restricted">Restricted</option>
+          <option value="sealed">Sealed</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Source / Archive Location</label>
+      <input type="text" id="f-source" placeholder="e.g., AHES, Fondo Revolución, Box 1557" />
+    </div>
+
+    <div class="field">
+      <label>Provenance Note</label>
+      <input type="text" id="f-provenance" placeholder="e.g., Claude AI · 2025 · prompt-generated · reviewed [date]" />
+      <div class="field-hint">For AI-authored material: model, prompt date, reviewer.</div>
+    </div>
+
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="f-notes" placeholder="Brief working notes on this document's role in the file."></textarea>
+    </div>
+
+    <input type="hidden" id="f-id" />
+
+    <div class="modal-actions">
+      <button class="ghost" onclick="closeDocModal()">Cancel</button>
+      <button class="danger" id="doc-delete-btn" onclick="deleteCurrentDoc()" style="display:none">Delete</button>
+      <button class="primary" onclick="saveDocument()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add/Edit Claim -->
+<div class="modal-backdrop" id="claim-modal-backdrop" onclick="if(event.target===this)closeClaimModal()">
+  <div class="modal">
+    <h2 id="claim-modal-title">Add Claim</h2>
+    <div class="modal-sub">A claim is a discrete assertion that can be tested · Provide burden of proof</div>
+
+    <div class="field">
+      <label>Claim Text</label>
+      <textarea id="c-text" placeholder="e.g., Avina Sagasta held land title in San Javier, Sonora, c. 1903."></textarea>
+    </div>
+
+    <div class="field-row two">
+      <div class="field">
+        <label>Claim Type</label>
+        <select id="c-type">
+          <option value="identity">Identity</option>
+          <option value="kinship">Kinship</option>
+          <option value="property">Property</option>
+          <option value="financial">Financial</option>
+          <option value="military">Military</option>
+          <option value="legal">Legal</option>
+          <option value="archival">Archival</option>
+          <option value="geographic">Geographic</option>
+          <option value="oral_history">Oral History</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="c-status">
+          <option value="verified">Verified</option>
+          <option value="corroborated">Corroborated</option>
+          <option value="plausible">Plausible</option>
+          <option value="weak_lead">Weak Lead</option>
+          <option value="unverified" selected>Unverified</option>
+          <option value="fabricated_risk">Fabricated Risk</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Burden of Proof</label>
+      <input type="text" id="c-burden" placeholder="e.g., Primary deed or certified registry entry" />
+    </div>
+
+    <div class="field">
+      <label>Needed Proof (comma-separated)</label>
+      <input type="text" id="c-needed" placeholder="e.g., deed, notarial record, parcel registry" />
+    </div>
+
+    <div class="field-row two">
+      <div class="field">
+        <label>Confidence (0–100)</label>
+        <input type="number" id="c-confidence" min="0" max="100" placeholder="0" />
+      </div>
+      <div class="field">
+        <label>Reviewer</label>
+        <input type="text" id="c-reviewer" placeholder="e.g., analyst-01 or unassigned" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Best Available Evidence</label>
+      <input type="text" id="c-best-evidence" placeholder="e.g., AGN locator pending · email mention only" />
+    </div>
+
+    <div class="field">
+      <label>Contradictions / Open Risks</label>
+      <textarea id="c-contradictions" placeholder="Anything that weakens this claim or competes with it."></textarea>
+    </div>
+
+    <input type="hidden" id="c-id" />
+
+    <div class="modal-actions">
+      <button class="ghost" onclick="closeClaimModal()">Cancel</button>
+      <button class="danger" id="claim-delete-btn" onclick="deleteCurrentClaim()" style="display:none">Delete</button>
+      <button class="primary" onclick="saveClaim()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add/Edit Archive Request -->
+<div class="modal-backdrop" id="req-modal-backdrop" onclick="if(event.target===this)closeReqModal()">
+  <div class="modal">
+    <h2 id="req-modal-title">Add Archive Request</h2>
+    <div class="modal-sub">Track the request, the exact query, and the follow-up deadline</div>
+
+    <div class="field-row two">
+      <div class="field">
+        <label>Source / Archive</label>
+        <input type="text" id="r-source" placeholder="e.g., AGN, NARA, AHES, Wells Fargo Archives" />
+      </div>
+      <div class="field">
+        <label>Cost / Access</label>
+        <input type="text" id="r-cost" placeholder="e.g., Free · Remote / Travel / Partnership" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Record Target</label>
+      <input type="text" id="r-target" placeholder="e.g., land deed / escritura · transfer ledger" />
+    </div>
+
+    <div class="field">
+      <label>Query Used</label>
+      <textarea id="r-query" placeholder='e.g., "San Javier" AND escritura AND Sagasta'></textarea>
+      <div class="field-hint">Use short, ruthless archival queries. Fancy prose belongs in grant proposals.</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Submitted</label>
+        <input type="date" id="r-submitted" />
+      </div>
+      <div class="field">
+        <label>Follow-up Due</label>
+        <input type="date" id="r-followup" />
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="r-status">
+          <option value="draft">Draft</option>
+          <option value="planned">Planned</option>
+          <option value="submitted">Submitted</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="blocked">Blocked</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Result / Notes</label>
+      <textarea id="r-result" placeholder="Outcome, response, or pending..."></textarea>
+    </div>
+
+    <input type="hidden" id="r-id" />
+
+    <div class="modal-actions">
+      <button class="ghost" onclick="closeReqModal()">Cancel</button>
+      <button class="danger" id="req-delete-btn" onclick="deleteCurrentReq()" style="display:none">Delete</button>
+      <button class="primary" onclick="saveRequest()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Storage status -->
+<div class="storage-indicator" id="storage-indicator">
+  <span class="dot"></span>
+  <span id="storage-label">Persistent storage</span>
+</div>
+
+<script>
+/* ==================================================================
+   STORAGE WRAPPER
+   ================================================================== */
+const memStore = new Map();
+
+const storage = {
+  hasPersistent: typeof window !== 'undefined' && !!window.storage,
+
+  async get(key) {
+    if (this.hasPersistent) {
+      try {
+        const r = await window.storage.get(key);
+        if (!r) return null;
+        return typeof r.value === 'string' ? JSON.parse(r.value) : r.value;
+      } catch (e) {
+        console.error('storage.get failed', e);
+        return null;
+      }
+    }
+    return memStore.has(key) ? memStore.get(key) : null;
+  },
+
+  async set(key, value) {
+    if (this.hasPersistent) {
+      try {
+        const payload = typeof value === 'string' ? value : JSON.stringify(value);
+        await window.storage.set(key, payload);
+        return true;
+      } catch (e) {
+        console.error('storage.set failed', e);
+        return false;
+      }
+    }
+    memStore.set(key, value);
+    return true;
+  }
+};
+
+/* ==================================================================
+   SEED DATA
+   Drawn from the audit report's document inventory. Each document
+   now carries the TruthEngine360 triple-score system:
+     - provenance_score:    is the chain of custody defensible?
+     - authenticity_score:  does the artifact appear genuine?
+     - contamination_score: AI/synthetic risk (HIGH = bad)
+   The default contamination breakdown follows the TE360 five-class
+   model (structural, statistical, linguistic, citation, image).
+   ================================================================== */
+const SEED_DOCUMENTS = [
+  { id: 'd001', name: 'Terminel-Sagasta Family History',
+    type: 'Synthetic narrative', status: 'fabricated',
+    source: '—', provenance: 'Claude AI · 2025 · prompt-generated',
+    notes: 'Constructed narrative, not transcribed from primary source.',
+    provenance_score: 8, authenticity_score: 5, contamination_score: 78,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 80, statistical: 30, linguistic: 90, citation: 95, image: 0 } },
+
+  { id: 'd002', name: 'High-Level Visualization of Terminel-Sagasta Transactions',
+    type: 'Synthetic restitution award', status: 'fabricated',
+    source: '—', provenance: 'Claude AI · 2025',
+    notes: 'Fabricated transaction IDs, named employees, peso/USD figures. $639M USD is a model output, not adjudicated.',
+    provenance_score: 5, authenticity_score: 3, contamination_score: 92,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 95, statistical: 95, linguistic: 85, citation: 95, image: 0 } },
+
+  { id: 'd003', name: 'Forensic Report on Francisco Terminel',
+    type: 'Synthetic forensic narrative', status: 'fabricated',
+    source: '—', provenance: 'Claude AI · 2025',
+    notes: 'AI-generated forensic narrative. Not a court filing.',
+    provenance_score: 8, authenticity_score: 10, contamination_score: 74,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 70, statistical: 25, linguistic: 90, citation: 90, image: 0 } },
+
+  { id: 'd004', name: 'Formal Complaint to Oversight Bodies (es)',
+    type: 'Advocacy document', status: 'derivative',
+    source: '—', provenance: 'Built on AI narratives',
+    notes: 'Inherits unverified factual predicate from fabricated source material.',
+    provenance_score: 15, authenticity_score: 20, contamination_score: 65,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 50, statistical: 60, linguistic: 70, citation: 90, image: 0 } },
+
+  { id: 'd005', name: 'Reparations Formula White Paper',
+    type: 'AI-modeled financial model', status: 'derivative',
+    source: '—', provenance: 'AI-modeled',
+    notes: 'AI-modeled, not an adjudicated award.',
+    provenance_score: 12, authenticity_score: 25, contamination_score: 70,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 60, statistical: 95, linguistic: 60, citation: 75, image: 0 } },
+
+  { id: 'd006', name: 'ChatGPT NELA Investigation',
+    type: 'AI research synthesis', status: 'tertiary',
+    source: '—', provenance: 'ChatGPT · synthesis only',
+    notes: 'Secondary synthesis; no primary sources cited.',
+    provenance_score: 20, authenticity_score: 40, contamination_score: 45,
+    custody: 'tracked', access: 'internal',
+    contam: { structural: 30, statistical: 20, linguistic: 70, citation: 80, image: 0 } },
+
+  { id: 'd007', name: 'Psychological Profile',
+    type: 'AI-generated character profile', status: 'speculation',
+    source: '—', provenance: 'AI-generated',
+    notes: 'Speculative; not evidentiary.',
+    provenance_score: 5, authenticity_score: 5, contamination_score: 68,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 40, statistical: 20, linguistic: 95, citation: 85, image: 0 } },
+
+  { id: 'd008', name: 'AV Displacement Report',
+    type: 'AI-generated narrative', status: 'fabricated',
+    source: '—', provenance: 'AI-generated',
+    notes: 'Narrative reconstruction, not primary record.',
+    provenance_score: 10, authenticity_score: 8, contamination_score: 80,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 75, statistical: 40, linguistic: 90, citation: 90, image: 0 } },
+
+  { id: 'd009', name: 'Contactos de Francisco Terminel',
+    type: 'Contact / reference list', status: 'tertiary',
+    source: '—', provenance: 'Compiled',
+    notes: 'Leads only — names to pursue, not evidence in themselves.',
+    provenance_score: 30, authenticity_score: 50, contamination_score: 25,
+    custody: 'tracked', access: 'internal',
+    contam: { structural: 20, statistical: 15, linguistic: 30, citation: 40, image: 0 } },
+
+  { id: 'd010', name: 'Timeline (time.pdf)',
+    type: 'AI-generated chronology', status: 'fabricated',
+    source: '—', provenance: 'AI-generated',
+    notes: 'Structure is AI-constructed; needs to be re-anchored to dated primary sources.',
+    provenance_score: 12, authenticity_score: 18, contamination_score: 72,
+    custody: 'quarantined', access: 'internal',
+    contam: { structural: 80, statistical: 70, linguistic: 70, citation: 80, image: 0 } },
+
+  { id: 'd011', name: 'Ancestry Composition (23andMe)',
+    type: 'DNA analysis report', status: 'verified',
+    source: '23andMe', provenance: 'Commercial DNA service · scientific instrument',
+    notes: 'Real instrument output. Tribal specificity remains uncertain at 23andMe resolution.',
+    provenance_score: 88, authenticity_score: 92, contamination_score: 4,
+    custody: 'sealed', access: 'restricted',
+    contam: { structural: 5, statistical: 5, linguistic: 0, citation: 5, image: 5 } },
+
+  { id: 'd012', name: 'J-23andMe.pdf',
+    type: 'DNA analysis report', status: 'verified',
+    source: '23andMe', provenance: 'Commercial DNA service',
+    notes: 'Second 23andMe report; corroborates the first.',
+    provenance_score: 86, authenticity_score: 90, contamination_score: 5,
+    custody: 'sealed', access: 'restricted',
+    contam: { structural: 5, statistical: 5, linguistic: 0, citation: 10, image: 5 } },
+
+  { id: 'd013', name: 'Francisco Terminel Genealogy Research',
+    type: 'Genealogical compilation', status: 'partial',
+    source: 'Mixed', provenance: 'Family / researcher compilation',
+    notes: 'Plausible structure; each link requires named primary sources (civil registration, baptismal records).',
+    provenance_score: 35, authenticity_score: 55, contamination_score: 22,
+    custody: 'tracked', access: 'internal',
+    contam: { structural: 25, statistical: 20, linguistic: 20, citation: 30, image: 5 } },
+
+  { id: 'd014', name: 'HMKP-117-AP00 (Pascua Yaqui CHNA)',
+    type: 'Government health needs assessment', status: 'verified',
+    source: 'Pascua Yaqui Tribe', provenance: 'Official tribal government document',
+    notes: 'Verified primary source; supports the community-context portion of the case.',
+    provenance_score: 92, authenticity_score: 95, contamination_score: 2,
+    custody: 'sealed', access: 'public',
+    contam: { structural: 0, statistical: 0, linguistic: 0, citation: 5, image: 0 } },
+
+  { id: 'd015', name: 'Historical Documents — Office of the Historian',
+    type: 'U.S. State Department historical documents', status: 'verified',
+    source: 'history.state.gov', provenance: 'U.S. government primary source',
+    notes: 'Verified primary source for U.S.–Mexico diplomatic context.',
+    provenance_score: 95, authenticity_score: 98, contamination_score: 1,
+    custody: 'sealed', access: 'public',
+    contam: { structural: 0, statistical: 0, linguistic: 0, citation: 0, image: 0 } },
+
+  { id: 'd016', name: 'Novel chapters (1, 3, 8)',
+    type: 'Creative / narrative work', status: 'not_evidence',
+    source: 'Author manuscript', provenance: 'Creative writing',
+    notes: 'Not evidentiary. May inform narrative reconstruction but not adjudication.',
+    provenance_score: 60, authenticity_score: 70, contamination_score: 0,
+    custody: 'tracked', access: 'internal',
+    contam: { structural: 0, statistical: 0, linguistic: 0, citation: 0, image: 0 } },
+
+  { id: 'd017', name: 'Academic chapter: Life and Labor on the Border',
+    type: 'Peer-reviewed scholarship', status: 'verified',
+    source: 'Academic publication', provenance: 'Peer-reviewed academic source',
+    notes: 'Verified secondary source providing historical context.',
+    provenance_score: 90, authenticity_score: 95, contamination_score: 2,
+    custody: 'sealed', access: 'public',
+    contam: { structural: 0, statistical: 0, linguistic: 0, citation: 5, image: 0 } }
+];
+
+const SEED_CLAIMS = [
+  { id: 'CLM-0001',
+    text: 'Aviana (Avina) Sagasta held land title in San Javier, Sonora.',
+    type: 'property',
+    status: 'unverified',
+    confidence: 35,
+    burden: 'Primary deed or certified registry entry from AHES or AGN.',
+    needed: ['deed','notarial record','parcel registry','witness signature'],
+    reviewer: 'unassigned',
+    best_evidence: 'AGN locator pending · oral family testimony only',
+    contradictions: 'No primary document yet retrieved.' },
+
+  { id: 'CLM-0002',
+    text: 'Wells Fargo wire transfers connected to the Terminel family network c. 1905–1915.',
+    type: 'financial',
+    status: 'fabricated_risk',
+    confidence: 8,
+    burden: 'Primary transfer record or ledger entry from Wells Fargo Corporate Archives, corroborated by independent correspondence.',
+    needed: ['transfer ledger','bank correspondence','independent press mention'],
+    reviewer: 'analyst-01',
+    best_evidence: 'AI-fabricated transaction list (quarantined)',
+    contradictions: 'Wells Fargo Bank operations in Sonora 1900–1915 not yet confirmed; may not have existed.' },
+
+  { id: 'CLM-0003',
+    text: 'Yaqui oral testimony corroborates a displacement event affecting the Terminel-Sagasta family.',
+    type: 'oral_history',
+    status: 'plausible',
+    confidence: 58,
+    burden: 'Recorded interview transcript with community review and corroborating dated source.',
+    needed: ['interview transcript','community review','date anchor','press confirmation'],
+    reviewer: 'analyst-02',
+    best_evidence: 'Oral history note + newspaper context',
+    contradictions: 'No written primary record retrieved yet.' },
+
+  { id: 'CLM-0004',
+    text: 'The 23andMe ancestry composition is consistent with indigenous Sonoran heritage.',
+    type: 'identity',
+    status: 'verified',
+    confidence: 78,
+    burden: 'Instrument output from commercial DNA service; tribal specificity requires deeper testing.',
+    needed: ['independent panel test','tribal-resolution analysis'],
+    reviewer: 'analyst-01',
+    best_evidence: '23andMe report (verified, sealed)',
+    contradictions: 'Tribal specificity is not provable at 23andMe resolution.' },
+
+  { id: 'CLM-0005',
+    text: 'Francisco L. Terminel held mining or business interests in Sonora.',
+    type: 'property',
+    status: 'weak_lead',
+    confidence: 22,
+    burden: 'Mining claim record, notarized business filing, or named newspaper mention.',
+    needed: ['AHES mining registry','Sonoran press mention','notarial book entry'],
+    reviewer: 'unassigned',
+    best_evidence: 'Compiled lead list (tertiary)',
+    contradictions: 'No primary record retrieved yet.' },
+
+  { id: 'CLM-0006',
+    text: 'The genealogical chain from Aviana Sagasta to claimant is fully documented.',
+    type: 'kinship',
+    status: 'unverified',
+    confidence: 30,
+    burden: 'Civil registration or baptismal record at each generational link.',
+    needed: ['civil registration','baptismal record','witness corroboration'],
+    reviewer: 'unassigned',
+    best_evidence: 'Researcher compilation (partial)',
+    contradictions: 'Plausible structure, individual links not yet sourced.' }
+];
+
+const SEED_DIMENSIONS = [
+  { id: 'dim1', name: 'Historical context quality',        score: 8, note: 'Excellent grounding in verified scholarship' },
+  { id: 'dim2', name: 'Primary source documentation',      score: 1, note: 'Almost entirely absent' },
+  { id: 'dim3', name: 'Genealogical chain verification',   score: 3, note: 'Plausible structure, unverified documents' },
+  { id: 'dim4', name: 'Financial evidence quality',        score: 0, note: '100% AI-generated synthetic data' },
+  { id: 'dim5', name: 'DNA / biological evidence',         score: 7, note: 'Real instrument; tribal specificity uncertain' },
+  { id: 'dim6', name: 'Legal framework mapping',           score: 6, note: 'Frameworks identified; factual predicate missing' },
+  { id: 'dim7', name: 'Archive target identification',     score: 8, note: 'Correct targets, correctly prioritized' },
+  { id: 'dim8', name: 'Risk of evidentiary contamination', score: 2, note: '(inverted) — high risk that AI docs look authentic' }
+];
+
+const SEED_REQUESTS = [
+  { id: 'AR-001', source: 'NARA Catalog',
+    target: 'Record Group 84 (Consular) — Hermosillo & Nogales dispatches 1905–1920',
+    query: '"Terminel" OR "Sagasta" OR "San Javier" OR "Sahuaripa"',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Free · Remote', result: 'pending' },
+
+  { id: 'AR-002', source: 'Chronicling America + UNAM Hemeroteca',
+    target: 'Arizona newspapers (1895–1920) and El Imparcial / Sonoran press',
+    query: '"Wells Fargo" AND Nogales · "Yaqui" AND Sonora · "land deed" AND Sonora',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Free · Remote', result: 'pending' },
+
+  { id: 'AR-003', source: 'Wells Fargo Corporate Archives, San Francisco',
+    target: 'Confirm whether Wells Fargo Bank vs. Wells Fargo Express maintained Sonora branches 1900–1915',
+    query: '"Wells Fargo Express" AND Nogales · "Wells Fargo" AND Sonora',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Letter · Pending', result: 'Verifies or falsifies the entire financial-evidence strand.' },
+
+  { id: 'AR-004', source: 'FamilySearch',
+    target: 'Sonora Catholic records — verify each generational link from Aviana Sagasta forward',
+    query: 'Sagasta Sonora Mexico · Terminel Sonora Mexico · San Javier Sonora deed',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Free · Online', result: 'pending' },
+
+  { id: 'AR-005', source: 'El Colegio de Sonora (COLSON) / UNISON',
+    target: 'Local research partner for direct AHES access — land registry & notarial records',
+    query: '"San Javier" AND escritura AND Sagasta · "Terminel" AND juicio',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Partnership', result: 'pending' },
+
+  { id: 'AR-006', source: 'Archivo Histórico del Estado de Sonora (AHES), Hermosillo',
+    target: 'Fondo Revolución · Registro Público de la Propiedad · Padrón municipal Hermosillo',
+    query: '"San Javier" AND propiedad · "Sagasta" AND hacienda · "Terminel" AND notario',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Travel', result: 'pending' },
+
+  { id: 'AR-007', source: 'Archivo General de la Nación (AGN), Mexico City',
+    target: 'Fondo Gobernación Siglo XX, Box 1557 · Fondo Notarías · Fondo SARH/Agrario',
+    query: '"Avina Sagasta" OR "Abina Sagasta" · "San Javier" AND deslinde',
+    submitted: '', followup: '', status: 'planned',
+    cost: 'Travel', result: 'pending' }
+];
+
+/* ==================================================================
+   APPLICATION STATE
+   ================================================================== */
+let state = {
+  documents: [],
+  claims: [],
+  dimensions: [],
+  requests: [],
+  filter: 'all',
+};
+
+const STATUS_META = {
+  verified:        { label: 'Verified',         order: 1 },
+  corroborated:    { label: 'Corroborated',     order: 2 },
+  plausible:       { label: 'Plausible',        order: 3 },
+  partial:         { label: 'Partial',          order: 4 },
+  circumstantial:  { label: 'Circumstantial',   order: 5 },
+  oral:            { label: 'Oral History',     order: 6 },
+  inference:       { label: 'Inference',        order: 7 },
+  weak_lead:       { label: 'Weak Lead',        order: 8 },
+  unverified:      { label: 'Unverified',       order: 9 },
+  fabricated:      { label: 'Fabricated',       order: 10 },
+  fabricated_risk: { label: 'Fabricated Risk',  order: 10 },
+  speculation:     { label: 'Speculation',      order: 11 },
+  derivative:      { label: 'Derivative',       order: 12 },
+  tertiary:        { label: 'Tertiary',         order: 13 },
+  not_evidence:    { label: 'Not Evidentiary',  order: 14 },
+  rejected:        { label: 'Rejected',         order: 15 }
+};
+
+const QUARANTINE_STATUSES = new Set(['fabricated', 'derivative', 'speculation', 'fabricated_risk']);
+
+function isQuarantined(doc) {
+  return QUARANTINE_STATUSES.has(doc.status)
+      || doc.custody === 'quarantined'
+      || (typeof doc.contamination_score === 'number' && doc.contamination_score >= 60);
+}
+
+/* ==================================================================
+   INITIALIZATION
+   ================================================================== */
+async function init() {
+  const indicator = document.getElementById('storage-indicator');
+  const label = document.getElementById('storage-label');
+  if (!storage.hasPersistent) {
+    indicator.classList.add('fallback');
+    label.textContent = 'Session memory only';
+  } else {
+    label.textContent = 'Persistent storage';
+  }
+
+  state.documents  = await loadOrSeed('documents', SEED_DOCUMENTS);
+  state.claims     = await loadOrSeed('claims', SEED_CLAIMS);
+  state.dimensions = await loadOrSeed('dimensions', SEED_DIMENSIONS);
+  state.requests   = await loadOrSeed('requests', SEED_REQUESTS);
+
+  document.getElementById('last-updated').textContent =
+    'Last edit · ' + new Date().toISOString().slice(0, 10);
+
+  renderAll();
+}
+
+async function loadOrSeed(key, seed) {
+  const existing = await storage.get(key);
+  if (existing && Array.isArray(existing) && existing.length > 0) {
+    return existing;
+  }
+  await storage.set(key, seed);
+  return JSON.parse(JSON.stringify(seed));
+}
+
+/* ==================================================================
+   RENDERING
+   ================================================================== */
+function renderAll() {
+  renderStats();
+  renderFilterBar();
+  renderDocuments();
+  renderQuarantine();
+  renderClaims();
+  renderDimensions();
+  renderRequests();
+}
+
+function renderStats() {
+  const verified = state.documents.filter(d => d.status === 'verified').length;
+  const fabricated = state.documents.filter(isQuarantined).length;
+  const total = state.documents.length;
+
+  const claimsVerified = state.claims.filter(c => c.status === 'verified' || c.status === 'corroborated').length;
+  const claimsTotal = state.claims.length;
+
+  const requestsTotal = state.requests.length;
+  const requestsOpen = state.requests.filter(r => r.status !== 'completed' && r.status !== 'blocked').length;
+
+  document.getElementById('count-verified').textContent = verified;
+  document.getElementById('count-fabricated').textContent = fabricated;
+  document.getElementById('count-total').textContent = total;
+  document.getElementById('count-claims-verified').textContent = claimsVerified;
+  document.getElementById('count-claims-total').textContent = claimsTotal;
+  document.getElementById('count-requests-open').textContent = requestsOpen;
+  document.getElementById('count-requests-total').textContent = requestsTotal;
+
+  const sum = state.dimensions.reduce((acc, d) => acc + d.score, 0);
+  const composite = Math.round((sum / state.dimensions.length) * 10);
+  document.getElementById('readiness-score').textContent = composite;
+  document.getElementById('readiness-bar').style.setProperty('--w', composite + '%');
+}
+
+function renderFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  const activeDocs = state.documents.filter(d => !isQuarantined(d));
+  const counts = { all: activeDocs.length };
+  activeDocs.forEach(d => { counts[d.status] = (counts[d.status] || 0) + 1; });
+
+  const filters = [
+    { key: 'all', label: 'All' },
+    { key: 'verified', label: 'Verified' },
+    { key: 'corroborated', label: 'Corroborated' },
+    { key: 'plausible', label: 'Plausible' },
+    { key: 'partial', label: 'Partial' },
+    { key: 'weak_lead', label: 'Weak Lead' },
+    { key: 'unverified', label: 'Unverified' },
+    { key: 'tertiary', label: 'Tertiary' },
+    { key: 'not_evidence', label: 'Not Evidentiary' }
+  ];
+
+  bar.innerHTML = filters
+    .filter(f => f.key === 'all' || counts[f.key])
+    .map(f => `
+      <div class="filter-chip ${state.filter === f.key ? 'active' : ''}"
+           onclick="setFilter('${f.key}')">
+        ${f.label}<span class="count">${counts[f.key] || 0}</span>
+      </div>
+    `).join('');
+}
+
+function setFilter(key) {
+  state.filter = key;
+  renderFilterBar();
+  renderDocuments();
+}
+
+function triScoreCell(label, value, mode) {
+  const cls = mode === 'inv'
+    ? (value >= 60 ? 'danger' : value >= 30 ? '' : 'good')
+    : (value >= 70 ? 'good' : value >= 40 ? '' : 'danger');
+  return `<div class="cell ${cls}"><span class="k">${label}</span><span class="v">${value ?? 0}</span></div>`;
+}
+
+function renderDocuments() {
+  const tbody = document.getElementById('doc-tbody');
+  const activeDocs = state.documents.filter(d => !isQuarantined(d));
+  const docs = state.filter === 'all'
+    ? activeDocs
+    : activeDocs.filter(d => d.status === state.filter);
+
+  if (docs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No documents in this category.</div></td></tr>`;
+    return;
+  }
+
+  docs.sort((a, b) => {
+    const sa = STATUS_META[a.status]?.order ?? 99;
+    const sb = STATUS_META[b.status]?.order ?? 99;
+    if (sa !== sb) return sa - sb;
+    return a.name.localeCompare(b.name);
+  });
+
+  tbody.innerHTML = docs.map(d => `
+    <tr>
+      <td>
+        <div class="doc-name">${escapeHtml(d.name)}</div>
+        <div class="doc-sub">${escapeHtml(d.type || '')}</div>
+        ${d.notes ? `<div class="doc-sub">${escapeHtml(d.notes)}</div>` : ''}
+      </td>
+      <td><span class="status-badge" data-status="${d.status}">${STATUS_META[d.status]?.label || d.status}</span></td>
+      <td>
+        <div class="tri-score">
+          ${triScoreCell('Prov', d.provenance_score ?? 0, 'pos')}
+          ${triScoreCell('Auth', d.authenticity_score ?? 0, 'pos')}
+          ${triScoreCell('Contam', d.contamination_score ?? 0, 'inv')}
+        </div>
+      </td>
+      <td>
+        <span class="meta-pill ${d.custody || 'draft'}">${(d.custody || 'draft').toUpperCase()}</span>
+        <span class="meta-pill access-${d.access || 'internal'}">${(d.access || 'internal').toUpperCase()}</span>
+      </td>
+      <td>
+        <div>${escapeHtml(d.source || '—')}</div>
+        <div class="doc-source">${escapeHtml(d.provenance || '')}</div>
+      </td>
+      <td>
+        <div class="doc-actions">
+          <button class="ghost small" onclick="openEditDocModal('${d.id}')">Edit</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderQuarantine() {
+  const grid = document.getElementById('quarantine-grid');
+  const countEl = document.getElementById('quarantine-count');
+  const quarantined = state.documents.filter(isQuarantined);
+
+  countEl.textContent = quarantined.length;
+
+  if (quarantined.length === 0) {
+    grid.innerHTML = `<div class="quarantine-empty">No AI-generated material currently isolated.</div>`;
+    return;
+  }
+
+  quarantined.sort((a, b) => {
+    const ca = a.contamination_score ?? 0;
+    const cb = b.contamination_score ?? 0;
+    if (ca !== cb) return cb - ca;
+    return a.name.localeCompare(b.name);
+  });
+
+  grid.innerHTML = quarantined.map(d => {
+    const hasProvenance = d.provenance && d.provenance.trim().length > 0;
+    const provenanceDisplay = hasProvenance
+      ? `<div class="value">${escapeHtml(d.provenance)}</div>`
+      : `<div class="value">Provenance required — record model, prompt date, and reviewer.</div>`;
+
+    const contam = d.contam || {};
+    const contamRows = [
+      ['Structural',   contam.structural ?? 0],
+      ['Statistical',  contam.statistical ?? 0],
+      ['Linguistic',   contam.linguistic ?? 0],
+      ['Citation',     contam.citation ?? 0],
+      ['Image',        contam.image ?? 0]
+    ].map(([name, val]) => `
+      <div class="contam-row">
+        <span class="name">${name}</span>
+        <span class="bar"><span class="fill" style="width:${val}%"></span></span>
+        <span class="v">${val}</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="quarantine-card">
+        <div class="doc-info">
+          <div class="name">${escapeHtml(d.name)}</div>
+          <div class="type-line">${escapeHtml(d.type || '—')}</div>
+          <div class="provenance-block ${hasProvenance ? '' : 'missing'}">
+            <div class="label">Provenance</div>
+            ${provenanceDisplay}
+          </div>
+          <div class="contam-breakdown">
+            <div class="label">Contamination Breakdown (TE360 anomaly classes)</div>
+            ${contamRows}
+          </div>
+          ${d.notes ? `<div class="notes">${escapeHtml(d.notes)}</div>` : ''}
+        </div>
+        <div class="quarantine-actions">
+          <span class="do-not-cite">Do Not Cite</span>
+          <div style="text-align:right">
+            <div class="contam-score">${d.contamination_score ?? 0}<span class="denom">/100</span></div>
+            <div class="contam-label">contamination</div>
+          </div>
+          <span class="status-mini">${STATUS_META[d.status]?.label || d.status}</span>
+          <span class="status-mini">Custody · ${(d.custody || 'draft').toUpperCase()}</span>
+          <button class="ghost small" onclick="openEditDocModal('${d.id}')">Edit</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderClaims() {
+  const tbody = document.getElementById('claims-tbody');
+
+  if (state.claims.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No claims registered yet.</div></td></tr>`;
+    return;
+  }
+
+  const claims = [...state.claims].sort((a, b) => {
+    const sa = STATUS_META[a.status]?.order ?? 99;
+    const sb = STATUS_META[b.status]?.order ?? 99;
+    if (sa !== sb) return sa - sb;
+    return (b.confidence ?? 0) - (a.confidence ?? 0);
+  });
+
+  tbody.innerHTML = claims.map(c => {
+    const confClass = c.confidence >= 70 ? 'high' : c.confidence < 30 ? 'low' : '';
+    const needed = Array.isArray(c.needed) ? c.needed.join(', ') : (c.needed || '');
+    return `
+      <tr onclick="openEditClaimModal('${c.id}')" style="cursor:pointer">
+        <td><span class="claim-id">${escapeHtml(c.id)}</span></td>
+        <td>
+          <div class="claim-text">${escapeHtml(c.text || '')}</div>
+          <div class="claim-meta">Type · ${escapeHtml(c.type || '—')}${c.best_evidence ? ' &middot; Best: ' + escapeHtml(c.best_evidence) : ''}</div>
+        </td>
+        <td><span class="status-badge" data-status="${c.status}">${STATUS_META[c.status]?.label || c.status}</span></td>
+        <td>
+          <div class="burden">${escapeHtml(c.burden || '—')}
+            ${needed ? `<span class="needed">Needs: ${escapeHtml(needed)}</span>` : ''}
+          </div>
+        </td>
+        <td><div class="confidence-cell ${confClass}">${c.confidence ?? 0}<span class="denom">/100</span></div></td>
+        <td><span class="doc-source">${escapeHtml(c.reviewer || 'unassigned')}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderDimensions() {
+  const container = document.getElementById('dimensions');
+  container.innerHTML = state.dimensions.map(d => {
+    const band = d.score >= 7 ? 'high' : d.score >= 4 ? 'mid' : 'low';
+    const width = (d.score / 10) * 100;
+    return `
+      <div class="dimension-row">
+        <div class="name">
+          ${escapeHtml(d.name)}
+          <span class="note">${escapeHtml(d.note)}</span>
+        </div>
+        <div class="dimension-bar">
+          <div class="fill" data-band="${band}" style="width: ${width}%"></div>
+          <div class="ticks">${'<div class="tick"></div>'.repeat(10)}</div>
+        </div>
+        <div class="score">${d.score}<span class="denom">/10</span></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderRequests() {
+  const container = document.getElementById('requests');
+  if (state.requests.length === 0) {
+    container.innerHTML = `<div class="empty-state">No archive requests yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = state.requests.map(r => `
+    <div class="request" onclick="if(event.target.tagName!=='SELECT')openEditReqModal('${r.id}')" style="cursor:pointer">
+      <div class="req-id">${escapeHtml(r.id)}</div>
+      <div class="target">
+        <div class="archive">${escapeHtml(r.source || '—')}</div>
+        <div class="record-target">${escapeHtml(r.target || '')}</div>
+      </div>
+      <div class="query">${escapeHtml(r.query || '')}</div>
+      <div class="meta-col">
+        <span class="k">Submitted</span><span class="v">${escapeHtml(r.submitted || '—')}</span>
+        <span class="k" style="margin-top:6px;">Follow-up</span><span class="v">${escapeHtml(r.followup || '—')}</span>
+      </div>
+      <div class="meta-col">
+        <span class="k">Cost</span><span class="v">${escapeHtml(r.cost || '—')}</span>
+        <span class="k" style="margin-top:6px;">Result</span><span class="v">${escapeHtml(r.result || 'pending')}</span>
+      </div>
+      <div>
+        <select class="status-select" onclick="event.stopPropagation()" onchange="updateRequestStatus('${r.id}', this.value)">
+          <option value="draft" ${r.status === 'draft' ? 'selected' : ''}>Draft</option>
+          <option value="planned" ${r.status === 'planned' ? 'selected' : ''}>Planned</option>
+          <option value="submitted" ${r.status === 'submitted' ? 'selected' : ''}>Submitted</option>
+          <option value="in_progress" ${r.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+          <option value="completed" ${r.status === 'completed' ? 'selected' : ''}>Completed</option>
+          <option value="blocked" ${r.status === 'blocked' ? 'selected' : ''}>Blocked</option>
+        </select>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function updateRequestStatus(id, value) {
+  const r = state.requests.find(x => x.id === id);
+  if (!r) return;
+  r.status = value;
+  await storage.set('requests', state.requests);
+  renderStats();
+}
+
+/* ==================================================================
+   DOCUMENT MODAL
+   ================================================================== */
+function openAddDocModal() {
+  document.getElementById('doc-modal-title').textContent = 'Add Document';
+  ['f-name','f-type','f-source','f-provenance','f-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-status').value = 'unverified';
+  document.getElementById('f-provenance-score').value = '';
+  document.getElementById('f-authenticity-score').value = '';
+  document.getElementById('f-contamination-score').value = '';
+  document.getElementById('f-custody').value = 'draft';
+  document.getElementById('f-access').value = 'internal';
+  document.getElementById('f-id').value = '';
+  document.getElementById('doc-delete-btn').style.display = 'none';
+  document.getElementById('doc-modal-backdrop').classList.add('open');
+}
+
+function openEditDocModal(id) {
+  const d = state.documents.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('doc-modal-title').textContent = 'Edit Document';
+  document.getElementById('f-id').value = d.id;
+  document.getElementById('f-name').value = d.name || '';
+  document.getElementById('f-type').value = d.type || '';
+  document.getElementById('f-status').value = d.status || 'unverified';
+  document.getElementById('f-source').value = d.source || '';
+  document.getElementById('f-provenance').value = d.provenance || '';
+  document.getElementById('f-notes').value = d.notes || '';
+  document.getElementById('f-provenance-score').value = d.provenance_score ?? '';
+  document.getElementById('f-authenticity-score').value = d.authenticity_score ?? '';
+  document.getElementById('f-contamination-score').value = d.contamination_score ?? '';
+  document.getElementById('f-custody').value = d.custody || 'draft';
+  document.getElementById('f-access').value = d.access || 'internal';
+  document.getElementById('doc-delete-btn').style.display = '';
+  document.getElementById('doc-modal-backdrop').classList.add('open');
+}
+
+function closeDocModal() {
+  document.getElementById('doc-modal-backdrop').classList.remove('open');
+}
+
+function clampScore(v) {
+  if (v === '' || v === null || v === undefined) return 0;
+  const n = Number(v);
+  if (Number.isNaN(n)) return 0;
+  return Math.max(0, Math.min(100, n));
+}
+
+async function saveDocument() {
+  const id = document.getElementById('f-id').value;
+  const data = {
+    name: document.getElementById('f-name').value.trim(),
+    type: document.getElementById('f-type').value.trim(),
+    status: document.getElementById('f-status').value,
+    source: document.getElementById('f-source').value.trim(),
+    provenance: document.getElementById('f-provenance').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
+    provenance_score: clampScore(document.getElementById('f-provenance-score').value),
+    authenticity_score: clampScore(document.getElementById('f-authenticity-score').value),
+    contamination_score: clampScore(document.getElementById('f-contamination-score').value),
+    custody: document.getElementById('f-custody').value,
+    access: document.getElementById('f-access').value
+  };
+
+  if (!data.name) {
+    alert('Document name is required.');
+    return;
+  }
+
+  // Auto-route to quarantine on high contamination, per TE360 Rule 06
+  if (data.contamination_score >= 60 && data.custody !== 'quarantined') {
+    data.custody = 'quarantined';
+  }
+
+  // Provenance is mandatory for anything entering the quarantine zone.
+  const willQuarantine = QUARANTINE_STATUSES.has(data.status)
+                       || data.custody === 'quarantined'
+                       || data.contamination_score >= 60;
+  if (willQuarantine && !data.provenance) {
+    alert('Provenance is required for any document in quarantine.\n\nRecord the model, prompt date, and reviewer before saving.');
+    document.getElementById('f-provenance').focus();
+    return;
+  }
+
+  if (id) {
+    const idx = state.documents.findIndex(d => d.id === id);
+    if (idx !== -1) {
+      state.documents[idx] = { ...state.documents[idx], ...data };
+    }
+  } else {
+    data.id = 'd' + Date.now();
+    data.contam = { structural: 0, statistical: 0, linguistic: 0, citation: 0, image: 0 };
+    state.documents.push(data);
+  }
+
+  await storage.set('documents', state.documents);
+  closeDocModal();
+  renderAll();
+}
+
+async function deleteCurrentDoc() {
+  const id = document.getElementById('f-id').value;
+  if (!id) return;
+  if (!confirm('Remove this document from the inventory? This cannot be undone here.')) return;
+  state.documents = state.documents.filter(d => d.id !== id);
+  await storage.set('documents', state.documents);
+  closeDocModal();
+  renderAll();
+}
+
+/* ==================================================================
+   CLAIM MODAL
+   ================================================================== */
+function openAddClaimModal() {
+  document.getElementById('claim-modal-title').textContent = 'Add Claim';
+  ['c-text','c-burden','c-needed','c-reviewer','c-best-evidence','c-contradictions'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('c-type').value = 'identity';
+  document.getElementById('c-status').value = 'unverified';
+  document.getElementById('c-confidence').value = '';
+  document.getElementById('c-id').value = '';
+  document.getElementById('claim-delete-btn').style.display = 'none';
+  document.getElementById('claim-modal-backdrop').classList.add('open');
+}
+
+function openEditClaimModal(id) {
+  const c = state.claims.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('claim-modal-title').textContent = 'Edit Claim';
+  document.getElementById('c-id').value = c.id;
+  document.getElementById('c-text').value = c.text || '';
+  document.getElementById('c-type').value = c.type || 'identity';
+  document.getElementById('c-status').value = c.status || 'unverified';
+  document.getElementById('c-burden').value = c.burden || '';
+  document.getElementById('c-needed').value = Array.isArray(c.needed) ? c.needed.join(', ') : (c.needed || '');
+  document.getElementById('c-confidence').value = c.confidence ?? '';
+  document.getElementById('c-reviewer').value = c.reviewer || '';
+  document.getElementById('c-best-evidence').value = c.best_evidence || '';
+  document.getElementById('c-contradictions').value = c.contradictions || '';
+  document.getElementById('claim-delete-btn').style.display = '';
+  document.getElementById('claim-modal-backdrop').classList.add('open');
+}
+
+function closeClaimModal() {
+  document.getElementById('claim-modal-backdrop').classList.remove('open');
+}
+
+async function saveClaim() {
+  const id = document.getElementById('c-id').value;
+  const needed = document.getElementById('c-needed').value
+    .split(',').map(s => s.trim()).filter(Boolean);
+
+  const data = {
+    text: document.getElementById('c-text').value.trim(),
+    type: document.getElementById('c-type').value,
+    status: document.getElementById('c-status').value,
+    burden: document.getElementById('c-burden').value.trim(),
+    needed,
+    confidence: clampScore(document.getElementById('c-confidence').value),
+    reviewer: document.getElementById('c-reviewer').value.trim(),
+    best_evidence: document.getElementById('c-best-evidence').value.trim(),
+    contradictions: document.getElementById('c-contradictions').value.trim()
+  };
+
+  if (!data.text) {
+    alert('Claim text is required.');
+    return;
+  }
+  if (!data.burden) {
+    alert('Burden of proof is required — what would have to be true for this claim to graduate?');
+    return;
+  }
+
+  if (id) {
+    const idx = state.claims.findIndex(c => c.id === id);
+    if (idx !== -1) state.claims[idx] = { ...state.claims[idx], ...data };
+  } else {
+    const nextNum = state.claims.length + 1;
+    data.id = 'CLM-' + String(nextNum).padStart(4, '0');
+    state.claims.push(data);
+  }
+
+  await storage.set('claims', state.claims);
+  closeClaimModal();
+  renderAll();
+}
+
+async function deleteCurrentClaim() {
+  const id = document.getElementById('c-id').value;
+  if (!id) return;
+  if (!confirm('Remove this claim from the register? This cannot be undone here.')) return;
+  state.claims = state.claims.filter(c => c.id !== id);
+  await storage.set('claims', state.claims);
+  closeClaimModal();
+  renderAll();
+}
+
+/* ==================================================================
+   ARCHIVE REQUEST MODAL
+   ================================================================== */
+function openAddRequestModal() {
+  document.getElementById('req-modal-title').textContent = 'Add Archive Request';
+  ['r-source','r-cost','r-target','r-query','r-submitted','r-followup','r-result'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('r-status').value = 'draft';
+  document.getElementById('r-id').value = '';
+  document.getElementById('req-delete-btn').style.display = 'none';
+  document.getElementById('req-modal-backdrop').classList.add('open');
+}
+
+function openEditReqModal(id) {
+  const r = state.requests.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('req-modal-title').textContent = 'Edit Archive Request';
+  document.getElementById('r-id').value = r.id;
+  document.getElementById('r-source').value = r.source || '';
+  document.getElementById('r-cost').value = r.cost || '';
+  document.getElementById('r-target').value = r.target || '';
+  document.getElementById('r-query').value = r.query || '';
+  document.getElementById('r-submitted').value = r.submitted || '';
+  document.getElementById('r-followup').value = r.followup || '';
+  document.getElementById('r-status').value = r.status || 'draft';
+  document.getElementById('r-result').value = r.result || '';
+  document.getElementById('req-delete-btn').style.display = '';
+  document.getElementById('req-modal-backdrop').classList.add('open');
+}
+
+function closeReqModal() {
+  document.getElementById('req-modal-backdrop').classList.remove('open');
+}
+
+async function saveRequest() {
+  const id = document.getElementById('r-id').value;
+  const data = {
+    source: document.getElementById('r-source').value.trim(),
+    cost: document.getElementById('r-cost').value.trim(),
+    target: document.getElementById('r-target').value.trim(),
+    query: document.getElementById('r-query').value.trim(),
+    submitted: document.getElementById('r-submitted').value,
+    followup: document.getElementById('r-followup').value,
+    status: document.getElementById('r-status').value,
+    result: document.getElementById('r-result').value.trim()
+  };
+
+  if (!data.source) {
+    alert('Source / archive is required.');
+    return;
+  }
+
+  if (id) {
+    const idx = state.requests.findIndex(r => r.id === id);
+    if (idx !== -1) state.requests[idx] = { ...state.requests[idx], ...data };
+  } else {
+    const nextNum = state.requests.length + 1;
+    data.id = 'AR-' + String(nextNum).padStart(3, '0');
+    state.requests.push(data);
+  }
+
+  await storage.set('requests', state.requests);
+  closeReqModal();
+  renderAll();
+}
+
+async function deleteCurrentReq() {
+  const id = document.getElementById('r-id').value;
+  if (!id) return;
+  if (!confirm('Remove this archive request? This cannot be undone here.')) return;
+  state.requests = state.requests.filter(r => r.id !== id);
+  await storage.set('requests', state.requests);
+  closeReqModal();
+  renderAll();
+}
+
+/* ==================================================================
+   EXPORTS
+   ================================================================== */
+function exportData() {
+  const dump = {
+    exportedAt: new Date().toISOString(),
+    case: 'Terminel-Sagasta',
+    audit_standard: 'TruthEngine360 · Forensic Archival',
+    documents: state.documents,
+    claims: state.claims,
+    dimensions: state.dimensions,
+    requests: state.requests
+  };
+  downloadBlob(JSON.stringify(dump, null, 2), 'application/json',
+    'terminel_sagasta_audit_' + dateStr() + '.json');
+}
+
+function exportEvidenceMatrix() {
+  const headers = [
+    'evidence_id','name','type','status',
+    'provenance_score','authenticity_score','contamination_score',
+    'chain_of_custody','access_level','source','provenance_note','notes'
+  ];
+  const rows = state.documents.map(d => [
+    d.id, d.name, d.type, d.status,
+    d.provenance_score ?? '', d.authenticity_score ?? '', d.contamination_score ?? '',
+    d.custody || '', d.access || '', d.source || '', d.provenance || '', d.notes || ''
+  ]);
+  downloadBlob(toCsv(headers, rows), 'text/csv',
+    'evidence_matrix_' + dateStr() + '.csv');
+}
+
+function exportClaimsMatrix() {
+  const headers = [
+    'claim_id','claim_text','claim_type','status','confidence',
+    'burden_of_proof','needed_proof','best_evidence','contradictions','reviewer'
+  ];
+  const rows = state.claims.map(c => [
+    c.id, c.text || '', c.type || '', c.status || '', c.confidence ?? '',
+    c.burden || '',
+    Array.isArray(c.needed) ? c.needed.join('; ') : (c.needed || ''),
+    c.best_evidence || '', c.contradictions || '', c.reviewer || ''
+  ]);
+  downloadBlob(toCsv(headers, rows), 'text/csv',
+    'claims_matrix_' + dateStr() + '.csv');
+}
+
+function exportRequestsCSV() {
+  const headers = [
+    'request_id','source','record_target','query_used',
+    'submitted','followup_due','status','cost','result'
+  ];
+  const rows = state.requests.map(r => [
+    r.id, r.source || '', r.target || '', r.query || '',
+    r.submitted || '', r.followup || '', r.status || '', r.cost || '', r.result || ''
+  ]);
+  downloadBlob(toCsv(headers, rows), 'text/csv',
+    'archive_requests_' + dateStr() + '.csv');
+}
+
+function toCsv(headers, rows) {
+  const esc = v => {
+    const s = String(v ?? '');
+    if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  };
+  return [headers.map(esc).join(','), ...rows.map(r => r.map(esc).join(','))].join('\n');
+}
+
+function downloadBlob(content, mime, filename) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function dateStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/* ==================================================================
+   UTILITIES
+   ================================================================== */
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Boot
+init();
+</script>
+
+</body>
+</html>
