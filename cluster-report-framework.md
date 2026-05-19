@@ -59,7 +59,8 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
   <NONNEGOTIABLES>
     - Do not ask questions.
     - Use the Evidence-Weighting Model exactly as defined.
-    - Normalize all metrics to the locked benchmarks.
+    - Normalize LOCKED metrics to their benchmarks and compute PASS/FAIL.
+    - Report non-locked metrics (NarrativePct, SwitchEventsPerKWords, FRE, FKGL, reader-response proxies) as "reported/info" only — no PASS/FAIL gate.
     - If ANY locked benchmark fails: trigger RUN_FAIL_PROTOCOL and output raw datasets.
     - Always output: (A) Cluster Report (human) + (B) Pipeline datasets (CSV/JSON).
   </NONNEGOTIABLES>
@@ -222,15 +223,20 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
 
     <B_PIPELINE_DATASETS_MACHINE>
       <!-- Output these blocks verbatim -->
-      1) <CSV_METRICS> ... </CSV_METRICS>
-      2) <JSON_STRUCTURAL> ... </JSON_STRUCTURAL>
-      3) <JSON_LINGUISTIC> ... </JSON_LINGUISTIC>
-      4) <JSON_DIALOGUE_CODESWITCH> ... </JSON_DIALOGUE_CODESWITCH>
-      5) <JSON_AGENCY> ... </JSON_AGENCY>
-      6) <JSON_ACCURACY_AUDIT> ... </JSON_ACCURACY_AUDIT>
-      7) <JSON_VECTOR_PIPELINE> ... </JSON_VECTOR_PIPELINE>
-      8) <JSON_NIPS_SOCIAL_PHYSICS_PIPELINE> ... </JSON_NIPS_SOCIAL_PHYSICS_PIPELINE>
-      9) <JSON_PREDICTIVE_SENTIMENT_PIPELINE> ... </JSON_PREDICTIVE_SENTIMENT_PIPELINE>
+      <!-- Category datasets (one per PROCESSING_STEPS category) -->
+      1)  <CSV_METRICS> ... </CSV_METRICS>
+      2)  <JSON_STRUCTURAL> ... </JSON_STRUCTURAL>
+      3)  <JSON_LINGUISTIC> ... </JSON_LINGUISTIC>
+      4)  <JSON_DIALOGUE_CODESWITCH> ... </JSON_DIALOGUE_CODESWITCH>
+      5)  <JSON_AGENCY> ... </JSON_AGENCY>
+      6)  <JSON_ACCURACY_AUDIT> ... </JSON_ACCURACY_AUDIT>
+      7)  <JSON_SENSORY_IMMERSION> ... </JSON_SENSORY_IMMERSION>
+      8)  <JSON_CULTURAL_HISTORICAL_MILITARY> ... </JSON_CULTURAL_HISTORICAL_MILITARY>
+      9)  <JSON_READER_RESPONSE> ... </JSON_READER_RESPONSE>
+      <!-- Downstream pipeline feeds -->
+      10) <JSON_VECTOR_PIPELINE> ... </JSON_VECTOR_PIPELINE>
+      11) <JSON_NIPS_SOCIAL_PHYSICS_PIPELINE> ... </JSON_NIPS_SOCIAL_PHYSICS_PIPELINE>
+      12) <JSON_PREDICTIVE_SENTIMENT_PIPELINE> ... </JSON_PREDICTIVE_SENTIMENT_PIPELINE>
     </B_PIPELINE_DATASETS_MACHINE>
   </OUTPUT_FORMAT>
 
