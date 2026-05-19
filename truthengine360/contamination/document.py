@@ -42,4 +42,10 @@ class Document:
 
     @property
     def has_archive_locator(self) -> bool:
-        return bool(self.archive_name or self.collection_name or self.box_number or self.call_number)
+        return bool(
+            self.archive_name
+            or self.collection_name
+            or self.box_number
+            or self.folder_number
+            or self.call_number
+        )

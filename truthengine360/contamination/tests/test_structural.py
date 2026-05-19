@@ -60,3 +60,10 @@ def test_missing_provenance_only_on_substantive_text():
 
     with_locator = Document(title="t", ocr_text="a" * 250, archive_name="NARA")
     assert rule_missing_provenance(with_locator) == []
+
+
+def test_missing_provenance_quiet_when_only_folder_number_set():
+    # has_archive_locator must consider folder_number too — a record cited
+    # only by folder is not "missing provenance".
+    doc = Document(title="t", ocr_text="a" * 250, folder_number="Folder 42")
+    assert rule_missing_provenance(doc) == []

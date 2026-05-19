@@ -9,9 +9,13 @@ from ..document import Document
 from ..findings import Category, Finding
 
 
-# Match a wide variety of currency formats: $639,000,000 / USD 1,000 / 100 pesos
+# Match currency in both prefix and suffix forms.
+#   prefix:  $639,000,000 / USD 1,000 / MX$ 50 / pesos 250
+#   suffix:  100 pesos / 50 dollars / 2,500 USD
+# Groups: (prefix_amount, suffix_amount). Exactly one is set per match.
 _CURRENCY_RE = re.compile(
-    r"(?:\$|USD\s*|MXN\s*|MX\$\s*|pesos?\s*|dollars?\s*)([\d][\d,]*(?:\.\d+)?)",
+    r"(?:(?:\$|USD\s*|MXN\s*|MX\$\s*|pesos?\s*|dollars?\s*)([\d][\d,]*(?:\.\d+)?))"
+    r"|(?:([\d][\d,]*(?:\.\d+)?)\s*(?:USD\b|MXN\b|pesos?\b|dollars?\b))",
     re.I,
 )
 
@@ -21,6 +25,11 @@ def _parse_amount(s: str) -> Optional[float]:
         return float(s.replace(",", ""))
     except ValueError:
         return None
+
+
+def _match_amount(m: "re.Match[str]") -> Optional[float]:
+    raw = m.group(1) or m.group(2)
+    return _parse_amount(raw) if raw else None
 
 
 def _is_round(amount: float) -> bool:
@@ -49,7 +58,7 @@ def _is_pure_power_of_ten(amount: float) -> bool:
 def _extract_amounts(text: str) -> List[float]:
     return [
         amount
-        for amount in (_parse_amount(m.group(1)) for m in _CURRENCY_RE.finditer(text))
+        for amount in (_match_amount(m) for m in _CURRENCY_RE.finditer(text))
         if amount is not None
     ]
 

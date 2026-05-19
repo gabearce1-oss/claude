@@ -51,3 +51,12 @@ def test_powers_of_ten_quiet_below_threshold():
     text = "An amount of $1,000 was paid."
     doc = Document(title="t", ocr_text=text)
     assert rule_powers_of_ten_sequence(doc) == []
+
+
+def test_suffix_currency_forms_extracted():
+    # Both "100 pesos" and "2,500 USD" should be captured alongside prefix forms.
+    text = "Paid 100 pesos, 1,000 pesos, 10,000 pesos, and 100,000 pesos."
+    doc = Document(title="t", ocr_text=text)
+    findings = rule_powers_of_ten_sequence(doc)
+    assert findings, "suffix-form currency should feed statistical rules"
+    assert findings[0].rule_id == "T002_powers_of_ten_sequence"
