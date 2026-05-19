@@ -81,7 +81,7 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     <benchmark id="ActiveVoicePct"      target="ge:95"    fail_condition="lt:95" />
     <benchmark id="DialoguePct"         target="35-55"    fail_condition="outside range" />
     <benchmark id="CodeSwitchingPct"    target="15-35"    fail_condition="outside range" />
-    <benchmark id="DecisionPerScene"          target="ge:1"     fail_condition="lt:1" note="per-scene minimum" />
+    <benchmark id="DecisionPerScene"          target="ge:1"     fail_condition="any_scene_lt:1" note="FAIL if ANY scene has &lt; 1 decision; do not average across scenes" />
     <benchmark id="SensoryAnchorsPerParagraph" target="ge:1"     fail_condition="lt:1" />
     <benchmark id="AccuracyPct"         target="ge:95"    fail_condition="lt:95" />
     <benchmark id="PacingDistribution"  target="REQUIRED" fail_condition="missing" />
@@ -157,9 +157,11 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
 
     <!-- Code-switching (word-level language ID required) -->
     <metric id="CodeSwitchingPct"
-            formula="non_English_tokens_in_dialogue / total_dialogue_tokens * 100" />
+            formula="non_English_tokens_in_dialogue / total_dialogue_tokens * 100"
+            zero_guard="if total_dialogue_tokens == 0: output 0.0 and flag DIALOGUE_ABSENT" />
     <metric id="SwitchEventsPerKWords"
-            formula="count(language_switch_boundaries) / (dialogue_words / 1000)" />
+            formula="count(language_switch_boundaries) / (dialogue_words / 1000)"
+            zero_guard="if dialogue_words == 0: output 0.0 and flag DIALOGUE_ABSENT" />
 
     <!-- Active voice -->
     <metric id="ActiveVoicePct"
