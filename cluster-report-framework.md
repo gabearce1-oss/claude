@@ -81,8 +81,8 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     <benchmark id="ActiveVoicePct"      target="ge:95"    fail_condition="lt:95" />
     <benchmark id="DialoguePct"         target="35-55"    fail_condition="outside range" />
     <benchmark id="CodeSwitchingPct"    target="15-35"    fail_condition="outside range" />
-    <benchmark id="AgencyDecPerScene"   target="ge:1"     fail_condition="lt:1" />
-    <benchmark id="SensoryAnchorsPerP"  target="ge:1"     fail_condition="lt:1" />
+    <benchmark id="DecisionPerScene"          target="ge:1"     fail_condition="lt:1" note="per-scene minimum" />
+    <benchmark id="SensoryAnchorsPerParagraph" target="ge:1"     fail_condition="lt:1" />
     <benchmark id="AccuracyPct"         target="ge:95"    fail_condition="lt:95" />
     <benchmark id="PacingDistribution"  target="REQUIRED" fail_condition="missing" />
   </LOCKED_BENCHMARKS>
@@ -175,8 +175,9 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
 
     <!-- Agency -->
     <metric id="DecisionPerScene"
-            formula="count(explicit_POV_decisions_with_consequence_markers)"
-            pass="every scene >= 1" />
+            formula="for_each_scene: count(explicit_POV_decisions_with_consequence_markers)"
+            unit="decisions per scene"
+            pass="every scene >= 1; chapter passes only if ALL scenes pass" />
 
     <!-- Pacing -->
     <metric id="PacingDistribution"
@@ -186,7 +187,8 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
 
     <!-- Sensory -->
     <metric id="SensoryAnchorsPerParagraph"
-            formula="count(paragraphs_with_ge1_sensory_anchor) / total_paragraphs * 100" />
+            formula="total_sensory_anchors / total_paragraphs"
+            unit="average anchors per paragraph (not percentage)" />
 
     <!-- Accuracy -->
     <metric id="AccuracyPct"
