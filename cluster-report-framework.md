@@ -26,7 +26,7 @@ This framework turns a multi-system analytics ecosystem (Omega/Hybrid scoring, R
 | Principle | Implementation | Reference |
 |-----------|---------------|-----------|
 | Prompt clarity | XML-tagged sections prevent instruction bleed (context contaminating outputs, examples mistaken as content). | Anthropic recommends XML tags for multi-component prompts. |
-| Schema compliance | Claude Structured Outputs (JSON schema-constrained decoding) guarantee valid, typed JSON for downstream pipelines. | Reduces parse failures and retries. |
+| Schema compliance | The pipeline JSON blocks (Section B) are individually compatible with Claude Structured Outputs (JSON schema-constrained decoding). When using schema enforcement at the API level, extract pipeline blocks into separate API calls; the full combined response (human report + pipeline data) is not a single-schema output. | Reduces parse failures and retries for pipeline ingestion. |
 | Threshold enforcement | All metrics normalize to locked benchmark bands with Pass/Fail gates — modeled on how readability formulas map numeric scores to difficulty bands. | Flesch Reading Ease / Flesch-Kincaid use the same pattern. |
 | Deterministic code-switching | Word-level language ID, not sentence-level guessing. | Research shows word-level labeling is required for mixed-language text. |
 | Active voice detection | "be" + past participle pattern with documented false-positive risk for copular "be." | Standard active/passive grammar definitions. |
@@ -199,7 +199,7 @@ Feed the XML block below directly to Claude. Replace all `{{PLACEHOLDER}}` varia
     <metric id="AccuracyPct"
             formula="validated_claims / total_audited_claims * 100"
             min_audit_sample="20 claims (or all if fewer)"
-            zero_guard="if total_audited_claims == 0: output N/A and flag NO_AUDITABLE_CLAIMS" />
+            zero_guard="if total_audited_claims == 0: output FAIL, value=N/A, flag=NO_AUDITABLE_CLAIMS (locked benchmark cannot pass without auditable data)" />
 
     <!-- Omega -->
     <metric id="OmegaScore" formula="internal_omega_model"
