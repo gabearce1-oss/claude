@@ -1549,7 +1549,10 @@ function renderDocuments() {
       <td>
         <div class="doc-name">${escapeHtml(d.name)}</div>
         ${d.notes ? `<div class="doc-type" style="margin-top:4px; font-style: italic;">${escapeHtml(d.notes)}</div>` : ''}
-        ${d.modified ? `<span class="modified-stamp">mod · ${escapeHtml(isoDate(new Date(d.modified)))}</span>` : ''}
+        ${(() => {
+          const stamp = d.modified ? isoDate(new Date(d.modified)) : '';
+          return stamp ? `<span class="modified-stamp">mod · ${escapeHtml(stamp)}</span>` : '';
+        })()}
       </td>
       <td><div class="doc-type">${escapeHtml(d.type || '—')}</div></td>
       <td><span class="status-badge" data-status="${escapeAttr(d.status)}">${escapeHtml(STATUS_META[d.status]?.label || d.status)}</span></td>
@@ -1900,12 +1903,19 @@ async function handleImport(event) {
 
     if (!confirm('Replace current inventory with the imported file?\n\nThis overwrites all unsaved data. Export first if you need a backup.')) return;
 
-    // Defense in depth on import: coerce all fields to safe types and
-    // drop unknown enum values. The renderer escapes everything, but a
-    // bad payload should never reach it in the first place.
-    const safeId = (prefix, idx, raw) => {
-      if (typeof raw === 'string' && /^[A-Za-z0-9._-]+$/.test(raw)) return raw;
-      return prefix + Date.now() + '_' + idx;
+    // Defense in depth on import: coerce all fields to safe types,
+    // drop unknown enum values, deduplicate IDs within each collection.
+    // A pure-regex check is insufficient because duplicate-but-valid
+    // IDs cause edit/delete actions to operate on the wrong row.
+    const makeIdAllocator = (prefix) => {
+      const seen = new Set();
+      return (idx, raw) => {
+        const ok = typeof raw === 'string' && /^[A-Za-z0-9._-]+$/.test(raw);
+        let id = ok ? raw : prefix + Date.now() + '_' + idx;
+        while (seen.has(id)) id = prefix + Date.now() + '_' + idx + '_' + seen.size;
+        seen.add(id);
+        return id;
+      };
     };
     const str = (v) => (v == null ? '' : String(v));
     const safeStatus = (v) => (STATUS_META[v] ? v : 'partial');
@@ -1913,23 +1923,33 @@ async function handleImport(event) {
       ['not_started','in_progress','completed','blocked'].includes(v) ? v : 'not_started'
     );
 
+    // Reject obviously bad timestamps so renderDocuments doesn't blow
+    // up on RangeError. Empty string means "no modified date".
+    const safeTimestamp = (v) => {
+      if (!v) return '';
+      const t = new Date(String(v));
+      return Number.isNaN(t.getTime()) ? '' : t.toISOString();
+    };
+
     if (docs) {
+      const allocId = makeIdAllocator('d');
       state.documents = docs.filter(d => d && typeof d === 'object').map((d, i) => ({
-        id: safeId('d', i, d.id),
+        id: allocId(i, d.id),
         name: str(d.name),
         type: str(d.type),
         status: safeStatus(d.status),
         source: str(d.source),
         provenance: str(d.provenance),
         notes: str(d.notes),
-        created: str(d.created) || undefined,
-        modified: str(d.modified) || undefined
+        created: safeTimestamp(d.created) || undefined,
+        modified: safeTimestamp(d.modified) || undefined
       }));
       await storage.set('documents', state.documents);
     }
     if (dims) {
+      const allocId = makeIdAllocator('dim');
       state.dimensions = dims.filter(d => d && typeof d === 'object').map((d, i) => ({
-        id: safeId('dim', i, d.id),
+        id: allocId(i, d.id),
         name: str(d.name),
         score: Math.max(0, Math.min(10, parseInt(d.score, 10) || 0)),
         note: str(d.note),
@@ -1938,8 +1958,9 @@ async function handleImport(event) {
       await storage.set('dimensions', state.dimensions);
     }
     if (targets) {
+      const allocId = makeIdAllocator('t');
       state.targets = targets.filter(t => t && typeof t === 'object').map((t, i) => ({
-        id: safeId('t', i, t.id),
+        id: allocId(i, t.id),
         step: parseInt(t.step, 10) || (i + 1),
         archive: str(t.archive),
         action: str(t.action),
@@ -1972,7 +1993,10 @@ function escapeHtml(s) {
 
 function escapeAttr(s) { return escapeHtml(s); }
 
-function isoDate(d) { return d.toISOString().slice(0, 10); }
+function isoDate(d) {
+  if (!(d instanceof Date) || Number.isNaN(d.getTime())) return '';
+  return d.toISOString().slice(0, 10);
+}
 
 let toastTimer = null;
 function toast(msg, kind) {
