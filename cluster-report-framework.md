@@ -328,6 +328,7 @@ Numbers are illustrative for a hypothetical chapter.
 | Character/Agency | 16 | 4 | 2 |
 | Cultural/Historical/Military | 12 | 2 | 0 |
 | Sensory/Immersion | 31 | 3 | 0 |
+| Accuracy | 25 | 2 | 0 |
 | Reader Response | 14 | 2 | 1 |
 
 ### 4.4 Top Clusters
