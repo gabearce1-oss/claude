@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs -I{} sh -c 'f=\"{}\"; if [ -f \"$f\" ]; then if grep -Eil \"wells.fargo.*sonora|fabricated.transaction|restitution.award|\\\\$639M\" \"$f\" >/dev/null 2>&1; then echo \"evidence-audit: edit target ($f) references material flagged as fabricated in the audit. Confirm provenance before propagating into new documents.\" >&2; fi; fi'"
+            "command": "sh -c 'f=$(jq -r \".tool_input.file_path\"); [ -n \"$f\" ] && [ -f \"$f\" ] && grep -Eil \"wells.fargo.*sonora|fabricated.transaction|restitution.award|\\$639M\" \"$f\" >/dev/null 2>&1 && echo \"evidence-audit: edit target ($f) references material flagged as fabricated in the audit. Confirm provenance before propagating into new documents.\" >&2'"
           }
         ]
       }
