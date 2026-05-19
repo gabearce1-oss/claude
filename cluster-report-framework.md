@@ -364,8 +364,8 @@ CH-07,OmegaScore,104.2,"103-106",true,Within target band
 CH-07,RF,2.7,"le:2.5",false,Mid-scene exposition density spike in S3-S4
 CH-07,ActiveVoicePct,96.4,"ge:95",true,3 passive instances flagged; 1 copula false-positive
 CH-07,DialoguePct,33.1,"35-55",false,Convert exposition beats to conflict dialogue
-CH-07,CodeSwitchPct,19.8,"15-35",true,Spanish code-switching well-distributed across S1-S5
-CH-07,AgencyDecisionsPerScene,0.7,"ge:1",false,Scenes 2 4 5 have zero explicit POV decisions
+CH-07,CodeSwitchingPct,19.8,"15-35",true,Spanish code-switching well-distributed across S1-S5
+CH-07,DecisionPerScene,0.7,"ge:1",false,Scenes 2 4 5 have zero explicit POV decisions
 CH-07,AccuracyPct,96.0,"ge:95",true,24/25 claims validated; 1 uniform detail uncertain
 CH-07,SensoryAnchorsPerParagraph,1.2,"ge:1",true,83% of paragraphs have at least 1 anchor
 CH-07,FRE,61.0,reported,info,Standard difficulty range
@@ -375,6 +375,7 @@ CH-07,PacingDialogue,28,required,info,28% classified DIALOGUE
 CH-07,PacingReflection,18,required,info,18% classified REFLECTION
 CH-07,PacingExposition,24,required,info,24% classified EXPOSITION
 CH-07,PacingTransition,8,required,info,8% classified TRANSITION
+CH-07,PacingDistribution,provided,REQUIRED,true,All 5 pacing categories reported
 ```
 
 ### 5.2 JSON_VECTOR_PIPELINE
