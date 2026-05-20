@@ -9,6 +9,7 @@ import ClaimRow from '../components/claims/ClaimRow';
 import ClaimModal from '../components/claims/ClaimModal';
 import EvidenceLinkModal from '../components/claims/EvidenceLinkModal';
 import SemanticSearchBox from '../components/ml/SemanticSearchBox';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function ClaimsPage() {
   const qc = useQueryClient();
@@ -19,15 +20,15 @@ export default function ClaimsPage() {
 
   const { data: claims = [] } = useQuery({
     queryKey: ['claims'],
-    queryFn: () => base44.entities.Claim.list('-created_date'),
+    queryFn: () => listAll(base44.entities.Claim, '-created_date'),
   });
   const { data: evidence = [] } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: links = [] } = useQuery({
     queryKey: ['evidenceClaimLinks'],
-    queryFn: () => base44.entities.EvidenceClaimLink.list(),
+    queryFn: () => listAll(base44.entities.EvidenceClaimLink),
   });
 
   const createClaim = useMutation({

@@ -6,6 +6,7 @@ import { ArrowLeft, RotateCcw, Calendar } from 'lucide-react';
 import { WORKFLOW_BLOCKS } from '../components/workflow/workflowData';
 import WorkflowBlock from '../components/workflow/WorkflowBlock';
 import DailySummaryButton from '../components/workflow/DailySummaryButton';
+import { listAll } from '@/lib/base44/pagination';
 
 const STORAGE_KEY = 'te360_workflow_checks';
 const STORAGE_DATE_KEY = 'te360_workflow_date';
@@ -54,15 +55,15 @@ export default function WorkflowPage() {
   // Live data for the per-block metrics
   const { data: evidence = [] } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: archiveRequests = [] } = useQuery({
     queryKey: ['archiveRequests'],
-    queryFn: () => base44.entities.ArchiveRequest.list(),
+    queryFn: () => listAll(base44.entities.ArchiveRequest),
   });
   const { data: entities = [] } = useQuery({
     queryKey: ['entities'],
-    queryFn: () => base44.entities.Entity.list(),
+    queryFn: () => listAll(base44.entities.Entity),
   });
 
   const dataByEntity = useMemo(

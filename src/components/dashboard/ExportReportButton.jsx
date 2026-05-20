@@ -3,21 +3,22 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Download, Loader2 } from 'lucide-react';
 import { exportAuditReport } from './exportAuditReport';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function ExportReportButton() {
   const [generating, setGenerating] = useState(false);
 
   const { data: evidence = [] } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: claims = [] } = useQuery({
     queryKey: ['claims'],
-    queryFn: () => base44.entities.Claim.list(),
+    queryFn: () => listAll(base44.entities.Claim),
   });
   const { data: archiveRequests = [] } = useQuery({
     queryKey: ['archiveRequests'],
-    queryFn: () => base44.entities.ArchiveRequest.list(),
+    queryFn: () => listAll(base44.entities.ArchiveRequest),
   });
 
   const handleExport = async () => {

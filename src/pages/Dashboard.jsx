@@ -8,6 +8,7 @@ import OverviewTab from '../components/dashboard/tabs/OverviewTab';
 import EvidenceTab from '../components/dashboard/tabs/EvidenceTab';
 import IntelligenceTab from '../components/dashboard/tabs/IntelligenceTab';
 import CustodyTab from '../components/dashboard/tabs/CustodyTab';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -24,11 +25,11 @@ export default function Dashboard() {
 
   const { data: allEvidence = [], isLoading } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: allClaims = [] } = useQuery({
     queryKey: ['claims'],
-    queryFn: () => base44.entities.Claim.list(),
+    queryFn: () => listAll(base44.entities.Claim),
   });
 
   const filteredEvidence = useMemo(() => {

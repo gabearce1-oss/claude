@@ -7,6 +7,7 @@ import { ArrowLeft, Search } from 'lucide-react';
 import ProvenanceGraph from '../components/provenance/ProvenanceGraph';
 import ProvenanceLegend from '../components/provenance/ProvenanceLegend';
 import ProvenanceDetailPanel from '../components/provenance/ProvenanceDetailPanel';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function ProvenancePage() {
   const [selectedNode, setSelectedNode] = useState(null);
@@ -14,11 +15,11 @@ export default function ProvenancePage() {
 
   const { data: evidence = [], isLoading: loadingE } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: documents = [], isLoading: loadingD } = useQuery({
     queryKey: ['knowledgeDocuments'],
-    queryFn: () => base44.entities.KnowledgeDocument.list(),
+    queryFn: () => listAll(base44.entities.KnowledgeDocument),
   });
 
   const isLoading = loadingE || loadingD;

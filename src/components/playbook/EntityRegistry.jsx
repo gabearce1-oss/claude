@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Users, Building2, MapPin, Sparkles, Archive, Briefcase, Download } from 'lucide-react';
 import { seedEntities, normalizeKey } from './seedEntities';
+import { listAll } from '@/lib/base44/pagination';
 
 const TYPE_META = {
   person:       { Icon: Users,     label: 'People',        color: '#5a6b7a' },
@@ -19,7 +20,7 @@ export default function EntityRegistry() {
 
   const { data: entities = [], isLoading } = useQuery({
     queryKey: ['entities'],
-    queryFn: () => base44.entities.Entity.list(),
+    queryFn: () => listAll(base44.entities.Entity),
   });
 
   const grouped = useMemo(() => {

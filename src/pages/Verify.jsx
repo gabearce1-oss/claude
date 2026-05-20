@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { ArrowLeft, ArrowLeftRight } from 'lucide-react';
 import EvidencePane from '../components/verify/EvidencePane';
 import ChecklistPane from '../components/verify/ChecklistPane';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function VerifyPage() {
   const { evidenceId } = useParams();
@@ -14,8 +15,14 @@ export default function VerifyPage() {
   const { data: evidence, isLoading } = useQuery({
     queryKey: ['evidence', evidenceId],
     queryFn: async () => {
-      // Fallback: list and find — keeps it simple without assuming a single-get method.
-      const all = await base44.entities.Evidence.list();
+      // Prefer direct get(); fall back to a paginated scan if the SDK
+      // doesn't expose get on this entity. The previous implementation
+      // pulled only the first list() page, so evidenceIds past row 50
+      // resolved to undefined and rendered "Evidence record not found."
+      if (typeof base44.entities.Evidence.get === 'function') {
+        try { return await base44.entities.Evidence.get(evidenceId); } catch (_) {}
+      }
+      const all = await listAll(base44.entities.Evidence);
       return all.find((e) => e.id === evidenceId);
     },
   });
@@ -27,7 +34,7 @@ export default function VerifyPage() {
 
   const { data: claims = [] } = useQuery({
     queryKey: ['claims'],
-    queryFn: () => base44.entities.Claim.list(),
+    queryFn: () => listAll(base44.entities.Claim),
   });
 
   const updateStatus = useMutation({

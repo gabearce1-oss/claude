@@ -7,6 +7,7 @@ import { ArrowLeft, Plus } from 'lucide-react';
 import ArchiveRequestModal from '../components/archive/ArchiveRequestModal';
 import ArchiveRequestTable from '../components/archive/ArchiveRequestTable';
 import QueryPlaybookPanel from '../components/archive/QueryPlaybookPanel';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function ArchiveRequestsPage() {
   const qc = useQueryClient();
@@ -15,7 +16,7 @@ export default function ArchiveRequestsPage() {
 
   const { data: requests = [] } = useQuery({
     queryKey: ['archiveRequests'],
-    queryFn: () => base44.entities.ArchiveRequest.list('-created_date'),
+    queryFn: () => listAll(base44.entities.ArchiveRequest, '-created_date'),
   });
 
   const create = useMutation({

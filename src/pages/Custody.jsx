@@ -8,6 +8,7 @@ import CustodySummary from '../components/custody/CustodySummary';
 import CustodyRow from '../components/custody/CustodyRow';
 import CustodyChain from '../components/custody/CustodyChain';
 import { CUSTODY_STAGES } from '../components/custody/custodyConfig';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function CustodyPage() {
   const [filter, setFilter] = useState('all');
@@ -15,7 +16,7 @@ export default function CustodyPage() {
 
   const { data: evidence = [], isLoading } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
 
   const advance = useMutation({

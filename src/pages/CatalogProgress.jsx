@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { CATALOGS, CATALOG_ITEMS } from '../components/catalogs/sahuaripaCatalogData';
 import CatalogSection from '../components/catalogs/CatalogSection';
+import { listAll } from '@/lib/base44/pagination';
 
 // Match evidence -> catalog item by film number + record type / keywords.
 function matchEvidenceToItem(evidence, item) {
@@ -41,11 +42,11 @@ function matchEvidenceToItem(evidence, item) {
 export default function CatalogProgressPage() {
   const { data: evidence = [] } = useQuery({
     queryKey: ['evidence'],
-    queryFn: () => base44.entities.Evidence.list(),
+    queryFn: () => listAll(base44.entities.Evidence),
   });
   const { data: links = [] } = useQuery({
     queryKey: ['evidenceClaimLinks'],
-    queryFn: () => base44.entities.EvidenceClaimLink.list(),
+    queryFn: () => listAll(base44.entities.EvidenceClaimLink),
   });
 
   const { evidenceByItem, linksByItem, totals } = useMemo(() => {

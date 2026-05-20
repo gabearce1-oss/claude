@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Activity } from 'lucide-react';
 import { detectDrift } from '@/lib/ml';
+import { listAll } from '@/lib/base44/pagination';
 
 // Spark sparkline (inline SVG, no dep)
 function Spark({ points, width = 160, height = 32 }) {
@@ -26,7 +27,7 @@ function Spark({ points, width = 160, height = 32 }) {
 export default function AuditDriftBanner() {
   const { data: logs = [] } = useQuery({
     queryKey: ['sessionLogs'],
-    queryFn: () => base44.entities.SessionLog.list().catch(() => []),
+    queryFn: () => listAll(base44.entities.SessionLog).catch(() => []),
   });
 
   const drift = useMemo(() => detectDrift(logs, { windowSize: 7, threshold: 1.5 }), [logs]);

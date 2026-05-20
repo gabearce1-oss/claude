@@ -12,12 +12,13 @@ import QuarantinePanel from '../../forensic/QuarantinePanel';
 import CustodySummary from '../../custody/CustodySummary';
 import CustodyChain from '../../custody/CustodyChain';
 import AuditDriftBanner from '../../ml/AuditDriftBanner';
+import { listAll } from '@/lib/base44/pagination';
 
 export default function OverviewTab({ allEvidence, allClaims, verifiedOnly, setVerifiedOnly }) {
   const qc = useQueryClient();
   const { data: links = [] } = useQuery({
     queryKey: ['evidenceClaimLinks'],
-    queryFn: () => base44.entities.EvidenceClaimLink.list(),
+    queryFn: () => listAll(base44.entities.EvidenceClaimLink),
   });
   const unpin = useMutation({
     mutationFn: (claim) =>
