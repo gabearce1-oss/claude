@@ -1,0 +1,11 @@
+entity_id,entity_name,entity_type,linked_claim_id
+ENT-0001,"San Javier, Sonora",location,GEO-001
+ENT-0005,Luis Porchas,person,MIN-002
+ENT-0008,Francisco L. Terminel,person,POL-001
+ENT-0011,Verminel (telegraphic variant),unknown,POL-003
+ENT-0014,Gabriel T. Arce Jr.,person,LAND-002
+ENT-0018,Aviana/Avina Sagasta,person,IND-001
+ENT-0020,Névome Pima Bajo,group,IND-001
+ENT-0021,Yaqui people,group,IND-002
+ENT-0026,María Manuela (Nela) Terminel Sagasta,person,GEN-001
+ENT-0031,Wells Fargo Express,organization,WF-001

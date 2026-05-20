@@ -1,0 +1,380 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import * as XLSX from 'npm:xlsx@0.18.5';
+
+const XLSX_URL = 'https://media.base44.com/files/public/6a0ca84fc17e790fce3ccf92/03087d9ea_TE360_Master_Matrix_v3_MERGED3.xlsx';
+
+function mapClaimStatus(s) {
+  const up = (s || '').toUpperCase();
+  // UNVERIFIED must be checked before VERIFIED because includes() matches substrings
+  if (up.includes('UNVERIFIED')) return 'unverified';
+  if (up.includes('VERIFIED')) return 'verified';
+  if (up.includes('QUARANTINED') || up.includes('FABRICATED')) return 'fabricated_risk';
+  if (up.includes('DISCONFIRMED') || up.includes('REJECTED')) return 'rejected';
+  if (up.includes('CORROBORATED')) return 'corroborated';
+  if (up.includes('PLAUSIBLE') || up.includes('ORANGE')) return 'plausible';
+  if (up.includes('WEAK')) return 'weak_lead';
+  return 'unverified';
+}
+
+function mapClaimType(claimId) {
+  const prefix = (claimId || '').split('-')[0].toUpperCase();
+  const m = {
+    GEO: 'geographic', MIN: 'property', POL: 'legal', LAND: 'property',
+    IND: 'identity', GEN: 'kinship', WF: 'financial', DNA: 'identity',
+    ARCH: 'archival', INST: 'archival', LEGAL: 'legal', TRADE: 'financial',
+    AUDIT: 'archival',
+  };
+  return m[prefix] || 'other';
+}
+
+// Match the ArchiveRequest.status enum: planned, draft, submitted, running,
+// responded, completed, blocked, no_result. The v3 workbook uses free-form
+// labels per archive contact (e.g. "NOT SUBMITTED", "letter drafted",
+// "in progress", "received", "closed", and sometimes annotated forms like
+// "NOT SUBMITTED — TSK-005"); normalize aggressively before lookup so we
+// don't silently drop real workbook transitions. Unknown values return
+// null so the importer leaves the existing status untouched.
+function mapRequestStatus(s) {
+  if (!s) return null;
+  // Strip annotation tails after em-dash / en-dash / dash / colon / parens —
+  // e.g. "NOT SUBMITTED — TSK-005" → "NOT SUBMITTED",
+  // "drafted (pending)" → "drafted".
+  let raw = String(s).toLowerCase().split(/[—–\-:(]/)[0].trim();
+  // Collapse whitespace and dashes to single underscores so "letter drafted"
+  // and "letter  -  drafted" both reduce to "letter_drafted".
+  raw = raw.replace(/[\s_\-]+/g, '_').replace(/^_+|_+$/g, '');
+  if (!raw) return null;
+  const m = {
+    not_submitted: 'planned',
+    planned: 'planned',
+    letter_drafted: 'draft',
+    drafted: 'draft',
+    draft: 'draft',
+    letter_sent: 'submitted',
+    sent: 'submitted',
+    submitted: 'submitted',
+    in_progress: 'running',
+    inprogress: 'running',
+    running: 'running',
+    received: 'responded',
+    responded: 'responded',
+    response_received: 'responded',
+    closed: 'completed',
+    completed: 'completed',
+    complete: 'completed',
+    blocked: 'blocked',
+    no_result: 'no_result',
+    null_result: 'no_result',
+    no_results: 'no_result',
+  };
+  return m[raw] || null;
+}
+
+Deno.serve(async (req) => {
+  try {
+    const base44 = createClientFromRequest(req);
+    const user = await base44.auth.me();
+    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    if (user.role !== 'admin') return Response.json({ error: 'Admin only' }, { status: 403 });
+
+    const report = { newClaims: 0, updatedClaims: 0, quarantined: 0, updatedArchives: 0, knowledge: 0, skipped: [] };
+
+    // 1. Fetch the XLSX
+    const buf = new Uint8Array(await (await fetch(XLSX_URL)).arrayBuffer());
+    const wb = XLSX.read(buf, { type: 'array' });
+
+    // 2. Parse Master Matrix sheet
+    const matrixSheet = wb.Sheets['Master Matrix (75 Claims)'];
+    const matrixRows = XLSX.utils.sheet_to_json(matrixSheet, { header: 1, defval: null });
+    // Columns: [0]=Claim ID, [1]=Pipe, [2]=Claim Text, [3]=Date Range, [4]=Status,
+    // [5]=Conf., [6]=Link Type, [7]=Burden of Proof, [8]=Risk, [9]=Contam.,
+    // [10]=Review Status, [11]=Archive Target, [12]=Source Ref
+    const v3Claims = [];
+    for (const row of matrixRows) {
+      if (!row || !row[0]) continue;
+      const id = String(row[0]).trim();
+      if (!/^[A-Z]+-\d{3}$/.test(id)) continue; // only real claim IDs like GEO-001
+      v3Claims.push({
+        id,
+        pipe: row[1] || '',
+        text: row[2] || '',
+        dateRange: row[3] || '',
+        status: row[4] || '',
+        confidence: row[5],
+        burden: row[7] || '',
+        risk: row[8],
+        contam: row[9],
+        archiveTarget: row[11] || '',
+        sourceRef: row[12] || '',
+      });
+    }
+
+    // 3. Parse Quarantine Register sheet
+    // Sheet layout (with a leading spacer column):
+    //   row[0]=empty | row[1]=Claim ID | row[2]=Pipe | row[3]=Status
+    //   row[4]=Claim Text | row[5]=Why Quarantined | row[6]=Action Protocol
+    const qSheet = wb.Sheets['Quarantine Register'];
+    const qRows = XLSX.utils.sheet_to_json(qSheet, { header: 1, defval: null });
+    const quarantined = {};
+    for (const row of qRows) {
+      if (!row) continue;
+      // Scan first two columns to tolerate either layout
+      const idCell = (row[1] != null && String(row[1]).trim()) ? row[1] : row[0];
+      if (idCell == null) continue;
+      const id = String(idCell).trim();
+      if (!/^[A-Z]+-\d{3}$/.test(id)) continue;
+      const baseOffset = (row[1] != null && String(row[1]).trim() === id) ? 1 : 0;
+      quarantined[id] = {
+        status: row[baseOffset + 2] || '',
+        text: row[baseOffset + 3] || '',
+        reason: row[baseOffset + 4] || '',
+        protocol: row[baseOffset + 5] || '',
+      };
+    }
+
+    // 4. Parse Archive Targets & Contacts
+    // Sheet layout (with a leading spacer column):
+    //   row[0]=empty | row[1]=Archive | row[2]=Location | row[3]=Access Mode
+    //   row[4]=Contact/Address | row[5]=Email/Phone | row[6]=Related Claims
+    //   row[7]=Request Status | row[8]=Notes
+    const aSheet = wb.Sheets['Archive Targets & Contacts'];
+    const aRows = XLSX.utils.sheet_to_json(aSheet, { header: 1, defval: null });
+    const archiveContacts = [];
+    for (const row of aRows) {
+      if (!row) continue;
+      const nameCell = (row[1] != null && String(row[1]).trim()) ? row[1] : row[0];
+      if (nameCell == null) continue;
+      const name = String(nameCell).trim();
+      if (!name) continue;
+      if (name === 'Archive' || name.includes('Archive Targets')) continue;
+      const baseOffset = (row[1] != null && String(row[1]).trim() === name) ? 1 : 0;
+      archiveContacts.push({
+        name,
+        location: row[baseOffset + 1] || '',
+        access: row[baseOffset + 2] || '',
+        address: row[baseOffset + 3] || '',
+        contact: row[baseOffset + 4] || '',
+        claims: row[baseOffset + 5] || '',
+        status: row[baseOffset + 6] || '',
+        notes: row[baseOffset + 7] || '',
+      });
+    }
+
+    // 5. Load existing claims keyed by subject (source ID).
+    //    Must paginate — the v3 matrix alone has 75 claims, which is past
+    //    Base44 list()'s default first page. Base44 SDK signature is
+    //    list(sort, limit, skip) where skip is a record-offset, NOT a
+    //    page index, so advance by `limit` per iteration; otherwise
+    //    batches overlap and claimBySubject is missing rows that the
+    //    upsert then re-creates as duplicates.
+    const existingClaims = [];
+    {
+      const limit = 200;
+      let skip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.Claim.list(null, limit, skip);
+        if (!batch || batch.length === 0) break;
+        existingClaims.push(...batch);
+        if (batch.length < limit) break;
+        skip += limit;
+      }
+    }
+    const claimBySubject = {};
+    for (const c of existingClaims) if (c.subject) claimBySubject[c.subject] = c;
+
+    // 6. Upsert claims
+    for (const v3 of v3Claims) {
+      const q = quarantined[v3.id];
+      const isQuarantined = !!q;
+      const confidence = Math.round((parseFloat(v3.confidence) || 0) * 10);
+      const risk = Math.round((parseFloat(v3.risk) || 0) * 10);
+      const contam = Math.round((parseFloat(v3.contam) || 0) * 10);
+      const status = isQuarantined ? mapClaimStatus(q.status) : mapClaimStatus(v3.status);
+
+      const existing = claimBySubject[v3.id];
+      if (existing) {
+        // Only update fields that changed materially (status / quarantine reason / scores)
+        const patch = {};
+        if (existing.status !== status) patch.status = status;
+        if (existing.confidence_score !== confidence) patch.confidence_score = confidence;
+        if (existing.risk_score !== risk) patch.risk_score = risk;
+        if (isQuarantined) {
+          patch.contested = true;
+          patch.private_notes = `QUARANTINED: ${q.reason}\nProtocol: ${q.protocol}`;
+        } else if (existing.contested) {
+          // Claim dropped out of the quarantine register — clear stale flags
+          patch.contested = false;
+          if (existing.private_notes && existing.private_notes.startsWith('QUARANTINED:')) {
+            patch.private_notes = '';
+          }
+        }
+        if (Object.keys(patch).length > 0) {
+          await base44.asServiceRole.entities.Claim.update(existing.id, patch);
+          report.updatedClaims++;
+          if (isQuarantined) report.quarantined++;
+        }
+      } else {
+        // New claim
+        const payload = {
+          case_id: 'Terminel-Sagasta',
+          claim_text: v3.text,
+          claim_type: mapClaimType(v3.id),
+          status,
+          confidence_score: confidence,
+          risk_score: risk,
+          burden_of_proof: v3.burden || 'TBD',
+          subject: v3.id,
+          predicate: v3.pipe,
+          rationale: v3.sourceRef ? `Source ref: ${v3.sourceRef}` : '',
+          needed_proof: v3.archiveTarget
+            ? v3.archiveTarget.split(/[;,]/).map((s) => s.trim()).filter(Boolean)
+            : [],
+          contested: isQuarantined,
+          private_notes: isQuarantined ? `QUARANTINED: ${q.reason}\nProtocol: ${q.protocol}` : '',
+        };
+        await base44.asServiceRole.entities.Claim.create(payload);
+        report.newClaims++;
+        if (isQuarantined) report.quarantined++;
+      }
+    }
+
+    // 7. Update ArchiveRequest notes with v3 contact info (match by name substring)
+    // Paginate — Base44 list() defaults to 50 rows. Without this, archive
+    // targets past the first page never match the spreadsheet's
+    // contact/status updates so their notes stay stale on rerun.
+    const existingArchives = [];
+    {
+      const arPageSize = 200;
+      let arSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.ArchiveRequest.list(null, arPageSize, arSkip);
+        if (!batch || batch.length === 0) break;
+        existingArchives.push(...batch);
+        if (batch.length < arPageSize) break;
+        arSkip += arPageSize;
+      }
+    }
+    for (const ac of archiveContacts) {
+      const nameLower = ac.name.toLowerCase();
+      // Tokenize the contact name (after stripping a leading dash/colon-
+      // delimited prefix). Drop short prepositions but keep meaningful
+      // short tokens like "UC" so rows like "UC Berkeley Bancroft Library"
+      // still tie back to a target whose record_target says "Bancroft".
+      const STOPWORDS = new Set([
+        'the', 'of', 'a', 'an', 'and', 'or', 'de', 'del', 'la', 'el',
+        'los', 'las', 'y',
+      ]);
+      // Generic institutional words that are too common to disambiguate
+      // on their own — "library", "historical", "archive", "national"
+      // would each match dozens of unrelated archives. Allow these as
+      // bonus matches but never as the sole match.
+      const GENERIC = new Set([
+        'library', 'libraries', 'archive', 'archives', 'archivo', 'archivos',
+        'historical', 'historic', 'history', 'national', 'nacional',
+        'museum', 'museo', 'university', 'universidad', 'college',
+        'department', 'office', 'collection', 'collections', 'institute',
+        'institution', 'society', 'center', 'centre', 'records', 'record',
+        'special', 'public', 'general', 'state', 'estatal',
+      ]);
+      const tokens = nameLower
+        .split(/[—–\-:]/)[0]
+        .trim()
+        .split(/\s+/)
+        .filter((t) => t.length >= 2 && !STOPWORDS.has(t));
+      const specificTokens = tokens.filter((t) => !GENERIC.has(t));
+      // Score every candidate by overlap and pick the strongest match.
+      // A specific token is worth 2; a generic token is worth 1. Require
+      // at least one specific-token hit, or a score >= 2 when only
+      // generic tokens are available, to avoid the old failure mode
+      // where any single generic token like "library" tied the patch
+      // to an unrelated ArchiveRequest.
+      let bestMatch = null;
+      let bestScore = 0;
+      for (const a of existingArchives) {
+        const tgt = (a.record_target || '').toLowerCase();
+        if (!tgt) continue;
+        let score = 0;
+        let specificHit = false;
+        for (const tok of tokens) {
+          if (!tgt.includes(tok)) continue;
+          if (GENERIC.has(tok)) score += 1;
+          else { score += 2; specificHit = true; }
+        }
+        const meetsBar = specificTokens.length > 0 ? specificHit : score >= 2;
+        if (meetsBar && score > bestScore) {
+          bestScore = score;
+          bestMatch = a;
+        }
+      }
+      const match = bestMatch;
+      if (!match) { report.skipped.push(`no archive match for "${ac.name}"`); continue; }
+      const newNotes = [
+        ac.address && `Address: ${ac.address}`,
+        ac.contact && `Contact: ${ac.contact}`,
+        ac.access && `Access: ${ac.access}`,
+        ac.claims && `Related claims: ${ac.claims}`,
+        ac.notes && `Notes: ${ac.notes}`,
+      ].filter(Boolean).join(' · ');
+      // Propagate status transitions captured on the v3 sheet (e.g.
+      // planned → submitted/responded). Without this, refreshing
+      // contact data leaves request-state metrics stale even when the
+      // workbook reflects newer progress.
+      const mappedStatus = mapRequestStatus(ac.status);
+      const patch = {};
+      if (newNotes && match.notes !== newNotes) patch.notes = newNotes;
+      if (mappedStatus && match.status !== mappedStatus) patch.status = mappedStatus;
+      if (Object.keys(patch).length > 0) {
+        await base44.asServiceRole.entities.ArchiveRequest.update(match.id, patch);
+        report.updatedArchives++;
+      }
+    }
+
+    // 8. Add this v3 matrix itself as a KnowledgeDocument.
+    //    Paginate the dedupe-by-title lookup — Base44 list() defaults
+    //    to ~50 rows, so once KnowledgeDocument crosses one page the
+    //    existing matrix row would no longer be visible and reruns
+    //    would create duplicates.
+    const existingDocs = [];
+    {
+      const docPageSize = 200;
+      let docSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.KnowledgeDocument.list(null, docPageSize, docSkip);
+        if (!batch || batch.length === 0) break;
+        existingDocs.push(...batch);
+        if (batch.length < docPageSize) break;
+        docSkip += docPageSize;
+      }
+    }
+    const title = 'TE360 Master Evidence Matrix v3 — 75 Claims (May 20 2026)';
+    if (!existingDocs.find((d) => d.title === title)) {
+      await base44.asServiceRole.entities.KnowledgeDocument.create({
+        case_id: 'Terminel-Sagasta',
+        title,
+        doc_type: 'dataset_audit',
+        summary: '75 claims across 9 pipes (GEO+MIN, POL, LAND, IND, GEN+FAM, WF, LEGAL, ARCH, AUDIT+INST). Audit score 28/100 — primary archival research phase. 35 verified, 35 orange leads, 5 red/quarantined.',
+        key_findings: [
+          '35 VERIFIED · 35 ORANGE (leads) · 5 RED/QUARANTINED · Audit score 28/100',
+          'Gap to 75/100 = one trip to Hermosillo + four formal letters',
+          'WF-007, WF-008 fabrications permanently quarantined (NOG-1900-0117-001 etc., $639,187,500 restitution)',
+          'POL-005 downgraded: Diario XXXVI Leg. names Francisco López, not Terminel',
+          'ARCH-003 DISCONFIRMED by Grijalva Díaz 2024 (Banco Agrícola Sonorense founders)',
+        ],
+        trust_tier: 'mixed',
+        file_url: XLSX_URL,
+        file_type: 'other',
+        language: 'en',
+        author_source: 'TE360 Pass 3.1',
+        tags: ['master matrix', 'nine pipes', 'audit score', 'quarantine'],
+        related_archives: ['AHES', 'AGES', 'AGN', 'FAPECFT', 'Wells Fargo Historical Services', 'Huntington', 'NARA', 'FamilySearch'],
+        ingested_at: new Date().toISOString(),
+      });
+      report.knowledge++;
+    }
+
+    return Response.json({ ok: true, report });
+  } catch (error) {
+    console.error('v3 import failed:', error.message, error.stack);
+    return Response.json({ error: error.message, stack: error.stack }, { status: 500 });
+  }
+});

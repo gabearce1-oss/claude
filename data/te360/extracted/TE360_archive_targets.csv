@@ -1,0 +1,35 @@
+archive_id,archive_name,location,access_status,coverage_score,request_status
+ARCH-001,FamilySearch / LDS Church,International,accessible,0,not_submitted
+ARCH-002,INEGI (Instituto Nacional de Estadística y Geografía),Mexico,accessible,0,not_submitted
+ARCH-003,AHES (Archivo Histórico del Estado de Sonora),Mexico,requires_formal_request,0,not_submitted
+ARCH-004,SGM (Servicio Geológico Mexicano),Mexico,accessible,0,not_submitted
+ARCH-005,ru.iis.sociales.unam.mx; INEHRM archive,Unknown,requires_formal_request,0,not_submitted
+ARCH-006,FAPECFT correspondence files,Unknown,requires_formal_request,0,not_submitted
+ARCH-007,AGN (Archivo General de la Nación),Mexico,requires_formal_request,0,not_submitted
+ARCH-008,AGES (Archivo General Agrario),Mexico,requires_formal_request,0,not_submitted
+ARCH-009,University of Arizona Special Collections,Unknown,requires_formal_request,0,not_submitted
+ARCH-010,23andMe report on file,Unknown,requires_formal_request,0,not_submitted
+ARCH-011,Legal precedent — must be paired with archival gen,Unknown,requires_formal_request,0,not_submitted
+ARCH-012,Panteón Municipal San Javier; FindAGrave cemetery ,Unknown,requires_formal_request,0,not_submitted
+ARCH-013,Wells Fargo Historical Services,USA,requires_formal_request,0,not_submitted
+ARCH-014,1890 WF directory (on file),Unknown,requires_formal_request,0,not_submitted
+ARCH-015,Mexican banking statutes Porfiriato era; Pass 3 do,Unknown,requires_formal_request,0,not_submitted
+ARCH-016,Philatelic/express company collections; WF Histori,Unknown,requires_formal_request,0,not_submitted
+ARCH-017,N/A — fabricated; do not search,Unknown,requires_formal_request,0,not_submitted
+ARCH-018,N/A — does not exist,Unknown,requires_formal_request,0,not_submitted
+ARCH-019,UN treaty database; ILO; OAS,Unknown,requires_formal_request,0,not_submitted
+ARCH-020,Memoria Política de México — search XXXVI–XXXVII L,Unknown,requires_formal_request,0,not_submitted
+ARCH-021,On file,Unknown,requires_formal_request,0,not_submitted
+ARCH-022,"Huntington Library — WF Records Box 34 ""Investments in Mexico""","1151 Oxford Rd, San Marino, CA 91108",open_by_appointment,9,not_submitted
+ARCH-023,Archivo General de Notarías del Estado de Sonora,"Centro de Gobierno, Edif. Sonora y Norte, Comonfort y Blvd Paseo Río Sonora, Hermosillo CP 83270",requires_formal_request,9,letter_drafted
+ARCH-024,Registro Público de la Propiedad y de Comercio — Hermosillo (Guaymas historical records),"Hermosillo, Sonora",requires_formal_request,8,letter_drafted
+ARCH-025,Bancroft Library — Latin Americana + Villa silver-bars documents,"UC Berkeley, Berkeley CA 94720",open_by_appointment,7,not_submitted
+ARCH-026,Archivo Histórico Municipal de Sahuaripa,"Av. Rafael Meneses e Hidalgo S/N, Centro, CP 85600, Sahuaripa, Sonora",requires_formal_request,7,not_submitted
+ARCH-027,Archivo del Poder Judicial del Estado de Sonora (Historical Archive 1785–1930),"Periférico Oriente, Col. Las Lomas, Hermosillo",requires_formal_request,6,not_submitted
+ARCH-028,Parroquia de San Javier — sacramental books 1870–1920,"San Javier, Sonora (custodied via Archivo Histórico Diocesano de Hermosillo)",requires_formal_request,8,not_submitted
+ARCH-029,Oregon Historical Society — WF records 1855–1961,"1200 SW Park Ave, Portland, OR 97205",open_by_appointment,4,not_submitted
+ARCH-030,Pascua Yaqui Tribe — Cultural Resources Dept / ANARÓ,"7474 S. Camino de Oeste, Tucson AZ 85757",tribal_sovereign_protocol,6,letter_drafted
+ARCH-031,NARA RG 84 — Hermosillo Consular Records (11 cu.ft.),"National Archives, College Park MD 20740",open_pre_1930,7,not_submitted
+ARCH-032,NARA RG 84 — Nogales Consular Records (42 cu.ft.),"National Archives, College Park MD 20740",open_pre_1930,8,not_submitted
+ARCH-033,"NARA RG 36 — Bureau of Customs, Nogales port records","National Archives, College Park MD 20740",open,7,not_submitted
+ARCH-034,Smithsonian NAA — Edward Spicer Papers,"Smithsonian Institution, Washington DC",open_by_appointment,5,not_submitted

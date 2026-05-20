@@ -1,0 +1,114 @@
+{
+  "name": "Claim",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "default": "Terminel-Sagasta"
+    },
+    "claim_text": {
+      "type": "string",
+      "description": "The assertion being made"
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "identity",
+        "kinship",
+        "property",
+        "financial",
+        "military",
+        "legal",
+        "archival",
+        "geographic",
+        "oral_history",
+        "timeline",
+        "other"
+      ],
+      "default": "other"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "corroborated",
+        "plausible",
+        "weak_lead",
+        "fabricated_risk",
+        "rejected",
+        "unverified"
+      ],
+      "default": "unverified"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    },
+    "risk_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0
+    },
+    "burden_of_proof": {
+      "type": "string",
+      "description": "What evidence would settle this claim"
+    },
+    "needed_proof": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Specific missing sources / documents"
+    },
+    "rationale": {
+      "type": "string",
+      "description": "Analyst reasoning"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Person, place, or entity the claim is about"
+    },
+    "predicate": {
+      "type": "string",
+      "description": "Verb / relationship (e.g., owned, transferred_to)"
+    },
+    "object": {
+      "type": "string",
+      "description": "Target of the predicate"
+    },
+    "contested": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_foundational": {
+      "type": "boolean",
+      "default": false,
+      "description": "Pin to the Dashboard 'Key Documents' panel as a foundational claim"
+    },
+    "foundational_note": {
+      "type": "string",
+      "description": "Short headline shown in the Key Documents panel (why this claim is foundational)"
+    },
+    "public_safe_summary": {
+      "type": "string"
+    },
+    "private_notes": {
+      "type": "string"
+    },
+    "reviewer_id": {
+      "type": "string"
+    },
+    "last_reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "claim_text",
+    "claim_type",
+    "burden_of_proof"
+  ]
+}

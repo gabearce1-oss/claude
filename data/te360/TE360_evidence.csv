@@ -1,0 +1,11 @@
+evidence_id,linked_claim_id,source_name,source_system,storage_uri,provenance_score,authenticity_score,contamination_score,review_status
+EV-0001,GEO-001,Wikipedia / INEGI / Sonora96 / FamilySearch catalog,Multiple independent institutional sources,INEGI code 260541; FamilySearch region Centro Costa,10,10,0,verified
+EV-0002,GEO-002,Pass 3 Forensic Update — San Javier Geography,"Verified institutional sources (INEGI, geographic analysis)",INEGI municipal data,10,10,0,verified
+EV-0003,GEO-003,Pass 3 Forensic Update — administrative history,"Verified — State Law 109, December 22 1934",Sonora State legislature records; AHES,10,10,0,verified
+EV-0004,MIN-001,SGM 2006 mineral inventory — federal government work product,VERIFIED — Mexican federal government (Servicio Geológico Mexicano),"SGM Inventario de Recursos Minerales, San Javier, March 2006",10,10,0,verified
+EV-0005,MIN-002,SGM 2006 mineral inventory,VERIFIED — Mexican federal government document,"SGM inventory, authored Ing. José Antonio Sánchez González",10,10,0,verified
+EV-0006,MIN-003,SGM 2006 mineral inventory,VERIFIED — federal government document,SGM 2006 inventory land-tenure column,10,10,0,verified
+EV-0007,POL-001,UNAM-IIS institutional repository (Uruchurtu biography) + INEHRM-adjacent source,VERIFIED — institutional academic source,ru.iis.sociales.unam.mx; INEHRM archive,10,10,0,verified
+EV-0008,POL-002,INEHRM-adjacent source + UNAM-IIS,VERIFIED — institutional source,FAPECFT correspondence files,10,10,0,verified
+EV-0009,POL-003,UNAM-IIS repository (Uruchurtu biography),VERIFIED — UNAM institutional source,FAPECFT; AGN Fondo Gobernación; HNDM,10,10,0,verified
+EV-0010,LAND-001,University of Arizona peer-reviewed dissertation citing primary archival source,VERIFIED — peer-reviewed academic source citing primary archive,"AGES, Ramo Ejido-Dotaciones, expediente 411.123/2174",10,10,0,verified

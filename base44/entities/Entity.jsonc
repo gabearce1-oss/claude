@@ -1,0 +1,63 @@
+{
+  "name": "Entity",
+  "type": "object",
+  "description": "People, places, organizations, tribes, and archives referenced across the Terminel-Sagasta case. Mirrors the Neo4j node model.",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "default": "Terminel-Sagasta"
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "person",
+        "organization",
+        "place",
+        "tribe",
+        "archive",
+        "case"
+      ],
+      "description": "Node label in the TE360 graph model"
+    },
+    "name": {
+      "type": "string",
+      "description": "Canonical display name"
+    },
+    "aka": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Alternate spellings, nicknames, transliterations"
+    },
+    "normalized_key": {
+      "type": "string",
+      "description": "Lowercased, accent-stripped key used for de-duplication"
+    },
+    "description": {
+      "type": "string"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "death_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "role_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Functional roles, e.g. 'haciendado','diputado','banquero','exiliado'"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "entity_type",
+    "name"
+  ]
+}

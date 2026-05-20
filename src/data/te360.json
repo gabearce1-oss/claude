@@ -1,0 +1,3021 @@
+{
+  "master_matrix_75_claims": {
+    "sheet": "Master Matrix (75 Claims)",
+    "header": [
+      "Claim ID",
+      "Pipe",
+      "Claim Text",
+      "Date Range",
+      "Status",
+      "Conf.",
+      "Link Type",
+      "Burden of Proof",
+      "Risk",
+      "Contam.",
+      "Review Status",
+      "Archive Target",
+      "Source Ref"
+    ],
+    "rows": [
+      {
+        "Claim ID": "── PIPE: GEO+MIN ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "GEO-001",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "San Javier is an independent municipality in central Sonora, founded 1706 as Real de Minas de San Javier",
+        "Date Range": "1706–present",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — INEGI/institutional",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "INEGI",
+        "Source Ref": "INEGI code 260541"
+      },
+      {
+        "Claim ID": "GEO-002",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "San Javier ~146 km east of Hermosillo; located in Sonora River watershed (Centro Costa, NOT Sahuaripa)",
+        "Date Range": "Historical",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — INEGI",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "INEGI",
+        "Source Ref": "INEGI municipal data"
+      },
+      {
+        "Claim ID": "GEO-003",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "San Javier civil records 1930–1934 split across Hermosillo, Villa Pesqueira, La Colorada — State Law 109 (Dec 22 1934)",
+        "Date Range": "1930–1934",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — AHES/State Law",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "AHES",
+        "Source Ref": "Sonora State Law 109"
+      },
+      {
+        "Claim ID": "MIN-001",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "San Javier silver-gold mining 1706–present; silver 133–1,240 g/ton; gold 0.41–7.07 g/ton (SGM 2006)",
+        "Date Range": "1706–present",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — SGM federal",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "SGM",
+        "Source Ref": "SGM 2006 inventory"
+      },
+      {
+        "Claim ID": "MIN-002",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "Mine Las Goteras (#16 SGM) — active concession Luis Porchas; 6.74 km SE parish church; 3 adits, beneficiation plant",
+        "Date Range": "2006",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — SGM federal",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "SGM",
+        "Source Ref": "SGM 2006 inventory"
+      },
+      {
+        "Claim ID": "MIN-003",
+        "Pipe": "GEO+MIN",
+        "Claim Text": "28 of 32 San Javier mines on Ejido San Javier tenure — comprehensive Cárdenas expropriation",
+        "Date Range": "2006",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — SGM federal",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "SGM/AGES",
+        "Source Ref": "SGM 2006 land-tenure"
+      },
+      {
+        "Claim ID": "── PIPE: POL ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "POL-001",
+        "Pipe": "POL",
+        "Claim Text": "Francisco L. Terminel stripped of senatorial immunity (desafuero) December 14, 1935",
+        "Date Range": "December 1935",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — UNAM-IIS",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UNAM-IIS/FAPECFT",
+        "Source Ref": "ru.iis.sociales.unam.mx"
+      },
+      {
+        "Claim ID": "POL-002",
+        "Pipe": "POL",
+        "Claim Text": "Five desaforados Dec 14 1935: Manuel Riva Palacio, Francisco Terminel, Bernardo Bandala, Eliseo Pérez Gómez, Cristóbal Bon Bustamante",
+        "Date Range": "December 1935",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — UNAM-IIS",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UNAM-IIS",
+        "Source Ref": "Pass 3 Forensic Update"
+      },
+      {
+        "Claim ID": "POL-003",
+        "Pipe": "POL",
+        "Claim Text": "Terminel appears as 'Verminel' in 1935 telegrams — documented single-letter telegraphic error (UNAM-IIS / Uruchurtu biography)",
+        "Date Range": "December 1935",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — UNAM-IIS",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UNAM-IIS/FAPECFT/AGN",
+        "Source Ref": "UNAM Uruchurtu biography"
+      },
+      {
+        "Claim ID": "POL-004",
+        "Pipe": "POL",
+        "Claim Text": "Calles exile group exited Mexico April 9 1936: Calles, Morones, Ortega, Manrique — Terminel likely in this cohort",
+        "Date Range": "April 1936",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support",
+        "Burden of Proof": "FAPECFT correspondence; HNDM; AGN Gobernación",
+        "Risk": 4,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "FAPECFT/AGN Gobernación",
+        "Source Ref": "Calles exile documentation"
+      },
+      {
+        "Claim ID": "POL-005",
+        "Pipe": "POL",
+        "Claim Text": "Francisco Terminel as Federal Senator Sonora c.1934 — DOWNGRADED (Diario XXXVI Leg. Sept 6 1934 names Francisco López, not Terminel)",
+        "Date Range": "1934",
+        "Status": "ORANGE",
+        "Conf.": 3,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "Diario Debates XXXVI–XXXVII; Memoria Política de México",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Memoria Política de México",
+        "Source Ref": "Diario de Debates, Cámara de Diputados"
+      },
+      {
+        "Claim ID": "POL-006",
+        "Pipe": "POL",
+        "Claim Text": "Maximato 1928–1936: Calles as Jefe Máximo; desafuero 1935 was Cárdenas's decisive break from Calles machine",
+        "Date Range": "1928–1936",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — standard historiography",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Academic sources/AGN",
+        "Source Ref": "Maximato historiography"
+      },
+      {
+        "Claim ID": "POL-007",
+        "Pipe": "POL",
+        "Claim Text": "Cárdenas consolidation 1936–1940: oil nationalization, land redistribution, ejido expansion — context for all Terminel losses",
+        "Date Range": "1936–1940",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — standard historiography",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Academic sources",
+        "Source Ref": "Cárdenas period documentation"
+      },
+      {
+        "Claim ID": "POL-008",
+        "Pipe": "POL",
+        "Claim Text": "Terminel's brothers maintained complicit silence about Francisco's fate post-1936 — possible strategic cover narrative",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "Oral history corroboration; FAPECFT for brothers' names",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Oral history/FAPECFT",
+        "Source Ref": "Family oral history — Gabriel"
+      },
+      {
+        "Claim ID": "POL-009",
+        "Pipe": "POL",
+        "Claim Text": "Death-story narrative: Francisco reported as deceased to enable severance from Mexican political exposure — possible deliberate disinformation",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "CA death records; Baja CA civil registry; San Diego County records",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "CA vital records/Baja CA registry",
+        "Source Ref": "TRADE pipe corroboration"
+      },
+      {
+        "Claim ID": "POL-010",
+        "Pipe": "POL",
+        "Claim Text": "FAPECFT search target: Terminel/Verminel in Callista correspondence files 1930–1936",
+        "Date Range": "1930–1936",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Lead",
+        "Burden of Proof": "FAPECFT catalog search",
+        "Risk": 4,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "FAPECFT",
+        "Source Ref": "UNAM-IIS referral"
+      },
+      {
+        "Claim ID": "── PIPE: LAND ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "LAND-001",
+        "Pipe": "LAND",
+        "Claim Text": "Terminel family lost 453 ha in Bacobampo, Etchojoa — AGES expediente 411.123/2174, March 1938",
+        "Date Range": "March 1938",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — UA peer-reviewed dissertation",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "AGES/RAN",
+        "Source Ref": "UA dissertation citing AGES"
+      },
+      {
+        "Claim ID": "LAND-002",
+        "Pipe": "LAND",
+        "Claim Text": "Francisco Terminel owned water rights, dams, bridges in San Javier — private title deeds in Gabriel's possession (SHA-256 HASH PENDING — URGENT)",
+        "Date Range": "~1900–1938",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "SHA-256 hash deeds; AGES Ramo Fomento; AHES Registro Público",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Gabriel's holdings/AHES",
+        "Source Ref": "Deed images pending"
+      },
+      {
+        "Claim ID": "LAND-003",
+        "Pipe": "LAND",
+        "Claim Text": "San Javier analog ejido expediente documenting Terminel land/water dispossession likely exists in AGES — mirrors Bacobampo pattern",
+        "Date Range": "~1930–1940",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support (plausible)",
+        "Burden of Proof": "AGES Ramo Ejido-Dotaciones — San Javier municipality",
+        "Risk": 4,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AGES/RAN",
+        "Source Ref": "Bacobampo pattern inference"
+      },
+      {
+        "Claim ID": "LAND-004",
+        "Pipe": "LAND",
+        "Claim Text": "1892 private title deed: Libro 45, Folio 12 — Registro Público de la Propiedad, Sahuaripa — Francisco Terminel property San Javier",
+        "Date Range": "~1892",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "AHES — Registro Público/Notarías Sahuaripa; Libro 45 Folio 12",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AHES (Hermosillo)",
+        "Source Ref": "Private deed — family record"
+      },
+      {
+        "Claim ID": "LAND-005",
+        "Pipe": "LAND",
+        "Claim Text": "1907 escritura Libro 92, Folio 37 — nominal consideration 'one peso' — possible fraudulent conveyance (Art. 2163 CCF)",
+        "Date Range": "~1907",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "AHES Protocolos Notariales Libro 92 Folio 37; Article 2163 analysis",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AHES (Hermosillo)",
+        "Source Ref": "Private deed — family record"
+      },
+      {
+        "Claim ID": "LAND-006",
+        "Pipe": "LAND",
+        "Claim Text": "San Javier infrastructure deeds (bridges, dams, irrigation works) — in Gabriel's custody — Francisco as contractor/owner",
+        "Date Range": "~1900–1920",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "SHA-256 hash; AGES Ramo Fomento hydraulic concessions",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Gabriel's custody/AGES",
+        "Source Ref": "Deed images pending"
+      },
+      {
+        "Claim ID": "LAND-007",
+        "Pipe": "LAND",
+        "Claim Text": "Vendor/contractor payment trail — Francisco Terminel received government payments for San Javier mining district infrastructure",
+        "Date Range": "~1900–1920",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "AHES Fondo Hacienda; AGN Gobernación payment records",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AHES/AGN",
+        "Source Ref": "Archival lead"
+      },
+      {
+        "Claim ID": "LAND-008",
+        "Pipe": "LAND",
+        "Claim Text": "Terminel-Porchas partnership: Francisco owned land/water; Porchas held mining concessions — complementary assets to be confirmed by combining deeds + SGM",
+        "Date Range": "~1895–1938",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support (plausible)",
+        "Burden of Proof": "Private deeds + SGM 2006 Porchas concessions",
+        "Risk": 4,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "SGM (partial) + deeds (pending)",
+        "Source Ref": "SGM verified; deeds pending"
+      },
+      {
+        "Claim ID": "LAND-009",
+        "Pipe": "LAND",
+        "Claim Text": "Bácum/Mayo Valley: separate Terminel landholding site; source of Bacobampo 453 ha expropriation — distinct from San Javier mineral holdings",
+        "Date Range": "1938",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — AGES expediente via UA dissertation",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "AGES/RAN",
+        "Source Ref": "UA dissertation"
+      },
+      {
+        "Claim ID": "── PIPE: IND+DNA ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "IND-001",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Aviana Sagasta most likely Névome Pima Bajo (50–65%) — geographic match to Sonora River watershed / San Javier corridor",
+        "Date Range": "Pre-colonial–1900",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "Parish/civil FamilySearch cat. 704679/704681; AGN Gobernación",
+        "Risk": 4,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "FamilySearch/AGN",
+        "Source Ref": "Geographic/ethnographic framework"
+      },
+      {
+        "Claim ID": "IND-002",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Yaqui deportations peaked 1904–1908; Yaquis adopted mestizo identities to survive (Spicer/Hu-DeHart)",
+        "Date Range": "1904–1908",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — peer-reviewed",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UA Special Collections (Spicer)",
+        "Source Ref": "Multiple peer-reviewed sources"
+      },
+      {
+        "Claim ID": "IND-003",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Asset shielding through indigenous women as nominal titleholders — documented Porfiriato-era practice",
+        "Date Range": "~1880–1910",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — multiple peer-reviewed historical sources",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "AGN Notarías/AHES",
+        "Source Ref": "Multiple historical sources"
+      },
+      {
+        "Claim ID": "IND-004",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Pass 3.1 tribal probability table: Opata/Jova 5% (retired), Yaqui 15–25%, Névome Pima Bajo 50–65% — geographic correction drives revision",
+        "Date Range": "Pass 3.1",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — geographic analysis + Pass 3.1 forensic correction",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Pass 3.1 document",
+        "Source Ref": "Internal forensic correction"
+      },
+      {
+        "Claim ID": "IND-005",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Geographic correction: San Javier is in Centro Costa (Névome homeland), NOT Sahuaripa — invalidates prior Opata-Jova attribution",
+        "Date Range": "INEGI current",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — INEGI 260541",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "INEGI",
+        "Source Ref": "INEGI code 260541"
+      },
+      {
+        "Claim ID": "IND-006",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Yaqui deportation pipeline: Turner → Izábal/Corral → General Torres → Molina henequen plantations Yucatán",
+        "Date Range": "1904–1910",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — Turner primary source; Spicer/Hu-DeHart",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UA Special Collections/academic",
+        "Source Ref": "Turner 1911; Spicer 1980"
+      },
+      {
+        "Claim ID": "IND-007",
+        "Pipe": "IND+DNA",
+        "Claim Text": "IACHR Case 12.865 Tribu Yaqui v. Mexico (2023) — active international HR case; establishes legal context for Sonoran indigenous land claims",
+        "Date Range": "2023",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — IACHR official records",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "IACHR/OAS",
+        "Source Ref": "IACHR case file"
+      },
+      {
+        "Claim ID": "IND-008",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Gabriel T. Arce Jr. 23andMe mtDNA haplogroup B2 — consistent with Névome Pima Bajo; cannot alone establish tribal affiliation",
+        "Date Range": "Contemporary",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — scientific instrument; legal boundary documented",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "23andMe (on file)",
+        "Source Ref": "23andMe report"
+      },
+      {
+        "Claim ID": "── PIPE: GEN+FAM ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "GEN-001",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Nela (María Manuela Terminel Sagasta) born San Javier ~August 7 1910 — oral history corroborated by geographic detail and site visit",
+        "Date Range": "1910–2012",
+        "Status": "ORANGE",
+        "Conf.": 7,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "FamilySearch cat. 704679 — San Javier civil registry 1868–1993",
+        "Risk": 3,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "FamilySearch cat. 704679",
+        "Source Ref": "Oral history + site visit"
+      },
+      {
+        "Claim ID": "GEN-002",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Porchas family graves confirmed in Panteón Municipal San Javier (Gabriel site visit ~2005); no Terminel graves found",
+        "Date Range": "~2005 obs.",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support (partial)",
+        "Burden of Proof": "FindAGrave cemetery 2740823; on-site visit",
+        "Risk": 4,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "FindAGrave/on-site",
+        "Source Ref": "Gabriel personal site visit"
+      },
+      {
+        "Claim ID": "GEN-003",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "1952 Los Angeles passenger manifest lead — possible Nela entry under variant spelling",
+        "Date Range": "1952",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "Ancestry.com/FamilySearch passenger manifests; CA passenger arrivals 1952",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Ancestry.com/FamilySearch",
+        "Source Ref": "Oral history lead"
+      },
+      {
+        "Claim ID": "GEN-004",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "1920 Sonora census Distrito 5 — possible Terminel/Sagasta household with children",
+        "Date Range": "1920",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "FamilySearch Mexico 1921 census (Sonora); AHES Padrón Municipal",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "FamilySearch/AHES",
+        "Source Ref": "Archival lead"
+      },
+      {
+        "Claim ID": "GEN-005",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Bácum/La Realidad: locality renamed post-expropriation — possible site of Francisco Terminel Mayo Valley operations",
+        "Date Range": "Post-1938",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "AGES ejido documentation; INEGI locality records",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AGES/INEGI",
+        "Source Ref": "Archival inference"
+      },
+      {
+        "Claim ID": "GEN-006",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Francisco Terminel death location — open question: Mexico, California, or unknown — death story may be cover narrative (TRADE-001)",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 3,
+        "Link Type": "Lead",
+        "Burden of Proof": "CA death records; Baja CA civil registry; San Diego County probate; FAPECFT",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "CA vital records/Baja CA registry",
+        "Source Ref": "Open question"
+      },
+      {
+        "Claim ID": "GEN-007",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Dual-family hypothesis: Francisco may have established second household post-1936 under altered identity",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 3,
+        "Link Type": "Lead",
+        "Burden of Proof": "CA vital records; ancestry.com; San Diego County records",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "CA vital records/Ancestry",
+        "Source Ref": "Tradecraft hypothesis"
+      },
+      {
+        "Claim ID": "── PIPE: WF ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "WF-001",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo Express: 223 offices in Mexico (Jan 1900); 456 by Jan 1909; Guaymas office Agent A. Willard (1890 directory)",
+        "Date Range": "1890–1910",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — 1890 WF directory on file",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "1890 WF Directory (on file)",
+        "Source Ref": "Corporate primary source"
+      },
+      {
+        "Claim ID": "WF-002",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo Express documented office in Guaymas, Sonora — Agent A. Willard, 1890",
+        "Date Range": "1890",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — 1890 WF directory",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "1890 WF Directory (on file)",
+        "Source Ref": "Corporate primary source"
+      },
+      {
+        "Claim ID": "WF-003",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo Bank had NO retail branches in Mexico — Mexican banking law prohibited foreign branch banks",
+        "Date Range": "1900–1964",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — Mexican banking statutes",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Mexican banking statutes",
+        "Source Ref": "Pass 3 forensic analysis"
+      },
+      {
+        "Claim ID": "WF-004",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo Co. Express S.A. (Mexican subsidiary) operated until 1964 — NOT nationalized 1918 (only US domestic ended July 1 1918)",
+        "Date Range": "1900–1964",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — corporate historical record",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "WF Historical Services/philatelic",
+        "Source Ref": "Pass 3.1 correction"
+      },
+      {
+        "Claim ID": "WF-005",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo Express handled Sonoran bullion shipments — documented 1910 gold bullion receipt (physical document on file)",
+        "Date Range": "1910",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — physical primary source",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Philatelic/express collections",
+        "Source Ref": "Physical document on file"
+      },
+      {
+        "Claim ID": "WF-006",
+        "Pipe": "WF",
+        "Claim Text": "Aviana Sagasta visited Wells Fargo Express office (~1912–1935) inquiring about funds/accounts; denied access — 4-generation oral history",
+        "Date Range": "~1912–1935",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Support (plausible)",
+        "Burden of Proof": "WF Historical Services Wiltsee Collection; AHES Fondo Judicial",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "WF Historical Services/AHES",
+        "Source Ref": "Oral history — historically coherent"
+      },
+      {
+        "Claim ID": "WF-007",
+        "Pipe": "WF",
+        "Claim Text": "WF transaction IDs (NOG-1900-0117-001 etc.), employees Peterson/Hughes/Harrington/Wilson, internal memos — ALL AI-FABRICATED",
+        "Date Range": "1900–1964",
+        "Status": "RED — QUARANTINED",
+        "Conf.": 0,
+        "Link Type": "Fabricated",
+        "Burden of Proof": "N/A",
+        "Risk": 10,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "N/A — do not search",
+        "Source Ref": "AI confabulation — quarantined"
+      },
+      {
+        "Claim ID": "WF-008",
+        "Pipe": "WF",
+        "Claim Text": "WF-RPA-2025-ASD-001 'Restitution Award' — T.H. Whitford signature, $639,187,500 USD — AI-GENERATED FICTION",
+        "Date Range": "2025",
+        "Status": "RED — QUARANTINED",
+        "Conf.": 0,
+        "Link Type": "Fabricated",
+        "Burden of Proof": "N/A",
+        "Risk": 10,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "N/A — does not exist",
+        "Source Ref": "AI confabulation — quarantined"
+      },
+      {
+        "Claim ID": "WF-009",
+        "Pipe": "WF",
+        "Claim Text": "1905 corporate split: Wells Fargo Express separated from Wells Fargo Nevada National Bank — two distinct corporate entities from 1905",
+        "Date Range": "1905",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — corporate historical record",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "WF Historical Services",
+        "Source Ref": "Corporate history"
+      },
+      {
+        "Claim ID": "WF-010",
+        "Pipe": "WF",
+        "Claim Text": "1910 restructuring: Wells Fargo Express Mexico became Compañía Mexicana de Express S.A. (joint venture with Mexican postal authorities)",
+        "Date Range": "1910",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — corporate historical record",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "WF Historical Services/WF museum",
+        "Source Ref": "Corporate history"
+      },
+      {
+        "Claim ID": "WF-011",
+        "Pipe": "WF",
+        "Claim Text": "Wiltsee Collection — ~1,400 express-company document envelopes at WF Historical Services — highest-probability archive for Sonoran agent records",
+        "Date Range": "~1890–1930",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Lead",
+        "Burden of Proof": "WF Historical Services inquiry (TSK-004 — letter pending)",
+        "Risk": 4,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "WF Historical Services",
+        "Source Ref": "Historical literature reference"
+      },
+      {
+        "Claim ID": "WF-012",
+        "Pipe": "WF",
+        "Claim Text": "Hosmer B. Parsons correspondence (Huntington Library) — WF Mexico operations; possible 1913 silver-bars episode documentation",
+        "Date Range": "1913",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "Huntington Library finding aid — Parsons papers",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Huntington Library (San Marino CA)",
+        "Source Ref": "Historical literature reference"
+      },
+      {
+        "Claim ID": "WF-013",
+        "Pipe": "WF",
+        "Claim Text": "Oregon Historical Society — secondary WF Express collection; possible Mexico Division correspondence",
+        "Date Range": "~1895–1920",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "OHS catalog search — Wells Fargo Express Mexico",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Oregon Historical Society",
+        "Source Ref": "Secondary collection reference"
+      },
+      {
+        "Claim ID": "WF-014",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo ESRM / Indigenous Peoples Statement — corporate policy re historical indigenous land impacts",
+        "Date Range": "Contemporary",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "WF corporate website/sustainability reports",
+        "Risk": 5,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "Wells Fargo (corporate)",
+        "Source Ref": "Corporate policy reference"
+      },
+      {
+        "Claim ID": "WF-015",
+        "Pipe": "WF",
+        "Claim Text": "Aviana-as-recipient reframe: inquiry should ask if Aviana Sagasta held any account or deposit (not Francisco) — changes WF search strategy",
+        "Date Range": "~1912–1935",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "WF Historical Services inquiry (Q3 of letter)",
+        "Risk": 5,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "WF Historical Services",
+        "Source Ref": "Strategy reframe — Pass 3"
+      },
+      {
+        "Claim ID": "── PIPE: TRADE ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "TRADE-001",
+        "Pipe": "TRADE",
+        "Claim Text": "Death-story severance: Francisco told family he 'died' — enabled clean break from political exposure post-1936",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "CA death records; Baja CA registry; San Diego County probate — absence supports narrative",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "CA vital records/Baja CA",
+        "Source Ref": "GEN-006 corroboration"
+      },
+      {
+        "Claim ID": "TRADE-002",
+        "Pipe": "TRADE",
+        "Claim Text": "Gambling cover narrative: financial losses attributed to gambling — possible deliberate misdirection from political seizure",
+        "Date Range": "Family narrative",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "Contrast with documented AGES 453 ha expropriation — systemic vs. behavioral loss",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "Internal analysis",
+        "Source Ref": "Tradecraft pattern"
+      },
+      {
+        "Claim ID": "TRADE-003",
+        "Pipe": "TRADE",
+        "Claim Text": "Brothers' complicit silence: Francisco's siblings did not dispute death story — suggests coordination, fear, or asset protection",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "FAPECFT — search brothers' names in Callista correspondence",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "FAPECFT/family oral history",
+        "Source Ref": "Oral history — Gabriel"
+      },
+      {
+        "Claim ID": "TRADE-004",
+        "Pipe": "TRADE",
+        "Claim Text": "Dual-family hypothesis: Francisco established second household post-1936 under altered identity in California or Baja California",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 3,
+        "Link Type": "Lead",
+        "Burden of Proof": "CA marriage records; Baja CA civil registry; ancestry.com",
+        "Risk": 7,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "CA/Baja CA vital records",
+        "Source Ref": "GEN-007 corroboration"
+      },
+      {
+        "Claim ID": "TRADE-005",
+        "Pipe": "TRADE",
+        "Claim Text": "Strategic geographic anchoring: San Diego chosen as diaspora location — closest major US city to Sonora; suggests deliberate proximity",
+        "Date Range": "Post-1936",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Support (plausible)",
+        "Burden of Proof": "Family settlement pattern in San Diego/Oceanside consistent with Sonoran border corridor",
+        "Risk": 5,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "Internal analysis",
+        "Source Ref": "Geographic analysis"
+      },
+      {
+        "Claim ID": "── PIPE: LEGAL ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "LEGAL-001",
+        "Pipe": "LEGAL",
+        "Claim Text": "UNDRIP Art. 28, ILO Convention 169, Inter-American Court indigenous property jurisprudence, Mexico Yaqui Justice Plan 2021",
+        "Date Range": "1990–2021",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — international law instruments",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "UN treaty database/ILO/OAS",
+        "Source Ref": "International law instruments"
+      },
+      {
+        "Claim ID": "LEGAL-002",
+        "Pipe": "LEGAL",
+        "Claim Text": "Article 2163 CCF — fraudulent conveyance; applicable to 1907 'one peso' escritura (Libro 92 Folio 37) if nominal transfer confirmed",
+        "Date Range": "1907",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Support (plausible)",
+        "Burden of Proof": "AHES Libro 92 Folio 37; Article 2163 CCF legal analysis",
+        "Risk": 4,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AHES + legal analysis",
+        "Source Ref": "Conditional on LAND-005"
+      },
+      {
+        "Claim ID": "LEGAL-003",
+        "Pipe": "LEGAL",
+        "Claim Text": "Calvo Clause: Mexican constitutional principle barring foreigners from invoking home-government protection for property disputes",
+        "Date Range": "Historical",
+        "Status": "VERIFIED",
+        "Conf.": 8,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — constitutional law",
+        "Risk": 2,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Mexican Constitution/legal doctrine",
+        "Source Ref": "Standard legal doctrine"
+      },
+      {
+        "Claim ID": "LEGAL-004",
+        "Pipe": "LEGAL",
+        "Claim Text": "BSA 1970 absence: pre-1970 records not subject to Bank Secrecy Act retention — WF Express records 1895–1935 governed only by corporate policy",
+        "Date Range": "1895–1970",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — US federal law",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "US federal statutes",
+        "Source Ref": "BSA 1970 legal analysis"
+      },
+      {
+        "Claim ID": "LEGAL-005",
+        "Pipe": "LEGAL",
+        "Claim Text": "IACHR indigenous property precedents (Saramaka, Sawhoyamaxa, Xákmok Kásek) — international standard for restitution of ancestral land",
+        "Date Range": "1993–2010",
+        "Status": "VERIFIED",
+        "Conf.": 9,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — IACHR official case records",
+        "Risk": 1,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "IACHR/OAS",
+        "Source Ref": "International human rights law"
+      },
+      {
+        "Claim ID": "LEGAL-006",
+        "Pipe": "LEGAL",
+        "Claim Text": "Lloyd's of London 2020 precedent — institutional acknowledgment of historical indigenous land/asset claims",
+        "Date Range": "2020",
+        "Status": "ORANGE",
+        "Conf.": 5,
+        "Link Type": "Lead",
+        "Burden of Proof": "Lloyd's formal statement; academic commentary",
+        "Risk": 5,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "Lloyd's/academic sources",
+        "Source Ref": "International precedent reference"
+      },
+      {
+        "Claim ID": "── PIPE: AUDIT+INST ──",
+        "Pipe": "",
+        "Claim Text": "",
+        "Date Range": "",
+        "Status": "",
+        "Conf.": "",
+        "Link Type": "",
+        "Burden of Proof": "",
+        "Risk": "",
+        "Contam.": "",
+        "Review Status": "",
+        "Archive Target": "",
+        "Source Ref": ""
+      },
+      {
+        "Claim ID": "INST-001",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Pascua Yaqui Nation CHNA (HMKP-117-AP00) — official US government document confirming Yaqui institutional recognition",
+        "Date Range": "Contemporary",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — official US government document",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "On file",
+        "Source Ref": "Official government document"
+      },
+      {
+        "Claim ID": "INST-002",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Life and Labor on the Border (peer-reviewed) — Yaqui/Sonoran mining labor history",
+        "Date Range": "Academic",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — peer-reviewed",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "On file",
+        "Source Ref": "Academic source"
+      },
+      {
+        "Claim ID": "INST-003",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "27 AI confabulation audit entries — top 3: WF-007 (transaction IDs), WF-008 (restitution award), ARCH-003 (Banco Agrícola co-founder)",
+        "Date Range": "2024–2025",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Contradict (quarantined)",
+        "Burden of Proof": "Met — audit completed",
+        "Risk": 0,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "Dataset Audit Report",
+        "Source Ref": "AI audit — internal"
+      },
+      {
+        "Claim ID": "INST-004",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "ARCH-003 DISCONFIRMED: Grijalva Díaz 2024 names only 5 Banco Agrícola Sonorense founding associations; Terminel absent",
+        "Date Range": "1933",
+        "Status": "RED — DISCONFIRMED",
+        "Conf.": 0,
+        "Link Type": "Contradict (disconfirmed)",
+        "Burden of Proof": "Met — peer-reviewed scholarship closes claim",
+        "Risk": 10,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "Grijalva Díaz 2024/AGES FN",
+        "Source Ref": "Peer-reviewed disconfirmation"
+      },
+      {
+        "Claim ID": "INST-005",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Celso López phantom citation — appears in prior AI documents; no record in UNAM, COLSON, or UNISON repositories",
+        "Date Range": "2024–2025",
+        "Status": "RED — QUARANTINED",
+        "Conf.": 0,
+        "Link Type": "Fabricated",
+        "Burden of Proof": "N/A — no such scholar found",
+        "Risk": 10,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "N/A — phantom",
+        "Source Ref": "AI confabulation"
+      },
+      {
+        "Claim ID": "INST-006",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "The Cow Principle: 'retaining only a cow' detail too specific for AI invention — likely genuine oral history; verify via Hermosillo census padrones",
+        "Date Range": "~1913",
+        "Status": "ORANGE",
+        "Conf.": 4,
+        "Link Type": "Lead",
+        "Burden of Proof": "Hermosillo census padrones 1913–1915; AHES Padrón Municipal",
+        "Risk": 6,
+        "Contam.": 3,
+        "Review Status": "triaged",
+        "Archive Target": "AHES Padrón Municipal",
+        "Source Ref": "Oral history archival lead"
+      },
+      {
+        "Claim ID": "INST-007",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "WF named employees (Peterson, Hughes, Harrington, Wilson) — appear in no WF historical record; confirmed AI-generated names",
+        "Date Range": "1900–1935",
+        "Status": "RED — QUARANTINED",
+        "Conf.": 0,
+        "Link Type": "Fabricated",
+        "Burden of Proof": "N/A — quarantined",
+        "Risk": 10,
+        "Contam.": 10,
+        "Review Status": "quarantined",
+        "Archive Target": "N/A — do not search",
+        "Source Ref": "AI confabulation"
+      },
+      {
+        "Claim ID": "INST-008",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Dataset Audit Report case readiness score: 28/100 — not ready for formal legal proceedings; ready for primary archival research phase",
+        "Date Range": "2025",
+        "Status": "VERIFIED",
+        "Conf.": 10,
+        "Link Type": "Support",
+        "Burden of Proof": "Met — internal audit",
+        "Risk": 0,
+        "Contam.": 0,
+        "Review Status": "verified",
+        "Archive Target": "Dataset Audit Report",
+        "Source Ref": "Internal audit score"
+      },
+      {
+        "Claim ID": "INST-009",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Silvestre Terrazas papers (UC Berkeley Bancroft Library) — 1913 WF silver-bars correspondence; released Walter Brem 1999; resolve Chihuahua vs. Sonora episode",
+        "Date Range": "1913",
+        "Status": "ORANGE",
+        "Conf.": 6,
+        "Link Type": "Lead",
+        "Burden of Proof": "Bancroft Library finding aid — Terrazas papers (TSK-003)",
+        "Risk": 4,
+        "Contam.": 0,
+        "Review Status": "triaged",
+        "Archive Target": "UC Berkeley Bancroft Library",
+        "Source Ref": "Historical literature reference"
+      }
+    ]
+  },
+  "dashboard": {
+    "sheet": "Dashboard",
+    "header": [
+      "col_0",
+      "✅ VERIFIED",
+      "col_2",
+      "col_3",
+      " ORANGE (Leads)",
+      "col_5",
+      "col_6",
+      " RED / QUARANTINED",
+      "col_8",
+      "col_9",
+      " TOTAL CLAIMS",
+      "col_11",
+      "col_12",
+      " AUDIT SCORE /100",
+      "col_14"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "✅ VERIFIED": 35,
+        "col_2": "",
+        "col_3": "",
+        " ORANGE (Leads)": 35,
+        "col_5": "",
+        "col_6": "",
+        " RED / QUARANTINED": 5,
+        "col_8": "",
+        "col_9": "",
+        " TOTAL CLAIMS": 75,
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": 28,
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "ℹ️  Score 28/100 = Primary archival research phase (not yet ready for formal legal proceedings). Gap to 75/100 = one trip to Hermosillo + four letters.",
+        "col_2": "",
+        "col_3": "",
+        " ORANGE (Leads)": "",
+        "col_5": "",
+        "col_6": "",
+        " RED / QUARANTINED": "",
+        "col_8": "",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "Pipe Code",
+        "col_2": "Pipe Name",
+        "col_3": "Total",
+        " ORANGE (Leads)": "Verified",
+        "col_5": "Orange",
+        "col_6": "Red",
+        " RED / QUARANTINED": "% Verified",
+        "col_8": "Priority Action",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "GEO+MIN",
+        "col_2": "GEO+MIN",
+        "col_3": 6,
+        " ORANGE (Leads)": 6,
+        "col_5": 0,
+        "col_6": 0,
+        " RED / QUARANTINED": "100%",
+        "col_8": "Complete",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "POL",
+        "col_2": "POL",
+        "col_3": 10,
+        " ORANGE (Leads)": 5,
+        "col_5": 5,
+        "col_6": 0,
+        " RED / QUARANTINED": "50%",
+        "col_8": "FAPECFT + HNDM searches",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "LAND",
+        "col_2": "LAND",
+        "col_3": 9,
+        " ORANGE (Leads)": 2,
+        "col_5": 7,
+        "col_6": 0,
+        " RED / QUARANTINED": "22%",
+        "col_8": "TSK-005 AGES + TSK-006 SHA-256 + AHES LAND-004/005",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "IND+DNA",
+        "col_2": "IND+DNA",
+        "col_3": 8,
+        " ORANGE (Leads)": 7,
+        "col_5": 1,
+        "col_6": 0,
+        " RED / QUARANTINED": "88%",
+        "col_8": "TSK-001/002 FamilySearch 704679/704681",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "GEN+FAM",
+        "col_2": "GEN+FAM",
+        "col_3": 7,
+        " ORANGE (Leads)": 0,
+        "col_5": 7,
+        "col_6": 0,
+        " RED / QUARANTINED": "0%",
+        "col_8": "FamilySearch browse + CA passenger manifests",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "WF",
+        "col_2": "WF",
+        "col_3": 15,
+        " ORANGE (Leads)": 7,
+        "col_5": 6,
+        "col_6": 2,
+        " RED / QUARANTINED": "47%",
+        "col_8": "TSK-004 WF letter + TSK-003 Bancroft Library",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "TRADE",
+        "col_2": "TRADE",
+        "col_3": 5,
+        " ORANGE (Leads)": 0,
+        "col_5": 5,
+        "col_6": 0,
+        " RED / QUARANTINED": "0%",
+        "col_8": "CA vital records + oral history documentation",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "LEGAL",
+        "col_2": "LEGAL",
+        "col_3": 6,
+        " ORANGE (Leads)": 4,
+        "col_5": 2,
+        "col_6": 0,
+        " RED / QUARANTINED": "67%",
+        "col_8": "AHES LAND-005 → Article 2163 analysis",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      },
+      {
+        "col_0": "",
+        "✅ VERIFIED": "AUDIT+INST",
+        "col_2": "AUDIT+INST",
+        "col_3": 9,
+        " ORANGE (Leads)": 4,
+        "col_5": 2,
+        "col_6": 3,
+        " RED / QUARANTINED": "44%",
+        "col_8": "Maintain quarantine — no action on RED claims",
+        "col_9": "",
+        " TOTAL CLAIMS": "",
+        "col_11": "",
+        "col_12": "",
+        " AUDIT SCORE /100": "",
+        "col_14": ""
+      }
+    ]
+  },
+  "priority_action_queue": {
+    "sheet": "Priority Action Queue",
+    "header": [
+      "col_0",
+      "#",
+      "Claim ID",
+      "Pipe",
+      "Claim Text",
+      "Date Range",
+      "Risk",
+      "Conf.",
+      "Archive Target",
+      "Immediate Action",
+      "TSK Ref"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "#": 1,
+        "Claim ID": "POL-005",
+        "Pipe": "POL",
+        "Claim Text": "Francisco Terminel as Federal Senator Sonora c.1934 — DOWNGRADED (Diario XXXVI Leg. Sept 6 1934 names Francisco López, not Terminel)",
+        "Date Range": "1934",
+        "Risk": 7,
+        "Conf.": 3,
+        "Archive Target": "Memoria Política de México",
+        "Immediate Action": "Diario Debates XXXVI Leg.; Memoria Política de México",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 2,
+        "Claim ID": "GEN-006",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Francisco Terminel death location — open question: Mexico, California, or unknown — death story may be cover narrative (TRADE-001)",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 3,
+        "Archive Target": "CA vital records/Baja CA registry",
+        "Immediate Action": "CA death records + Baja CA civil registry",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 3,
+        "Claim ID": "POL-009",
+        "Pipe": "POL",
+        "Claim Text": "Death-story narrative: Francisco reported as deceased to enable severance from Mexican political exposure — possible deliberate disinformation",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 4,
+        "Archive Target": "CA vital records/Baja CA registry",
+        "Immediate Action": "CA vital records + San Diego County probate",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 4,
+        "Claim ID": "TRADE-003",
+        "Pipe": "TRADE",
+        "Claim Text": "Brothers' complicit silence: Francisco's siblings did not dispute death story — suggests coordination, fear, or asset protection",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 4,
+        "Archive Target": "FAPECFT/family oral history",
+        "Immediate Action": "FAPECFT — search brothers' names",
+        "TSK Ref": "FAPECFT"
+      },
+      {
+        "col_0": "",
+        "#": 5,
+        "Claim ID": "TRADE-004",
+        "Pipe": "TRADE",
+        "Claim Text": "Dual-family hypothesis: Francisco established second household post-1936 under altered identity in California or Baja California",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 3,
+        "Archive Target": "CA/Baja CA vital records",
+        "Immediate Action": "CA marriage + Baja CA civil registry",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 6,
+        "Claim ID": "TRADE-001",
+        "Pipe": "TRADE",
+        "Claim Text": "Death-story severance: Francisco told family he 'died' — enabled clean break from political exposure post-1936",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 4,
+        "Archive Target": "CA vital records/Baja CA",
+        "Immediate Action": "CA death records + Baja CA registry",
+        "TSK Ref": "GEN follow-up"
+      },
+      {
+        "col_0": "",
+        "#": 7,
+        "Claim ID": "GEN-007",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Dual-family hypothesis: Francisco may have established second household post-1936 under altered identity",
+        "Date Range": "Post-1936",
+        "Risk": 7,
+        "Conf.": 3,
+        "Archive Target": "CA vital records/Ancestry",
+        "Immediate Action": "CA marriage records + Ancestry.com",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 8,
+        "Claim ID": "WF-006",
+        "Pipe": "WF",
+        "Claim Text": "Aviana Sagasta visited Wells Fargo Express office (~1912–1935) inquiring about funds/accounts; denied access — 4-generation oral history",
+        "Date Range": "~1912–1935",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "WF Historical Services/AHES",
+        "Immediate Action": "Mail WF Historical Services letter (TSK-004)",
+        "TSK Ref": "TSK-004"
+      },
+      {
+        "col_0": "",
+        "#": 9,
+        "Claim ID": "POL-008",
+        "Pipe": "POL",
+        "Claim Text": "Terminel's brothers maintained complicit silence about Francisco's fate post-1936 — possible strategic cover narrative",
+        "Date Range": "Post-1936",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "Oral history/FAPECFT",
+        "Immediate Action": "FAPECFT correspondence",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 10,
+        "Claim ID": "GEN-003",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "1952 Los Angeles passenger manifest lead — possible Nela entry under variant spelling",
+        "Date Range": "1952",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "Ancestry.com/FamilySearch",
+        "Immediate Action": "Ancestry.com passenger manifests 1952",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 11,
+        "Claim ID": "LAND-007",
+        "Pipe": "LAND",
+        "Claim Text": "Vendor/contractor payment trail — Francisco Terminel received government payments for San Javier mining district infrastructure",
+        "Date Range": "~1900–1920",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "AHES/AGN",
+        "Immediate Action": "AHES Fondo Hacienda; AGN Gobernación",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 12,
+        "Claim ID": "TRADE-002",
+        "Pipe": "TRADE",
+        "Claim Text": "Gambling cover narrative: financial losses attributed to gambling — possible deliberate misdirection from political seizure",
+        "Date Range": "Family narrative",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "Internal analysis",
+        "Immediate Action": "Contrast with AGES expediente documentation",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 13,
+        "Claim ID": "WF-013",
+        "Pipe": "WF",
+        "Claim Text": "Oregon Historical Society — secondary WF Express collection; possible Mexico Division correspondence",
+        "Date Range": "~1895–1920",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "Oregon Historical Society",
+        "Immediate Action": "Oregon Historical Society catalog search",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 14,
+        "Claim ID": "INST-006",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "The Cow Principle: 'retaining only a cow' detail too specific for AI invention — likely genuine oral history; verify via Hermosillo census padrones",
+        "Date Range": "~1913",
+        "Risk": 6,
+        "Conf.": 4,
+        "Archive Target": "AHES Padrón Municipal",
+        "Immediate Action": "AHES Padrón Municipal / census padrones",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 15,
+        "Claim ID": "TRADE-005",
+        "Pipe": "TRADE",
+        "Claim Text": "Strategic geographic anchoring: San Diego chosen as diaspora location — closest major US city to Sonora; suggests deliberate proximity",
+        "Date Range": "Post-1936",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Internal analysis",
+        "Immediate Action": "Family settlement pattern analysis",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 16,
+        "Claim ID": "LAND-005",
+        "Pipe": "LAND",
+        "Claim Text": "1907 escritura Libro 92, Folio 37 — nominal consideration 'one peso' — possible fraudulent conveyance (Art. 2163 CCF)",
+        "Date Range": "~1907",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "AHES (Hermosillo)",
+        "Immediate Action": "Mail AHES request for Libro 92 Folio 37",
+        "TSK Ref": "LAND-005"
+      },
+      {
+        "col_0": "",
+        "#": 17,
+        "Claim ID": "LAND-006",
+        "Pipe": "LAND",
+        "Claim Text": "San Javier infrastructure deeds (bridges, dams, irrigation works) — in Gabriel's custody — Francisco as contractor/owner",
+        "Date Range": "~1900–1920",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Gabriel's custody/AGES",
+        "Immediate Action": "SHA-256 hash Gabriel's infrastructure deeds",
+        "TSK Ref": "TSK-006"
+      },
+      {
+        "col_0": "",
+        "#": 18,
+        "Claim ID": "LAND-004",
+        "Pipe": "LAND",
+        "Claim Text": "1892 private title deed: Libro 45, Folio 12 — Registro Público de la Propiedad, Sahuaripa — Francisco Terminel property San Javier",
+        "Date Range": "~1892",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "AHES (Hermosillo)",
+        "Immediate Action": "Mail AHES request for Libro 45 Folio 12",
+        "TSK Ref": "LAND-004"
+      },
+      {
+        "col_0": "",
+        "#": 19,
+        "Claim ID": "LAND-002",
+        "Pipe": "LAND",
+        "Claim Text": "Francisco Terminel owned water rights, dams, bridges in San Javier — private title deeds in Gabriel's possession (SHA-256 HASH PENDING — URGENT)",
+        "Date Range": "~1900–1938",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Gabriel's holdings/AHES",
+        "Immediate Action": "SHA-256 hash Gabriel's deeds — DO TODAY",
+        "TSK Ref": "TSK-006"
+      },
+      {
+        "col_0": "",
+        "#": 20,
+        "Claim ID": "LEGAL-006",
+        "Pipe": "LEGAL",
+        "Claim Text": "Lloyd's of London 2020 precedent — institutional acknowledgment of historical indigenous land/asset claims",
+        "Date Range": "2020",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Lloyd's/academic sources",
+        "Immediate Action": "Lloyd's formal statement; academic commentary",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 21,
+        "Claim ID": "WF-015",
+        "Pipe": "WF",
+        "Claim Text": "Aviana-as-recipient reframe: inquiry should ask if Aviana Sagasta held any account or deposit (not Francisco) — changes WF search strategy",
+        "Date Range": "~1912–1935",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "WF Historical Services",
+        "Immediate Action": "WF Historical Services Q3 of inquiry letter",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 22,
+        "Claim ID": "WF-012",
+        "Pipe": "WF",
+        "Claim Text": "Hosmer B. Parsons correspondence (Huntington Library) — WF Mexico operations; possible 1913 silver-bars episode documentation",
+        "Date Range": "1913",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Huntington Library (San Marino CA)",
+        "Immediate Action": "Bancroft Library finding aid — Parsons papers",
+        "TSK Ref": "TSK-003 (Bancroft)"
+      },
+      {
+        "col_0": "",
+        "#": 23,
+        "Claim ID": "WF-014",
+        "Pipe": "WF",
+        "Claim Text": "Wells Fargo ESRM / Indigenous Peoples Statement — corporate policy re historical indigenous land impacts",
+        "Date Range": "Contemporary",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "Wells Fargo (corporate)",
+        "Immediate Action": "WF corporate website / sustainability reports",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 24,
+        "Claim ID": "GEN-004",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "1920 Sonora census Distrito 5 — possible Terminel/Sagasta household with children",
+        "Date Range": "1920",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "FamilySearch/AHES",
+        "Immediate Action": "FamilySearch Mexico 1921 census (Sonora)",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 25,
+        "Claim ID": "GEN-005",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Bácum/La Realidad: locality renamed post-expropriation — possible site of Francisco Terminel Mayo Valley operations",
+        "Date Range": "Post-1938",
+        "Risk": 5,
+        "Conf.": 5,
+        "Archive Target": "AGES/INEGI",
+        "Immediate Action": "AGES ejido documentation + INEGI locality records",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 26,
+        "Claim ID": "POL-004",
+        "Pipe": "POL",
+        "Claim Text": "Calles exile group exited Mexico April 9 1936: Calles, Morones, Ortega, Manrique — Terminel likely in this cohort",
+        "Date Range": "April 1936",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "FAPECFT/AGN Gobernación",
+        "Immediate Action": "FAPECFT + HNDM newspaper search",
+        "TSK Ref": "FAPECFT + HNDM"
+      },
+      {
+        "col_0": "",
+        "#": 27,
+        "Claim ID": "POL-010",
+        "Pipe": "POL",
+        "Claim Text": "FAPECFT search target: Terminel/Verminel in Callista correspondence files 1930–1936",
+        "Date Range": "1930–1936",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "FAPECFT",
+        "Immediate Action": "FAPECFT catalog search",
+        "TSK Ref": "FAPECFT"
+      },
+      {
+        "col_0": "",
+        "#": 28,
+        "Claim ID": "LAND-003",
+        "Pipe": "LAND",
+        "Claim Text": "San Javier analog ejido expediente documenting Terminel land/water dispossession likely exists in AGES — mirrors Bacobampo pattern",
+        "Date Range": "~1930–1940",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "AGES/RAN",
+        "Immediate Action": "Submit AGES/RAN request (TSK-005)",
+        "TSK Ref": "TSK-005"
+      },
+      {
+        "col_0": "",
+        "#": 29,
+        "Claim ID": "LAND-008",
+        "Pipe": "LAND",
+        "Claim Text": "Terminel-Porchas partnership: Francisco owned land/water; Porchas held mining concessions — complementary assets to be confirmed by combining deeds + SGM",
+        "Date Range": "~1895–1938",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "SGM (partial) + deeds (pending)",
+        "Immediate Action": "Combine deeds (TSK-006) + SGM confirmation",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 30,
+        "Claim ID": "GEN-002",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Porchas family graves confirmed in Panteón Municipal San Javier (Gabriel site visit ~2005); no Terminel graves found",
+        "Date Range": "~2005 obs.",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "FindAGrave/on-site",
+        "Immediate Action": "FindAGrave cemetery 2740823; on-site documentation",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 31,
+        "Claim ID": "IND-001",
+        "Pipe": "IND+DNA",
+        "Claim Text": "Aviana Sagasta most likely Névome Pima Bajo (50–65%) — geographic match to Sonora River watershed / San Javier corridor",
+        "Date Range": "Pre-colonial–1900",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "FamilySearch/AGN",
+        "Immediate Action": "Browse FamilySearch cat. 704679 + 704681 — DO TODAY",
+        "TSK Ref": "TSK-001/002"
+      },
+      {
+        "col_0": "",
+        "#": 32,
+        "Claim ID": "LEGAL-002",
+        "Pipe": "LEGAL",
+        "Claim Text": "Article 2163 CCF — fraudulent conveyance; applicable to 1907 'one peso' escritura (Libro 92 Folio 37) if nominal transfer confirmed",
+        "Date Range": "1907",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "AHES + legal analysis",
+        "Immediate Action": "Confirm AHES Libro 92 Folio 37 first (LAND-005)",
+        "TSK Ref": "—"
+      },
+      {
+        "col_0": "",
+        "#": 33,
+        "Claim ID": "WF-011",
+        "Pipe": "WF",
+        "Claim Text": "Wiltsee Collection — ~1,400 express-company document envelopes at WF Historical Services — highest-probability archive for Sonoran agent records",
+        "Date Range": "~1890–1930",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "WF Historical Services",
+        "Immediate Action": "WF Historical Services letter (TSK-004)",
+        "TSK Ref": "TSK-004"
+      },
+      {
+        "col_0": "",
+        "#": 34,
+        "Claim ID": "INST-009",
+        "Pipe": "AUDIT+INST",
+        "Claim Text": "Silvestre Terrazas papers (UC Berkeley Bancroft Library) — 1913 WF silver-bars correspondence; released Walter Brem 1999; resolve Chihuahua vs. Sonora episode",
+        "Date Range": "1913",
+        "Risk": 4,
+        "Conf.": 6,
+        "Archive Target": "UC Berkeley Bancroft Library",
+        "Immediate Action": "Bancroft Library inquiry (TSK-003)",
+        "TSK Ref": "TSK-003"
+      },
+      {
+        "col_0": "",
+        "#": 35,
+        "Claim ID": "GEN-001",
+        "Pipe": "GEN+FAM",
+        "Claim Text": "Nela (María Manuela Terminel Sagasta) born San Javier ~August 7 1910 — oral history corroborated by geographic detail and site visit",
+        "Date Range": "1910–2012",
+        "Risk": 3,
+        "Conf.": 7,
+        "Archive Target": "FamilySearch cat. 704679",
+        "Immediate Action": "Browse FamilySearch cat. 704679 — DO TODAY",
+        "TSK Ref": "TSK-001/002"
+      }
+    ]
+  },
+  "quarantine_register": {
+    "sheet": "Quarantine Register",
+    "header": [
+      "col_0",
+      "Claim ID",
+      "Pipe",
+      "Status",
+      "Claim Text",
+      "Why Quarantined / Disconfirmed",
+      "Action Protocol",
+      "col_7"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "Claim ID": "WF-007",
+        "Pipe": "WF",
+        "Status": "RED — QUARANTINED",
+        "Claim Text": "WF transaction IDs (NOG-1900-0117-001 etc.), employees Peterson/Hughes/Harrington/Wilson, internal memos — ALL AI-FABRICATED",
+        "Why Quarantined / Disconfirmed": "AI-fabricated transaction IDs (NOG-1900-0117-001 format), named employees (Peterson, Hughes, Harrington, Wilson), internal memos — no such WF archive format exists",
+        "Action Protocol": "Retain in quarantine register permanently. Do not search archives using these identifiers. Document as AI confabulation in audit trail and TE360.",
+        "col_7": ""
+      },
+      {
+        "col_0": "",
+        "Claim ID": "WF-008",
+        "Pipe": "WF",
+        "Status": "RED — QUARANTINED",
+        "Claim Text": "WF-RPA-2025-ASD-001 'Restitution Award' — T.H. Whitford signature, $639,187,500 USD — AI-GENERATED FICTION",
+        "Why Quarantined / Disconfirmed": "AI-generated restitution document WF-RPA-2025-ASD-001 — forged T.H. Whitford signature, $639,187,500 USD figure never issued by Wells Fargo",
+        "Action Protocol": "Retain in quarantine register permanently. Never submit to any institution. Remove from any correspondence or filing. Document forgery in audit trail.",
+        "col_7": ""
+      },
+      {
+        "col_0": "",
+        "Claim ID": "INST-004",
+        "Pipe": "AUDIT+INST",
+        "Status": "RED — DISCONFIRMED",
+        "Claim Text": "ARCH-003 DISCONFIRMED: Grijalva Díaz 2024 names only 5 Banco Agrícola Sonorense founding associations; Terminel absent",
+        "Why Quarantined / Disconfirmed": "Grijalva Díaz 2024 peer-reviewed scholarship names only 5 founding associations of Banco Agrícola Sonorense; Francisco Terminel is absent from all founding records",
+        "Action Protocol": "Read AGES FN Álvarez escritura 21 (1933) to formally close. Move to CLOSED-DISCONFIRMED status after reading.",
+        "col_7": ""
+      },
+      {
+        "col_0": "",
+        "Claim ID": "INST-005",
+        "Pipe": "AUDIT+INST",
+        "Status": "RED — QUARANTINED",
+        "Claim Text": "Celso López phantom citation — appears in prior AI documents; no record in UNAM, COLSON, or UNISON repositories",
+        "Why Quarantined / Disconfirmed": "Phantom citation — 'Celso López' appears in prior AI outputs as supposed academic source; not found in UNAM, COLSON, UNISON, or any academic repository search",
+        "Action Protocol": "Document as confabulation. No further research action required. Do not cite.",
+        "col_7": ""
+      },
+      {
+        "col_0": "",
+        "Claim ID": "INST-007",
+        "Pipe": "AUDIT+INST",
+        "Status": "RED — QUARANTINED",
+        "Claim Text": "WF named employees (Peterson, Hughes, Harrington, Wilson) — appear in no WF historical record; confirmed AI-generated names",
+        "Why Quarantined / Disconfirmed": "AI-generated employee names (Peterson, Hughes, Harrington, Wilson) — appear in no verifiable Wells Fargo historical record from any period",
+        "Action Protocol": "Retain in quarantine. Do not search. Document as confabulation in WF inquiry correspondence.",
+        "col_7": ""
+      }
+    ]
+  },
+  "nine_pipes_reference": {
+    "sheet": "Nine Pipes Reference",
+    "header": [
+      "col_0",
+      "Code",
+      "Pipe",
+      "Description",
+      "Claims",
+      "Status Summary",
+      "Key Archives",
+      "Key Verified / Plausible Facts",
+      "Immediate Action",
+      "col_9"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "Code": "P1",
+        "Pipe": "GEO+MIN",
+        "Description": "San Javier geography & mining district",
+        "Claims": "6",
+        "Status Summary": "Complete — all GREEN",
+        "Key Archives": "None",
+        "Key Verified / Plausible Facts": "SGM 2006; INEGI 260541; Porchas concession; ore grades",
+        "Immediate Action": "None — complete",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P2",
+        "Pipe": "POL",
+        "Description": "Political collapse 1935–1936",
+        "Claims": "10",
+        "Status Summary": "3 VERIFIED + 7 ORANGE",
+        "Key Archives": "FAPECFT + HNDM + AGN",
+        "Key Verified / Plausible Facts": "Desafuero Dec 14 1935; Calles exile Apr 9 1936; Verminel variant",
+        "Immediate Action": "Search FAPECFT for Terminel/Verminel + HNDM newspapers",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P3",
+        "Pipe": "LAND",
+        "Description": "Land & property dispossession",
+        "Claims": "9",
+        "Status Summary": "2 VERIFIED + 7 ORANGE",
+        "Key Archives": "TSK-005 + TSK-006 + AHES",
+        "Key Verified / Plausible Facts": "453 ha Bacobampo 1938 (UA verified); Bácum/Mayo Valley",
+        "Immediate Action": "SHA-256 hash deeds TODAY; AGES request; AHES Libro 45/92",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P4",
+        "Pipe": "IND+DNA",
+        "Description": "Indigenous identity & DNA",
+        "Claims": "8",
+        "Status Summary": "6 VERIFIED + 2 ORANGE",
+        "Key Archives": "FamilySearch 704679/704681 + AGN",
+        "Key Verified / Plausible Facts": "Névome Pima Bajo 50-65%; INEGI correction; B2 haplogroup",
+        "Immediate Action": "Browse FamilySearch 704679 + 704681 TODAY",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P5",
+        "Pipe": "GEN+FAM",
+        "Description": "Genealogical chain",
+        "Claims": "7",
+        "Status Summary": "0 VERIFIED + 7 ORANGE",
+        "Key Archives": "FamilySearch + CA records + Ancestry",
+        "Key Verified / Plausible Facts": "Nela born San Javier ~1910; Porchas graves confirmed on site",
+        "Immediate Action": "FamilySearch browse; CA passenger manifests; open death question",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P6",
+        "Pipe": "WF",
+        "Description": "Wells Fargo Express operations",
+        "Claims": "15",
+        "Status Summary": "7 VERIFIED + 6 ORANGE + 2 RED",
+        "Key Archives": "TSK-004 + Bancroft TSK-003",
+        "Key Verified / Plausible Facts": "WF Express Mexico 1890–1964; Guaymas office 1890; bullion receipts",
+        "Immediate Action": "Mail WF Historical Services letter; Bancroft Library inquiry",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P7",
+        "Pipe": "TRADE",
+        "Description": "Tradecraft & cover narratives",
+        "Claims": "5",
+        "Status Summary": "0 VERIFIED + 5 ORANGE",
+        "Key Archives": "CA vital records + family documentation",
+        "Key Verified / Plausible Facts": "Death-story; gambling cover; dual-family; SD border proximity",
+        "Immediate Action": "CA death records; Baja CA registry; document oral history",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P8",
+        "Pipe": "LEGAL",
+        "Description": "Legal frameworks",
+        "Claims": "6",
+        "Status Summary": "5 VERIFIED + 1 ORANGE",
+        "Key Archives": "AHES LAND-005 then Art. 2163 analysis",
+        "Key Verified / Plausible Facts": "UNDRIP; ILO 169; IACHR; Calvo Clause; BSA absence",
+        "Immediate Action": "Confirm Libro 92 Folio 37; Art. 2163 fraudulent conveyance analysis",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Code": "P9",
+        "Pipe": "AUDIT+INST",
+        "Description": "Source integrity & audit",
+        "Claims": "9",
+        "Status Summary": "4 VERIFIED + 2 ORANGE + 3 RED",
+        "Key Archives": "Quarantine register (no new research needed for RED)",
+        "Key Verified / Plausible Facts": "28/100 audit score; WF confabulations quarantined; Cow Principle",
+        "Immediate Action": "Maintain quarantine register; pursue AHES Padrón for Cow Principle",
+        "col_9": ""
+      }
+    ]
+  },
+  "archive_targets_contacts": {
+    "sheet": "Archive Targets & Contacts",
+    "header": [
+      "col_0",
+      "Archive",
+      "Location",
+      "Access Mode",
+      "Contact / Address",
+      "Email / Phone",
+      "Related Claims",
+      "Request Status",
+      "Notes",
+      "col_9"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "Archive": "FamilySearch (LDS)",
+        "Location": "International — online",
+        "Access Mode": "Free online browse",
+        "Contact / Address": "familysearch.org — Catalog search 704679 / 704681",
+        "Email / Phone": "familysearch.org",
+        "Related Claims": "IND-001, GEN-001, GEN-003, GEN-004",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Browse catalog 704679 (civil) & 704681 (parish) today — zero cost",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "AHES — Archivo Histórico del Estado de Sonora",
+        "Location": "Hermosillo, Sonora MX",
+        "Access Mode": "Formal written request",
+        "Contact / Address": "Comonfort y Rosales s/n, Centro, Hermosillo, Sonora CP 83000",
+        "Email / Phone": "+52 (662) 212-0671",
+        "Related Claims": "LAND-004, LAND-005, LEGAL-002, ARCH-001, ARCH-002, IND-003",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Call first to confirm email submission. Mon–Fri 8AM–3PM. Letter drafted.",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "AGES / RAN — Registro Agrario Nacional",
+        "Location": "Mexico City (national) + Hermosillo delegation",
+        "Access Mode": "Formal written request or email",
+        "Contact / Address": "Carretera Picacho-Ajusco 57, Col. Jardines en la Montaña, Tlalpan, CDMX CP 14210",
+        "Email / Phone": "reporte_rantel@ran.gob.mx",
+        "Related Claims": "LAND-001, LAND-003, LAND-009",
+        "Request Status": "NOT SUBMITTED — TSK-005",
+        "Notes": "Request expediente 411.123/2174 Bacobampo; also ask for San Javier ejido expediente",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "AGN — Archivo General de la Nación",
+        "Location": "Mexico City",
+        "Access Mode": "Online catalog + on-site / staff-mediated",
+        "Contact / Address": "Av. Ricardo Flores Magón 1, Tlatelolco, CDMX",
+        "Email / Phone": "catalogo.archivos.gob.mx",
+        "Related Claims": "POL-001, POL-003, POL-004, IND-001, IND-003, LAND-007",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Search Fondo Gobernación for Terminel, Verminel, Sagasta. Also Notarías for IND-003.",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "FAPECFT — Fideicomiso Plutarco Elías Calles y F. Torreblanca",
+        "Location": "Mexico City",
+        "Access Mode": "On-site research / staff-mediated",
+        "Contact / Address": "Lago Zurich 245, Piso 16, Ampliación Granada, CDMX",
+        "Email / Phone": "fapecft.gob.mx",
+        "Related Claims": "POL-001, POL-002, POL-003, POL-004, POL-010, TRADE-003",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Search Terminel AND Verminel in Callista correspondence 1930–1936",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "Wells Fargo Historical Services",
+        "Location": "San Francisco, CA USA",
+        "Access Mode": "Physical mail only",
+        "Contact / Address": "MAC A0101-017, 420 Montgomery Street, San Francisco CA 94104",
+        "Email / Phone": "No public email — physical mail only",
+        "Related Claims": "WF-001 through WF-015 (all WF claims)",
+        "Request Status": "NOT SUBMITTED — TSK-004",
+        "Notes": "Letter already drafted (5 questions). Mail certified mail. Allow 6–12 weeks.",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "UC Berkeley Bancroft Library",
+        "Location": "Berkeley, CA USA",
+        "Access Mode": "Online finding aid + on-site / remote request",
+        "Contact / Address": "The Bancroft Library, UC Berkeley, Berkeley CA 94720-6000",
+        "Email / Phone": "bancroft.berkeley.edu/reference/",
+        "Related Claims": "INST-009, WF-012",
+        "Request Status": "NOT SUBMITTED — TSK-003",
+        "Notes": "Silvestre Terrazas papers — 1913 WF correspondence. Request finding aid first.",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "Huntington Library",
+        "Location": "San Marino, CA USA",
+        "Access Mode": "Researcher registration + on-site",
+        "Contact / Address": "1151 Oxford Road, San Marino CA 91108",
+        "Email / Phone": "huntington.org/research",
+        "Related Claims": "WF-012",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Hosmer B. Parsons correspondence — WF Mexico operations. Request finding aid.",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "University of Arizona Special Collections",
+        "Location": "Tucson, AZ USA",
+        "Access Mode": "Online finding aid + on-site",
+        "Contact / Address": "1510 E. University Blvd., Tucson AZ 85721",
+        "Email / Phone": "speccoll.library.arizona.edu",
+        "Related Claims": "IND-002, IND-006",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Spicer Yaqui papers + borderlands collections for Yaqui deportation documentation",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "ICRESON — Registro Público Sonora",
+        "Location": "Hermosillo, Sonora MX",
+        "Access Mode": "Online + on-site",
+        "Contact / Address": "Comonfort y Paseo de la Cultura, Centro de Gobierno, Hermosillo",
+        "Email / Phone": "icreson.gob.mx / 662-108-4200",
+        "Related Claims": "LAND-004, LAND-005, LAND-006",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Instituto Catastral y Registral del Estado de Sonora — Registro Público de la Propiedad",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "Hemeroteca Nacional Digital MX (HNDM)",
+        "Location": "Online — digital",
+        "Access Mode": "Free online search",
+        "Contact / Address": "hndm.unam.mx",
+        "Email / Phone": "hndm.unam.mx",
+        "Related Claims": "POL-001, POL-003, POL-004, POL-010",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Search: 'Terminel' AND Sonora; 'Verminel' AND Sonora; 'San Javier' AND escritura; 'Bacobampo' AND 1938",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "Chronicling America (Library of Congress)",
+        "Location": "Online — digital",
+        "Access Mode": "Free online search",
+        "Contact / Address": "chroniclingamerica.loc.gov",
+        "Email / Phone": "chroniclingamerica.loc.gov",
+        "Related Claims": "POL-001, WF-001, WF-002",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Search: Francisco Terminel; San Javier Sonora; Wells Fargo Express Mexico",
+        "col_9": ""
+      },
+      {
+        "col_0": "",
+        "Archive": "Oregon Historical Society",
+        "Location": "Portland, OR USA",
+        "Access Mode": "Online finding aid + on-site",
+        "Contact / Address": "1200 SW Park Ave, Portland OR 97205",
+        "Email / Phone": "ohs.org/research",
+        "Related Claims": "WF-013",
+        "Request Status": "NOT SUBMITTED",
+        "Notes": "Secondary Wells Fargo Express collection — possible Mexico Division correspondence",
+        "col_9": ""
+      }
+    ]
+  },
+  "letters_print_ready": {
+    "sheet": "Letters (Print-Ready)",
+    "header": [
+      "col_0",
+      "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead"
+    ],
+    "rows": [
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "LETTER A — TSK-004 — Wells Fargo Historical Services (English)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Wells Fargo Historical Services"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Attn: Historical Research"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "MAC A0101-017"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "420 Montgomery Street"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "San Francisco, CA 94104"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Date: [INSERT DATE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Re: Research Inquiry — Wells Fargo Express Mexico / Sonora Operations (1895–1935)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Dear Wells Fargo Historical Services:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "This letter is a formal research inquiry on behalf of the Terminel-Sagasta family"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "concerning the operations of Wells Fargo Express in Sonora, Mexico, between"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "approximately 1895 and 1935."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "We understand that Wells Fargo Express (operating variously as Wells Fargo y Cía.,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Compañía Mexicana de Express S.A., and Wells Fargo Co. Express S.A.) maintained"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "a documented network of express offices in Mexico, including a Guaymas, Sonora"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "office (Agent A. Willard, confirmed in the 1890 Wells Fargo directory). We also"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "understand that following the 1905 corporate separation of Wells Fargo Express from"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Wells Fargo Nevada National Bank, and the 1910 restructuring into Compañía Mexicana"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "de Express S.A., the Mexican express subsidiary continued operations through at least"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "the 1960s."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "We wish to disclose proactively that our files contain several AI-generated documents"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "purporting to be Wells Fargo records, including fabricated transaction IDs, employee"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "names, and a \"restitution award\" document (WF-RPA-2025-ASD-001). None of these"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "will ever be presented as genuine Wells Fargo records. We raise this solely to"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "demonstrate the investigation's commitment to source integrity."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "QUESTION 1 — GEOGRAPHIC PRESENCE"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Did Wells Fargo Express maintain agent offices, stations, or correspondent relationships"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "in any of the following Sonoran locations during 1895–1935: Hermosillo, Guaymas, Ures,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Tecoripa, San Javier (INEGI code 260541, central Sonora mining district), Nogales"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "(Mexican side), or any other location in central/eastern Sonora serving mining districts?"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "QUESTION 2 — SURVIVING RECORDS"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Do any of the following record types survive for Sonoran operations, 1895–1935:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "agent ledgers, money-order registers or stubs, bullion shipment waybills naming"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Sonoran consignors/consignees, telegraphic transfer records from Sonoran mining"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "districts, or correspondence files for the Mexico Division or Pacific Department?"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "QUESTION 3 — NAMED INDIVIDUALS"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Do any surviving records — including the Wiltsee Collection and any Mexico Division"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "files — contain references to: Francisco L. Terminel (variant: Verminel or Terminal),"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Aviana Sagasta (variant: Avina Sagasta or A. Sagasta), or Luis Porchas (verified"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "San Javier mining concessionaire in federal SGM records)?"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "QUESTION 4 — RECORDS DISPOSITION"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Did pre-1918 operational records from the Mexican express subsidiary survive the"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "disruptions of the Mexican Revolution? Were records retained in San Francisco,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "transferred to Mexico, or lost? Is there a finding aid, inventory, or catalog of"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "surviving Mexico Division records this investigation could consult?"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "QUESTION 5 — WILTSEE COLLECTION"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Does the Wiltsee Collection include items related to: Sonoran mining districts,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "bullion or silver shipments originating in Sonora, or money-order/wire-transfer"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "records from Hermosillo or border-area offices?"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "A written negative finding (confirming no records survive) would itself constitute"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "primary evidence for this investigation and would be equally valued."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Thank you for your assistance."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Respectfully submitted,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[NAME]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[ADDRESS]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[EMAIL]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[PHONE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[DATE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "LETTER B — TSK-005 — AGES/RAN Bacobampo Expediente (Spanish)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Registro Agrario Nacional (RAN)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Unidad de Atención Ciudadana / Fondo Documental"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Carretera Picacho-Ajusco No. 57"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Col. Jardines en la Montaña, Tlalpan"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Ciudad de México, CP 14210"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "También por correo electrónico: reporte_rantel@ran.gob.mx"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Fecha: [INSERTAR FECHA]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Asunto: Solicitud de expediente — Ramo Ejido-Dotaciones — Bacobampo, Etchojoa,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Sonora — No. 411.123/2174"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Estimados Señores:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Por medio de la presente, el suscrito/la suscrita [NOMBRE COMPLETO], en representación"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "de la familia Terminel-Sagasta, solicita respetuosamente copia certificada del expediente"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "completo identificado con el número de registro 411.123/2174, correspondiente a la"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "dotación de tierras del ejido de Bacobampo, municipio de Etchojoa, Sonora, tramitado"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "en el mes de marzo de 1938."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "El expediente es necesario para documentar la pérdida de 453 hectáreas pertenecientes"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "a la familia Terminel, en el marco de una investigación histórica sobre desposesión de"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "tierras durante el período cardenista (1934–1940)."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Solicitamos específicamente:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "1. Copia certificada del expediente completo No. 411.123/2174"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "2. Resolución presidencial de dotación"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "3. Planos del ejido (si existen en el expediente)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "4. Relación de afectados (si figura en el expediente)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "5. Nombre del ejido San Javier, municipio de San Javier, Sonora — y cualquier"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "expediente análogo que documente afectaciones a tierras Terminel en dicho municipio"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "En caso de que el expediente se encuentre en la Delegación Estatal del RAN en Sonora,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "agradecemos nos indiquen la dirección y procedimiento correspondiente."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Quedamos a sus órdenes para cualquier información adicional que requieran."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Atentamente,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[NOMBRE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[DOMICILIO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[CORREO ELECTRÓNICO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[TELÉFONO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[FECHA]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "LETTER C — LAND-004/005 — AHES (Spanish)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Archivo Histórico del Estado de Sonora (AHES)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Atención: Área de Consulta / Registro Público y Notarías"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Comonfort y Rosales s/n, Centro"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Hermosillo, Sonora, CP 83000"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Teléfono: +52 (662) 212-0671"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Fecha: [INSERTAR FECHA]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Asunto: Solicitud de consulta — Registro Público de la Propiedad y Protocolos"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Notariales — San Javier / Sahuaripa — Dos instrumentos específicos"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Estimados Señores:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Por medio de la presente, el suscrito/la suscrita [NOMBRE COMPLETO], solicita"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "respetuosamente acceso de consulta y, de ser posible, copia certificada de los"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "siguientes dos instrumentos notariales o registrales, relacionados con la familia"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Terminel en el municipio de San Javier, Sonora:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "INSTRUMENTO 1 (LAND-004)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Registro: Libro 45, Folio 12"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Fecha aproximada: 1892"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Distrito/Notaría: Sahuaripa o jurisdicción de San Javier"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Partes posibles: Francisco L. Terminel (propietario)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Descripción: Escritura de propiedad de tierras / aguas en San Javier"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "INSTRUMENTO 2 (LAND-005)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Registro: Libro 92, Folio 37"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Fecha aproximada: 1907"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Distrito/Notaría: Sahuaripa o jurisdicción de San Javier"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Partes posibles: Francisco L. Terminel"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Descripción: Escritura con contraprestación de \"un peso\" — posible"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "transmisión de bienes con valor nominal"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Asimismo, solicitamos acceso al Padrón Municipal o Padrón de Hogares de Hermosillo"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "o San Javier correspondiente al período 1912–1916, para buscar el registro de"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Aviana Sagasta o Francisco Terminel."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Quedamos en espera de sus instrucciones sobre el procedimiento de consulta,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "costos de reproducción, y si es posible el envío de copias digitales por correo"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "electrónico."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Atentamente,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[NOMBRE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[DOMICILIO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[CORREO ELECTRÓNICO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[TELÉFONO]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[FECHA]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "LETTER D — TSK-003 — UC Berkeley Bancroft Library (English)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "The Bancroft Library"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Reference Services"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "University of California, Berkeley"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Berkeley, CA 94720-6000"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "(Submitvia: bancroft.berkeley.edu/reference/askref.html)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Date: [INSERT DATE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Re: Finding Aid Request — Silvestre Terrazas Papers — 1913 Wells Fargo Correspondence"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Dear Bancroft Library Reference Staff:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "I am writing to request access to materials within the Silvestre Terrazas Papers"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "collection, specifically correspondence related to Wells Fargo Express dating from"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "approximately 1913, understood to include materials released by Walter Brem in 1999."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "The purpose of this inquiry is to determine whether a documented 1913 Wells Fargo"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "silver-bars episode — associated with Mexican Northwestern Railway Train 7,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "April 9, 1913 (Chihuahua) — has any documented connection to Sonora, the"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Sahuaripa district, or specific mine operators active in the San Javier, Sonora"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "mining district during the same period."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "We request:"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "1. The current finding aid or box/folder inventory for the Silvestre Terrazas Papers"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "2. Confirmation of whether any materials specifically concern Wells Fargo Express"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "operations in Sonora (as distinct from Chihuahua)"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "3. Information about the 1999 Walter Brem release of correspondence: scope, date"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "range, and whether these materials have been digitized"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "4. Any related collections at Bancroft that concern Wells Fargo Express Mexico"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "operations or Sonoran mining districts circa 1895–1918"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Remote scanning or photocopy services would be gratefully accepted if on-site"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "access is not possible. Costs for reproduction are accepted."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Thank you for your assistance."
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "Respectfully,"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[NAME]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[INSTITUTION / AFFILIATION (if any)]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[ADDRESS]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[EMAIL]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[PHONE]"
+      },
+      {
+        "col_0": "",
+        "READY-TO-MAIL LETTERS — Copy each section to a Word document and print on letterhead": "[DATE]"
+      }
+    ]
+  }
+}
