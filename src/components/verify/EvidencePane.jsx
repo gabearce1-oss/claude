@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, ExternalLink, Calendar, MapPin, Archive, User } from 'lucide-react';
+import { FileText, ExternalLink, User } from 'lucide-react';
 
 function Field({ label, value, mono = false }) {
   if (!value && value !== 0) return null;

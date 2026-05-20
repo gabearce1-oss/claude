@@ -255,7 +255,6 @@ Deno.serve(async (req) => {
         // fresh server read and try again. Up to 5 retries before
         // surfacing the error.
         let evidence = null;
-        let lastErr = null;
         for (let attempt = 0; attempt < 5; attempt++) {
           const evidenceNumber = await allocateEvidenceNumber();
           try {
@@ -309,8 +308,8 @@ Deno.serve(async (req) => {
           } catch (e) {
             // Treat any create() failure as a potential conflict and retry
             // with a freshly allocated number. The allocator re-reads from
-            // the server, so concurrent racers naturally diverge.
-            lastErr = e;
+            // the server, so concurrent racers naturally diverge. After
+            // the last attempt, surface the error.
             if (attempt === 4) {
               errors.push({ itemUrl, error: `create after 5 retries: ${e && e.message}` });
             }

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { ShieldCheck, Save, FileSearch, Plus, Link2 } from 'lucide-react';
+import { ShieldCheck, Save, Plus, Link2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { checklistItems } from './checklistItems';
 import ChecklistItem from './ChecklistItem';
