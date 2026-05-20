@@ -1,5 +1,55 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+const DRIVE_ROOT_FOLDER = 'TE360 Backups';
+const DRIVE_SESSION_FOLDER = 'Daily Session Reports';
+
+async function findOrCreateFolder(accessToken, name, parentId) {
+  const parentClause = parentId ? ` and '${parentId}' in parents` : " and 'root' in parents";
+  const q = encodeURIComponent(
+    `name='${name.replace(/'/g, "\\'")}' and mimeType='application/vnd.google-apps.folder' and trashed=false${parentClause}`
+  );
+  const searchRes = await fetch(
+    `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  const searchData = await searchRes.json();
+  if (searchData.files && searchData.files.length > 0) return searchData.files[0].id;
+  const createRes = await fetch('https://www.googleapis.com/drive/v3/files?fields=id', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name,
+      mimeType: 'application/vnd.google-apps.folder',
+      ...(parentId ? { parents: [parentId] } : {}),
+    }),
+  });
+  const created = await createRes.json();
+  return created.id;
+}
+
+async function uploadJsonToDrive(accessToken, { name, parentId, json }) {
+  const boundary = '-------te360' + Math.random().toString(36).slice(2);
+  const metadata = { name, parents: [parentId], mimeType: 'application/json' };
+  const body =
+    `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n` +
+    JSON.stringify(metadata) +
+    `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n` +
+    json +
+    `\r\n--${boundary}--`;
+  const res = await fetch(
+    'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': `multipart/related; boundary=${boundary}`,
+      },
+      body,
+    }
+  );
+  return res.json();
+}
+
 // Get today's date in America/Los_Angeles as YYYY-MM-DD
 function pacificDate(d = new Date()) {
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -110,7 +160,23 @@ Deno.serve(async (req) => {
       result = await base44.asServiceRole.entities.SessionLog.create(payload);
     }
 
-    return Response.json({ ok: true, log: result, summary });
+    // Best-effort backup to Google Drive (non-blocking failure)
+    let driveBackup = null;
+    try {
+      const { accessToken } = await base44.asServiceRole.connectors.getConnection('googledrive');
+      const rootId = await findOrCreateFolder(accessToken, DRIVE_ROOT_FOLDER, null);
+      const subId = await findOrCreateFolder(accessToken, DRIVE_SESSION_FOLDER, rootId);
+      driveBackup = await uploadJsonToDrive(accessToken, {
+        name: `SessionLog_${sessionDate}.json`,
+        parentId: subId,
+        json: JSON.stringify(payload, null, 2),
+      });
+    } catch (driveErr) {
+      console.error('Drive backup failed:', driveErr.message);
+      driveBackup = { error: driveErr.message };
+    }
+
+    return Response.json({ ok: true, log: result, summary, driveBackup });
   } catch (error) {
     console.error('archiveDailySession failed:', error.message, error.stack);
     return Response.json({ error: error.message, stack: error.stack }, { status: 500 });

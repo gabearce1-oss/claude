@@ -22,6 +22,7 @@ import WellsFargoLetter from './pages/protocols/WellsFargoLetter';
 import PriorityActionPackage from './pages/protocols/PriorityActionPackage';
 import LivingSources from './pages/protocols/LivingSources';
 import ResearchProtocol from './pages/protocols/ResearchProtocol';
+import CatalogProgress from './pages/CatalogProgress';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
       <Route path="/playbook/priority-actions" element={<PriorityActionPackage />} />
       <Route path="/playbook/living-sources" element={<LivingSources />} />
       <Route path="/playbook/research-protocol" element={<ResearchProtocol />} />
+      <Route path="/catalog-progress" element={<CatalogProgress />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

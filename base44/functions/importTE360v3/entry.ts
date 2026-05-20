@@ -67,38 +67,53 @@ Deno.serve(async (req) => {
     }
 
     // 3. Parse Quarantine Register sheet
+    // Sheet layout (with a leading spacer column):
+    //   row[0]=empty | row[1]=Claim ID | row[2]=Pipe | row[3]=Status
+    //   row[4]=Claim Text | row[5]=Why Quarantined | row[6]=Action Protocol
     const qSheet = wb.Sheets['Quarantine Register'];
     const qRows = XLSX.utils.sheet_to_json(qSheet, { header: 1, defval: null });
     const quarantined = {};
     for (const row of qRows) {
-      if (!row || !row[0]) continue;
-      const id = String(row[0]).trim();
+      if (!row) continue;
+      // Scan first two columns to tolerate either layout
+      const idCell = (row[1] != null && String(row[1]).trim()) ? row[1] : row[0];
+      if (idCell == null) continue;
+      const id = String(idCell).trim();
       if (!/^[A-Z]+-\d{3}$/.test(id)) continue;
+      const baseOffset = (row[1] != null && String(row[1]).trim() === id) ? 1 : 0;
       quarantined[id] = {
-        status: row[2] || '',
-        text: row[3] || '',
-        reason: row[4] || '',
-        protocol: row[5] || '',
+        status: row[baseOffset + 2] || '',
+        text: row[baseOffset + 3] || '',
+        reason: row[baseOffset + 4] || '',
+        protocol: row[baseOffset + 5] || '',
       };
     }
 
     // 4. Parse Archive Targets & Contacts
+    // Sheet layout (with a leading spacer column):
+    //   row[0]=empty | row[1]=Archive | row[2]=Location | row[3]=Access Mode
+    //   row[4]=Contact/Address | row[5]=Email/Phone | row[6]=Related Claims
+    //   row[7]=Request Status | row[8]=Notes
     const aSheet = wb.Sheets['Archive Targets & Contacts'];
     const aRows = XLSX.utils.sheet_to_json(aSheet, { header: 1, defval: null });
-    const archiveContacts = []; // [{name, location, access, address, contact, claims, status, notes}]
+    const archiveContacts = [];
     for (const row of aRows) {
-      if (!row || !row[0]) continue;
-      const name = String(row[0]).trim();
+      if (!row) continue;
+      const nameCell = (row[1] != null && String(row[1]).trim()) ? row[1] : row[0];
+      if (nameCell == null) continue;
+      const name = String(nameCell).trim();
+      if (!name) continue;
       if (name === 'Archive' || name.includes('Archive Targets')) continue;
+      const baseOffset = (row[1] != null && String(row[1]).trim() === name) ? 1 : 0;
       archiveContacts.push({
         name,
-        location: row[1] || '',
-        access: row[2] || '',
-        address: row[3] || '',
-        contact: row[4] || '',
-        claims: row[5] || '',
-        status: row[6] || '',
-        notes: row[7] || '',
+        location: row[baseOffset + 1] || '',
+        access: row[baseOffset + 2] || '',
+        address: row[baseOffset + 3] || '',
+        contact: row[baseOffset + 4] || '',
+        claims: row[baseOffset + 5] || '',
+        status: row[baseOffset + 6] || '',
+        notes: row[baseOffset + 7] || '',
       });
     }
 
@@ -126,6 +141,12 @@ Deno.serve(async (req) => {
         if (isQuarantined) {
           patch.contested = true;
           patch.private_notes = `QUARANTINED: ${q.reason}\nProtocol: ${q.protocol}`;
+        } else if (existing.contested) {
+          // Claim dropped out of the quarantine register — clear stale flags
+          patch.contested = false;
+          if (existing.private_notes && existing.private_notes.startsWith('QUARANTINED:')) {
+            patch.private_notes = '';
+          }
         }
         if (Object.keys(patch).length > 0) {
           await base44.asServiceRole.entities.Claim.update(existing.id, patch);
