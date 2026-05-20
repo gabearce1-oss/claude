@@ -27,6 +27,37 @@ function mapClaimType(claimId) {
   return m[prefix] || 'other';
 }
 
+// Match the ArchiveRequest.status enum: planned, draft, submitted, running,
+// responded, completed, blocked, no_result. The v3 workbook uses free-form
+// labels per archive contact (e.g. "letter drafted", "in progress",
+// "received", "closed"); map them to valid enum values so the importer can
+// propagate state transitions during refresh. Unknown values return null
+// so the importer leaves the existing status untouched.
+function mapRequestStatus(s) {
+  const raw = (s || '').toLowerCase().trim();
+  if (!raw) return null;
+  const m = {
+    not_submitted: 'planned',
+    planned: 'planned',
+    letter_drafted: 'draft',
+    drafted: 'draft',
+    draft: 'draft',
+    letter_sent: 'submitted',
+    sent: 'submitted',
+    submitted: 'submitted',
+    in_progress: 'running',
+    running: 'running',
+    received: 'responded',
+    responded: 'responded',
+    closed: 'completed',
+    completed: 'completed',
+    blocked: 'blocked',
+    no_result: 'no_result',
+    null_result: 'no_result',
+  };
+  return m[raw] || null;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -239,8 +270,16 @@ Deno.serve(async (req) => {
         ac.claims && `Related claims: ${ac.claims}`,
         ac.notes && `Notes: ${ac.notes}`,
       ].filter(Boolean).join(' · ');
-      if (newNotes && match.notes !== newNotes) {
-        await base44.asServiceRole.entities.ArchiveRequest.update(match.id, { notes: newNotes });
+      // Propagate status transitions captured on the v3 sheet (e.g.
+      // planned → submitted/responded). Without this, refreshing
+      // contact data leaves request-state metrics stale even when the
+      // workbook reflects newer progress.
+      const mappedStatus = mapRequestStatus(ac.status);
+      const patch = {};
+      if (newNotes && match.notes !== newNotes) patch.notes = newNotes;
+      if (mappedStatus && match.status !== mappedStatus) patch.status = mappedStatus;
+      if (Object.keys(patch).length > 0) {
+        await base44.asServiceRole.entities.ArchiveRequest.update(match.id, patch);
         report.updatedArchives++;
       }
     }
