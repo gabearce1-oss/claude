@@ -137,6 +137,7 @@ import ForensicCommandCenter from "../components/te/ForensicCommandCenter";
 import EvidenceVaultPanel from "../components/te/EvidenceVaultPanel";
 import ClaimEnginePanel from "../components/te/ClaimEnginePanel";
 import MilitaryResearchDBPanel from "../components/te/MilitaryResearchDBPanel";
+import DeportedMarinesExpansionPanel from "../components/te/DeportedMarinesExpansionPanel";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -293,6 +294,7 @@ export default function TruthEngine() {
       {tab === "evidencevault" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><EvidenceVaultPanel /></div>}
       {tab === "claimengine" && <div style={{ padding:"0", height:"calc(100vh - 118px)", display:"flex", overflow:"hidden" }}><ClaimEnginePanel /></div>}
       {tab === "milresearchdb" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><MilitaryResearchDBPanel /></div>}
+      {tab === "deportedmarines" && <div style={{ padding:"0", height:"calc(100vh - 118px)", display:"flex", flexDirection:"column", overflow:"hidden" }}><DeportedMarinesExpansionPanel /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />

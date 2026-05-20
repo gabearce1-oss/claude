@@ -1,273 +1,383 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { InvokeLLM } from "@base44/sdk/modules/ai.js";
 import { P } from "../../lib/teData";
-import { base44 } from "@/api/base44Client";
+import { SECTIONS, CONNECTOR_QUEUE, SOURCES } from "../../lib/masterDBIndex.js";
 
-// ── TruthEngine360 Database Master Index ────────────────────────────────────
-// Derived from TruthEngine360_Database_Master_Index.xlsx
-// Category | Database | Country | Type | Access | API | Primary Use | Strategic Value | URL | Notes
+const PRIORITY_COLOR = { CRITICAL: P.red, HIGH: P.gold, MEDIUM: P.teal, LOW: P.t3 };
+const ACCESS_COLOR   = { open: P.teal, key: P.gold, foia: P.red, manual: P.blue, sub: "#a78bfa" };
+const COUNTRY_FLAG   = { US: "🇺🇸", MX: "🇲🇽", INT: "🌐" };
 
-const DATABASE_MASTER = [
-  // US Federal & Military
-  { id:"nara",     category:"Federal Archive",  db:"National Archives (NARA)",              country:"USA",    type:"Government Archive",      access:"Public",    api:true,    use:"Military/Veteran Records",        value:"Critical",  url:"https://www.archives.gov",                          notes:"Vietnam, casualty, immigration, draft" },
-  { id:"loc",      category:"Federal Archive",  db:"Library of Congress",                   country:"USA",    type:"Historical Archive",      access:"Public",    api:true,    use:"Oral histories/newspapers",        value:"Critical",  url:"https://www.loc.gov",                               notes:"Veterans History Project, Chicano archives" },
-  { id:"dtic",     category:"Military",         db:"Defense Technical Information Center",  country:"USA",    type:"Military Research",       access:"Public",    api:false,   use:"Defense studies / PTSD",          value:"High",      url:"https://discover.dtic.mil",                         notes:"PTSD, logistics, Vietnam operational reports" },
-  { id:"cia",      category:"Intelligence",     db:"CIA Reading Room",                      country:"USA",    type:"Declassified Intelligence",access:"Public",   api:false,   use:"Cold War/Mexico/Vietnam",         value:"High",      url:"https://www.cia.gov/readingroom/",                  notes:"Psychological operations, Latin America" },
-  { id:"fbi",      category:"Law Enforcement",  db:"FBI Vault",                             country:"USA",    type:"FOIA Archive",            access:"Public",    api:false,   use:"Civil rights/surveillance",       value:"High",      url:"https://vault.fbi.gov",                             notes:"Chicano movement monitoring" },
-  { id:"va",       category:"Veterans",         db:"VA Open Data",                          country:"USA",    type:"Veterans Data",           access:"Public",    api:true,    use:"Claims/disabilities",             value:"Critical",  url:"https://www.data.va.gov",                           notes:"PTSD/service-connected patterns" },
-  { id:"dpaa",     category:"Military",         db:"Defense POW/MIA Accounting Agency",    country:"USA",    type:"Personnel Recovery",      access:"Public",    api:false,   use:"Missing personnel/DNA recovery",  value:"High",      url:"https://www.dpaa.mil",                              notes:"Service verification, casualty reconciliation" },
-  { id:"mcua",     category:"Military",         db:"Marine Corps University Archives",      country:"USA",    type:"Unit History",            access:"Public",    api:false,   use:"Unit histories/oral histories",   value:"Medium",    url:"https://www.usmcu.edu",                             notes:"After-action reports, Vietnam collections" },
-  { id:"ahec",     category:"Military",         db:"Army Heritage and Education Center",    country:"USA",    type:"Soldier Collections",     access:"Public",    api:false,   use:"Vietnam soldier records",         value:"Medium",    url:"https://ahec.armywarcollege.edu",                   notes:"Unit records, personal papers" },
-  { id:"sss",      category:"Federal Archive",  db:"Selective Service System",              country:"USA",    type:"Draft Records",           access:"Public",    api:false,   use:"Draft-era reconstruction",        value:"High",      url:"https://www.sss.gov",                               notes:"Hispanic service probability, enlistment" },
-  { id:"spend",    category:"Federal Archive",  db:"USAspending.gov",                       country:"USA",    type:"Federal Spending",        access:"Public",    api:true,    use:"Defense/NGO funding trails",      value:"Medium",    url:"https://www.usaspending.gov",                       notes:"Research funding, veteran programs" },
-  { id:"datagov",  category:"Federal Archive",  db:"Data.gov",                              country:"USA",    type:"Open Data Portal",        access:"Public",    api:true,    use:"Veterans/census/immigration",     value:"Medium",    url:"https://www.data.gov",                              notes:"Central US federal open-data portal" },
-  { id:"census",   category:"Demographics",     db:"US Census Bureau API",                  country:"USA",    type:"Demographic Database",    access:"Public",    api:true,    use:"Hispanic demographic modeling",   value:"Critical",  url:"https://www.census.gov",                            notes:"Veteran population, migration flows" },
-  { id:"bls",      category:"Demographics",     db:"Bureau of Labor Statistics",            country:"USA",    type:"Labor Statistics",        access:"Public",    api:true,    use:"Veteran unemployment/labor",      value:"Medium",    url:"https://www.bls.gov",                               notes:"Economic stress modeling, Chicano labor shifts" },
-  { id:"pacer",    category:"Legal",            db:"PACER + RECAP",                         country:"USA",    type:"Federal Court Records",   access:"Paid+Free", api:false,   use:"Immigration/veteran litigation",  value:"Critical",  url:"https://pacer.uscourts.gov",                        notes:"Use RECAP for free mirrors: free.law/recap" },
-  { id:"natsec",   category:"Intelligence",     db:"National Security Archive (GWU)",      country:"USA",    type:"FOIA / Declassified",    access:"Public",    api:false,   use:"CIA/Pentagon/State/Mexico intel", value:"High",      url:"https://nsarchive.gwu.edu",                         notes:"Latin America operations, Vietnam" },
-
-  // Mexico Government & Transparency
-  { id:"pnt",      category:"Transparency",     db:"Plataforma Nacional de Transparencia",  country:"Mexico", type:"FOIA System",            access:"Public",    api:false,   use:"Government requests",             value:"Critical",  url:"https://www.plataformadetransparencia.org.mx",      notes:"Military, police, migration — primary Mexico portal" },
-  { id:"inegi",    category:"Statistics",       db:"INEGI",                                 country:"Mexico", type:"Demographic Database",   access:"Public",    api:true,    use:"Population/migration",            value:"Critical",  url:"https://www.inegi.org.mx",                          notes:"Municipal analytics, migration flows" },
-  { id:"inai",     category:"Transparency",     db:"INAI México",                           country:"Mexico", type:"Transparency Authority", access:"Public",    api:false,   use:"Mexico FOIA appeals",             value:"High",      url:"https://home.inai.org.mx",                          notes:"Denials, litigation, transparency enforcement" },
-  { id:"agn",      category:"Federal Archive",  db:"Archivo General de la Nación",          country:"Mexico", type:"National Archive",       access:"Public",    api:false,   use:"Historical military/migration",   value:"High",      url:"https://www.gob.mx/agn",                            notes:"SRE consular death records, DFS intelligence" },
-  { id:"inm",      category:"Migration",        db:"Instituto Nacional de Migración",       country:"Mexico", type:"Immigration",            access:"Public",    api:false,   use:"Migration/deportation records",   value:"High",      url:"https://www.gob.mx/inm",                            notes:"Border movement, removal entry records" },
-  { id:"sedena",   category:"Military",         db:"SEDENA (Mexico Army)",                  country:"Mexico", type:"Military",               access:"Restricted", api:false,  use:"Regional military files",         value:"High",      url:"https://www.gob.mx/sedena",                         notes:"Use PNT for transparency requests" },
-  { id:"semar",    category:"Military",         db:"SEMAR (Mexico Navy)",                   country:"Mexico", type:"Military",               access:"Restricted", api:false,  use:"Coastal operations/intelligence", value:"Medium",    url:"https://www.gob.mx/semar",                          notes:"Security operations overlap" },
-  { id:"ran",      category:"Land Records",     db:"Registro Agrario Nacional",             country:"Mexico", type:"Land Registry",          access:"Public",    api:false,   use:"Indigenous land/ejido records",   value:"Medium",    url:"https://www.gob.mx/ran",                            notes:"Historical land disputes, family mapping" },
-  { id:"dof",      category:"Government",       db:"Diario Oficial de la Federación",       country:"Mexico", type:"Federal Register",       access:"Public",    api:false,   use:"Policy tracing/decrees",          value:"Medium",    url:"https://www.dof.gob.mx",                            notes:"Military decrees, regulatory timelines" },
-  { id:"rnpdno",   category:"Missing Persons",  db:"Registro Nacional de Personas Desaparecidas", country:"Mexico", type:"Missing Persons",  access:"Public",    api:false,  use:"Family mapping/identity",         value:"High",      url:"https://versionpublicarnpdno.segob.gob.mx",         notes:"Cross-border identity reconstruction" },
-
-  // Scholarly & Academic
-  { id:"scholar",  category:"Scholarly",        db:"Google Scholar",                        country:"Global", type:"Academic Search",        access:"Public",    api:false,   use:"Research discovery",              value:"Critical",  url:"https://scholar.google.com",                        notes:"Continuous monitoring for new dissertations" },
-  { id:"openalex", category:"Scholarly",        db:"OpenAlex",                              country:"Global", type:"Citation Graph",         access:"Public",    api:true,    use:"Research clustering",             value:"Critical",  url:"https://openalex.org",                              notes:"Author/institution graphs, API: docs.openalex.org" },
-  { id:"core",     category:"Scholarly",        db:"CORE",                                  country:"Global", type:"Open Access",            access:"Public",    api:true,    use:"Research papers",                 value:"High",      url:"https://core.ac.uk",                                notes:"250M+ open-access papers, API available" },
-  { id:"semscho",  category:"Scholarly",        db:"Semantic Scholar",                      country:"Global", type:"NLP Research Graph",     access:"Public",    api:true,    use:"Citation mapping/NLP ingestion",  value:"High",      url:"https://www.semanticscholar.org",                   notes:"API: api.semanticscholar.org" },
-  { id:"jstor",    category:"Scholarly",        db:"JSTOR",                                 country:"Global", type:"Academic Journals",      access:"Mixed",     api:false,   use:"Chicano/Vietnam studies",         value:"High",      url:"https://www.jstor.org",                             notes:"PTSD literature, historical sociology" },
-  { id:"ssrn",     category:"Scholarly",        db:"SSRN",                                  country:"Global", type:"Working Papers",         access:"Public",    api:false,   use:"Immigration law/policy research", value:"High",      url:"https://www.ssrn.com",                              notes:"Criminal justice, pre-publication research" },
-  { id:"hathi",    category:"Scholarly",        db:"HathiTrust",                            country:"Global", type:"Digitized Books",        access:"Public",    api:false,   use:"Military histories/government",   value:"Medium",    url:"https://www.hathitrust.org",                        notes:"Chicano literature, government reports" },
-  { id:"archive",  category:"Scholarly",        db:"Internet Archive",                      country:"Global", type:"Digital Archive",        access:"Public",    api:false,   use:"Newspapers/VHS/oral histories",   value:"High",      url:"https://archive.org",                               notes:"Community archives, rare oral histories" },
-  { id:"proquest", category:"Scholarly",        db:"ProQuest Dissertations",                country:"Global", type:"Dissertations",          access:"Paid",      api:false,   use:"Hidden interviews/original data", value:"High",      url:"https://www.proquest.com/products-services/dissertations/", notes:"Gold mine: regional archives, bibliographies" },
-
-  // Historical Newspapers & Media
-  { id:"chron",    category:"Newspapers",       db:"Chronicling America",                   country:"USA",    type:"Historical Newspapers",  access:"Public",    api:true,    use:"Vietnam-era press reporting",     value:"High",      url:"https://chroniclingamerica.loc.gov",                notes:"API available, OCR searchable, 20M+ pages" },
-  { id:"cdnc",     category:"Newspapers",       db:"CA Digital Newspaper Collection",       country:"USA",    type:"California Newspapers",  access:"Public",    api:false,   use:"Barrio-level Chicano reporting",  value:"High",      url:"https://cdnc.ucr.edu",                              notes:"Vietnam-era SoCal, East LA, Central Valley" },
-  { id:"newsp",    category:"Newspapers",       db:"Newspapers.com",                        country:"USA",    type:"Historical Newspapers",  access:"Paid",      api:false,   use:"Regional obituary research",      value:"Medium",    url:"https://www.newspapers.com",                        notes:"Powerful paid database" },
-  { id:"miltimes", category:"Newspapers",       db:"Military Times",                        country:"USA",    type:"Military Media",         access:"Public",    api:false,   use:"Veteran affairs coverage",        value:"Medium",    url:"https://www.militarytimes.com",                     notes:"Contemporary veteran policy tracking" },
-  { id:"pbs",      category:"Media",            db:"PBS Archives",                          country:"USA",    type:"Broadcast Archive",      access:"Public",    api:false,   use:"Vietnam/civil rights footage",    value:"Medium",    url:"https://www.pbs.org",                               notes:"Documentary and news archive" },
-
-  // OSINT / Entity Resolution / Graph Intelligence
-  { id:"maltego",  category:"OSINT",            db:"Maltego",                               country:"Global", type:"Entity Resolution",     access:"Commercial", api:true,   use:"Relationship/social mapping",     value:"Critical",  url:"https://www.maltego.com",                           notes:"Graph intelligence, entity linkage" },
-  { id:"opensanct",category:"OSINT",            db:"OpenSanctions",                         country:"Global", type:"Watchlists",            access:"Public",    api:true,    use:"Corruption/sanctions tracking",   value:"High",      url:"https://www.opensanctions.org",                     notes:"International investigations, due diligence" },
-  { id:"opencorp", category:"OSINT",            db:"OpenCorporates",                        country:"Global", type:"Corporate Records",     access:"Public",    api:true,    use:"Ownership/shell company tracing", value:"High",      url:"https://opencorporates.com",                        notes:"Funding trail analysis, API: api.opencorporates.com" },
-  { id:"wikidata", category:"OSINT",            db:"Wikidata SPARQL",                       country:"Global", type:"Knowledge Graph",       access:"Public",    api:true,    use:"Structured relationship extraction",value:"High",    url:"https://query.wikidata.org",                        notes:"SPARQL endpoint for entity relationships" },
-  { id:"osm",      category:"Geospatial",       db:"OpenStreetMap",                         country:"Global", type:"Geospatial",            access:"Public",    api:true,    use:"Geographic/border mapping",       value:"Medium",    url:"https://www.openstreetmap.org",                     notes:"Border region, shelter locations" },
-];
-
-const CATEGORIES = [...new Set(DATABASE_MASTER.map(d => d.category))];
-const VALUES = ["Critical", "High", "Medium"];
-const COUNTRIES = ["All", "USA", "Mexico", "Global"];
-const VALUE_COLORS = { Critical: P.red || "#EF4444", High: P.gold, Medium: P.teal };
-const ACCESS_COLOR = { Public: P.teal, Paid: P.amber || "#F59E0B", "Paid+Free": "#F59E0B", Mixed: "#F59E0B", Commercial: P.violet, Restricted: P.red || "#EF4444" };
+const Pill = ({ label, color }) => (
+  <span style={{
+    background: color + "20", border: `1px solid ${color}50`, color, borderRadius: 3,
+    fontSize: 9, padding: "1px 6px", fontWeight: 700, whiteSpace: "nowrap",
+  }}>{label}</span>
+);
 
 export default function DatabaseMasterIndex() {
+  const [tab, setTab] = useState("sections");
+  const [sectionFilter, setSectionFilter] = useState(0);
+  const [accessFilter, setAccessFilter] = useState("ALL");
+  const [countryFilter, setCountryFilter] = useState("ALL");
+  const [priorityFilter, setPriorityFilter] = useState("ALL");
   const [search, setSearch] = useState("");
-  const [catFilter, setCatFilter] = useState("All");
-  const [countryFilter, setCountryFilter] = useState("All");
-  const [valueFilter, setValueFilter] = useState("All");
-  const [apiOnly, setApiOnly] = useState(false);
   const [aiQuery, setAiQuery] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
-  const [sortBy, setSortBy] = useState("value");
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 50;
 
-  const filtered = DATABASE_MASTER
-    .filter(d => catFilter === "All" || d.category === catFilter)
-    .filter(d => countryFilter === "All" || d.country === countryFilter)
-    .filter(d => valueFilter === "All" || d.value === valueFilter)
-    .filter(d => !apiOnly || d.api)
-    .filter(d => !search || [d.db, d.use, d.notes, d.category, d.country].join(" ").toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => {
-      if (sortBy === "value") return VALUES.indexOf(a.value) - VALUES.indexOf(b.value);
-      if (sortBy === "category") return a.category.localeCompare(b.category);
-      if (sortBy === "country") return a.country.localeCompare(b.country);
-      return a.db.localeCompare(b.db);
+  const filtered = useMemo(() => {
+    return SOURCES.filter(s => {
+      if (sectionFilter && s.section !== sectionFilter) return false;
+      if (accessFilter !== "ALL" && s.access !== accessFilter) return false;
+      if (countryFilter !== "ALL" && s.country !== countryFilter) return false;
+      if (priorityFilter !== "ALL") {
+        const sec = SECTIONS.find(x => x.id === s.section);
+        if (sec?.priority !== priorityFilter) return false;
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        if (![s.name, s.url, s.data, s.use].join(" ").toLowerCase().includes(q)) return false;
+      }
+      return true;
     });
+  }, [sectionFilter, accessFilter, countryFilter, priorityFilter, search]);
 
-  const stats = {
-    total: DATABASE_MASTER.length,
-    critical: DATABASE_MASTER.filter(d => d.value === "Critical").length,
-    withApi: DATABASE_MASTER.filter(d => d.api).length,
-    countries: [...new Set(DATABASE_MASTER.map(d => d.country))].length,
-  };
+  const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+
+  const stats = useMemo(() => ({
+    total: SOURCES.length,
+    critical: SOURCES.filter(s => SECTIONS.find(x => x.id === s.section)?.priority === "CRITICAL").length,
+    open: SOURCES.filter(s => s.access === "open").length,
+    foia: SOURCES.filter(s => s.access === "foia").length,
+    us: SOURCES.filter(s => s.country === "US").length,
+    mx: SOURCES.filter(s => s.country === "MX").length,
+  }), []);
 
   const runAI = async () => {
     if (!aiQuery.trim()) return;
     setAiLoading(true);
     setAiResponse("");
+    const sectionNames = SECTIONS.map(s => `${s.id}. ${s.name} (${s.count})`).join("; ");
     try {
-      const res = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are the TruthEngine360 database integration strategist. A researcher asks about the database ecosystem for the DCAS/veteran deportation forensic investigation:
-
-QUERY: ${aiQuery}
-
-Available databases include: ${filtered.slice(0, 10).map(d => d.db).join(", ")} (and ${DATABASE_MASTER.length}+ total).
-
-Provide specific, actionable guidance referencing database names, API strategies, cross-referencing opportunities, and ingestion priorities. Tie advice to the DCAS anomaly, BISG methodology, or CHC briefing where relevant.`,
+      const res = await InvokeLLM({
+        prompt: `TruthEngine360 has ${SOURCES.length} research sources across 22 sections: ${sectionNames}. Top 25 connector queue: ${CONNECTOR_QUEUE.map(c => c.name).join(", ")}. Researcher query: ${aiQuery}. Provide specific actionable guidance: database names, API strategies, cross-referencing paths, FOIA priority. Connect advice to DCAS anomaly, BISG methodology, or CHC briefing where applicable.`,
+        system_prompt: "You are the TruthEngine360 database integration strategist for AUMER Foundation. Never fabricate data. Be precise and cite specific database names. DCAS anchor: 349 official Hispanic KIA vs 2,309 BISG estimate = 84.9% classification failure.",
+        response_type: "text",
       });
-      const text = typeof res === "string" ? res : res?.text || res?.content || JSON.stringify(res);
-      setAiResponse(text);
-    } catch (err) {
-      setAiResponse(`Error: ${err?.message}`);
-    } finally {
-      setAiLoading(false);
+      setAiResponse(typeof res === "string" ? res : res?.text || JSON.stringify(res));
+    } catch (e) {
+      setAiResponse("Query failed: " + e?.message);
     }
+    setAiLoading(false);
   };
 
+  const TABS = [
+    { key: "sections", label: "22 SECTIONS" },
+    { key: "sources",  label: `ALL ${SOURCES.length} SOURCES` },
+    { key: "connectors", label: "CONNECTOR QUEUE" },
+    { key: "ai",       label: "AI STRATEGY" },
+  ];
+
   return (
-    <div style={{ fontFamily: "'IBM Plex Mono',monospace", color: P.t1, padding: "14px 20px", overflowY: "auto", height: "calc(100vh - 118px)" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", background: P.bg, color: P.t1, fontFamily: "monospace" }}>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${P.card}, #0D1525)`, border: `2px solid ${P.orange || "#FF6B35"}30`, borderRadius: 12, padding: "14px 18px", marginBottom: 14 }}>
-        <div style={{ fontSize: 7, color: P.orange || "#FF6B35", letterSpacing: 3, fontWeight: 800, marginBottom: 4 }}>
-          📊 TRUTHENGINE360 DATABASE MASTER INDEX · FEDERATED INTELLIGENCE ECOSYSTEM
+      <div style={{ background: P.navy, borderBottom: `1px solid ${P.blue}33`, padding: "10px 16px 0" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: P.gold, letterSpacing: 1 }}>MASTER RESEARCH DATABASE INDEX</span>
+          <span style={{ fontSize: 11, color: P.teal }}>565 Sources · 22 Sections</span>
+          <span style={{ marginLeft: "auto", fontSize: 10, color: P.t3 }}>TruthEngine360 · AUMER Foundation</span>
         </div>
-        <div style={{ fontSize: 13, fontWeight: 800, color: P.t1, marginBottom: 4 }}>
-          Database Master Index — {stats.total} Sources
-        </div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 8 }}>
+        {/* Stats */}
+        <div style={{ display: "flex", gap: 20, marginBottom: 8, fontSize: 11 }}>
           {[
-            [stats.total + " Total", "Curated databases", P.blue],
-            [stats.critical + " Critical", "Highest priority", VALUE_COLORS.Critical],
-            [stats.withApi + " with API", "Programmatic access", P.teal],
-            [stats.countries + " Countries", "US · Mexico · Global", P.gold],
-          ].map(([v, l, c]) => (
-            <div key={l} style={{ background: `${c}12`, border: `1px solid ${c}30`, borderRadius: 7, padding: "5px 12px" }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: c }}>{v}</div>
-              <div style={{ fontSize: 6, color: P.t4 }}>{l}</div>
+            { label: "TOTAL", val: stats.total, color: P.gold },
+            { label: "CRITICAL", val: stats.critical, color: P.red },
+            { label: "OPEN ACCESS", val: stats.open, color: P.teal },
+            { label: "FOIA REQUIRED", val: stats.foia, color: P.red },
+            { label: "US SOURCES", val: stats.us, color: P.blue },
+            { label: "MEXICO SOURCES", val: stats.mx, color: P.gold },
+          ].map(s => (
+            <div key={s.label} style={{ display: "flex", gap: 5, alignItems: "center" }}>
+              <span style={{ fontSize: 9, color: P.t3 }}>{s.label}</span>
+              <span style={{ fontWeight: 700, color: s.color }}>{s.val}</span>
             </div>
+          ))}
+        </div>
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 2 }}>
+          {TABS.map(t => (
+            <button key={t.key} onClick={() => setTab(t.key)} style={{
+              background: tab === t.key ? P.blue + "22" : "transparent",
+              border: "none", borderBottom: tab === t.key ? `2px solid ${P.gold}` : "2px solid transparent",
+              color: tab === t.key ? P.gold : P.t3, fontSize: 11, fontFamily: "monospace",
+              padding: "6px 14px", cursor: "pointer", letterSpacing: 0.5,
+            }}>{t.label}</button>
           ))}
         </div>
       </div>
 
-      {/* Filters */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap", alignItems: "center" }}>
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search databases…"
-          style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 6, padding: "5px 10px", color: P.t1, outline: "none", width: 200 }}
-        />
-        <select
-          value={catFilter}
-          onChange={e => setCatFilter(e.target.value)}
-          style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 5, padding: "4px 8px", color: P.t4 }}
-        >
-          <option value="All">All Categories</option>
-          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select
-          value={countryFilter}
-          onChange={e => setCountryFilter(e.target.value)}
-          style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 5, padding: "4px 8px", color: P.t4 }}
-        >
-          {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select
-          value={valueFilter}
-          onChange={e => setValueFilter(e.target.value)}
-          style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 5, padding: "4px 8px", color: P.t4 }}
-        >
-          <option value="All">All Values</option>
-          {VALUES.map(v => <option key={v} value={v}>{v}</option>)}
-        </select>
-        <button
-          onClick={() => setApiOnly(!apiOnly)}
-          style={{ padding: "4px 10px", fontSize: 7, cursor: "pointer", background: apiOnly ? `${P.teal}20` : "transparent", border: `1px solid ${apiOnly ? P.teal : P.b}`, color: apiOnly ? P.teal : P.t4, borderRadius: 5, fontFamily: "inherit" }}
-        >
-          {apiOnly ? "✓ " : ""}API only
-        </button>
-        <select
-          value={sortBy}
-          onChange={e => setSortBy(e.target.value)}
-          style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 5, padding: "4px 8px", color: P.t4, marginLeft: "auto" }}
-        >
-          <option value="value">Sort: Strategic Value</option>
-          <option value="category">Sort: Category</option>
-          <option value="country">Sort: Country</option>
-          <option value="name">Sort: Name</option>
-        </select>
-        <span style={{ fontSize: 7, color: P.t4 }}>{filtered.length} shown</span>
-      </div>
+      {/* Content */}
+      <div style={{ flex: 1, overflow: "hidden", display: "flex" }}>
 
-      {/* Table */}
-      <div style={{ overflowX: "auto", marginBottom: 14 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 7 }}>
-          <thead>
-            <tr style={{ background: "#080D18", borderBottom: `2px solid ${P.b}` }}>
-              {["Category", "Database", "Country", "Access", "API", "Primary Use", "Value", "Notes", ""].map(h => (
-                <th key={h} style={{ padding: "7px 10px", textAlign: "left", color: P.t4, fontWeight: 800, letterSpacing: 1, fontSize: 6, whiteSpace: "nowrap" }}>{h.toUpperCase()}</th>
+        {/* SECTIONS TAB */}
+        {tab === "sections" && (
+          <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 10 }}>
+              {SECTIONS.map(s => (
+                <div key={s.id} onClick={() => { setSectionFilter(s.id); setTab("sources"); setPage(0); }}
+                  style={{
+                    background: P.navy, border: `1px solid ${(PRIORITY_COLOR[s.priority] || P.blue)}33`,
+                    borderRadius: 6, padding: "10px 14px", cursor: "pointer",
+                    transition: "border-color 0.2s",
+                  }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                    <div>
+                      <span style={{ fontSize: 9, color: P.t3, marginRight: 6 }}>§{s.id}</span>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: P.t1 }}>{s.name}</span>
+                    </div>
+                    <Pill label={s.priority} color={PRIORITY_COLOR[s.priority] || P.blue} />
+                  </div>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <span style={{ fontSize: 10, color: P.t3 }}>{COUNTRY_FLAG[s.country]} {s.country}</span>
+                    <span style={{ fontSize: 18, fontWeight: 700, color: PRIORITY_COLOR[s.priority] || P.blue }}>{s.count}</span>
+                    <span style={{ fontSize: 10, color: P.t3 }}>sources</span>
+                    <span style={{ marginLeft: "auto", fontSize: 10, color: P.blue }}>Browse →</span>
+                  </div>
+                </div>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((db, i) => (
-              <tr key={db.id} style={{ borderBottom: `1px solid ${P.b}15`, background: i % 2 === 0 ? "transparent" : "#080D1820" }}>
-                <td style={{ padding: "7px 10px", color: P.t4, whiteSpace: "nowrap" }}>{db.category}</td>
-                <td style={{ padding: "7px 10px", color: P.t1, fontWeight: 700, maxWidth: 220 }}>
-                  {db.db}
-                  <div style={{ fontSize: 6, color: P.t4, fontWeight: 400, marginTop: 1 }}>{db.type}</div>
-                </td>
-                <td style={{ padding: "7px 10px", color: P.t4, whiteSpace: "nowrap" }}>
-                  {db.country === "USA" ? "🇺🇸" : db.country === "Mexico" ? "🇲🇽" : "🌐"} {db.country}
-                </td>
-                <td style={{ padding: "7px 10px" }}>
-                  <span style={{ fontSize: 6, background: `${ACCESS_COLOR[db.access] || P.t4}15`, color: ACCESS_COLOR[db.access] || P.t4, border: `1px solid ${ACCESS_COLOR[db.access] || P.t4}30`, borderRadius: 3, padding: "1px 5px", fontWeight: 700, whiteSpace: "nowrap" }}>
-                    {db.access}
-                  </span>
-                </td>
-                <td style={{ padding: "7px 10px", textAlign: "center" }}>
-                  <span style={{ fontSize: 8, color: db.api ? P.teal : P.t4 }}>{db.api ? "✓" : "–"}</span>
-                </td>
-                <td style={{ padding: "7px 10px", color: P.t2, maxWidth: 200 }}>{db.use}</td>
-                <td style={{ padding: "7px 10px" }}>
-                  <span style={{ fontSize: 6, background: `${VALUE_COLORS[db.value]}15`, color: VALUE_COLORS[db.value], border: `1px solid ${VALUE_COLORS[db.value]}30`, borderRadius: 3, padding: "1px 5px", fontWeight: 800 }}>
-                    {db.value}
-                  </span>
-                </td>
-                <td style={{ padding: "7px 10px", color: P.t4, maxWidth: 160, fontSize: 6 }}>{db.notes}</td>
-                <td style={{ padding: "7px 10px" }}>
-                  <a href={db.url} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 6, color: P.blue, textDecoration: "none", padding: "2px 6px", border: `1px solid ${P.blue}30`, borderRadius: 4, whiteSpace: "nowrap" }}>
-                    Open →
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </div>
 
-      {/* AI Strategy */}
-      <div style={{ background: P.card, border: `1px solid ${P.gold}30`, borderRadius: 10, padding: "14px 16px" }}>
-        <div style={{ fontSize: 9, fontWeight: 800, color: P.gold, marginBottom: 4 }}>🤖 AI Integration Strategist</div>
-        <div style={{ fontSize: 7, color: P.t4, marginBottom: 8 }}>
-          Ask Claude AI for integration strategy, cross-reference paths, API ingestion recommendations, or FOIA targeting advice.
-        </div>
-        <div style={{ display: "flex", gap: 6 }}>
-          <input
-            value={aiQuery}
-            onChange={e => setAiQuery(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && runAI()}
-            placeholder="e.g. How do I cross-reference NARA draft records with INEGI data to identify Mexican-national Vietnam veterans?"
-            style={{ flex: 1, fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, background: "#080D18", border: `1px solid ${P.b}`, borderRadius: 6, padding: "6px 10px", color: P.t1, outline: "none" }}
-          />
-          <button onClick={runAI} disabled={!aiQuery.trim() || aiLoading}
-            style={{ padding: "6px 14px", fontSize: 7, fontWeight: 800, cursor: "pointer", background: `${P.gold}20`, border: `1px solid ${P.gold}`, color: P.gold, borderRadius: 6, fontFamily: "inherit", opacity: aiLoading ? 0.5 : 1 }}>
-            {aiLoading ? "…" : "Ask →"}
-          </button>
-        </div>
-        {aiResponse && (
-          <div style={{ marginTop: 10, fontSize: 7, color: P.t2, lineHeight: 1.8, whiteSpace: "pre-wrap", maxHeight: 240, overflowY: "auto", background: "#080D18", borderRadius: 7, padding: "10px 12px", border: `1px solid ${P.b}` }}>
-            {aiResponse}
+            {/* Section priority breakdown */}
+            <div style={{ background: P.navy, border: `1px solid ${P.blue}22`, borderRadius: 6, padding: "12px 14px", marginTop: 14 }}>
+              <div style={{ fontSize: 11, color: P.gold, fontWeight: 700, marginBottom: 10 }}>SECTION PRIORITY DISTRIBUTION</div>
+              {["CRITICAL", "HIGH", "MEDIUM", "LOW"].map(p => {
+                const secs = SECTIONS.filter(s => s.priority === p);
+                const total = secs.reduce((a, s) => a + s.count, 0);
+                if (!secs.length) return null;
+                return (
+                  <div key={p} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                    <Pill label={p} color={PRIORITY_COLOR[p]} />
+                    <div style={{ flex: 1, background: P.b, borderRadius: 2, height: 6 }}>
+                      <div style={{ width: `${(total / SOURCES.length) * 100}%`, background: PRIORITY_COLOR[p], height: 6, borderRadius: 2 }} />
+                    </div>
+                    <span style={{ fontSize: 10, color: P.t2, width: 60, textAlign: "right" }}>{total} sources</span>
+                    <span style={{ fontSize: 10, color: P.t3, width: 40, textAlign: "right" }}>{secs.length} sec</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* SOURCES TAB */}
+        {tab === "sources" && (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            {/* Filter bar */}
+            <div style={{ padding: "10px 14px", borderBottom: `1px solid ${P.blue}22`, display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", flexShrink: 0 }}>
+              <input value={search} onChange={e => { setSearch(e.target.value); setPage(0); }}
+                placeholder="Search 565 sources…" style={{
+                  background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3,
+                  color: P.t1, fontSize: 10, padding: "4px 10px", fontFamily: "monospace", width: 200,
+                }} />
+              <select value={sectionFilter} onChange={e => { setSectionFilter(+e.target.value); setPage(0); }} style={{
+                background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3, color: P.t2,
+                fontSize: 10, padding: "4px 6px", fontFamily: "monospace",
+              }}>
+                <option value={0}>ALL SECTIONS</option>
+                {SECTIONS.map(s => <option key={s.id} value={s.id}>§{s.id} {s.name}</option>)}
+              </select>
+              <select value={accessFilter} onChange={e => { setAccessFilter(e.target.value); setPage(0); }} style={{
+                background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3, color: P.t2,
+                fontSize: 10, padding: "4px 6px", fontFamily: "monospace",
+              }}>
+                <option value="ALL">ALL ACCESS</option>
+                {["open","key","foia","manual","sub"].map(a => <option key={a} value={a}>{a.toUpperCase()}</option>)}
+              </select>
+              <select value={countryFilter} onChange={e => { setCountryFilter(e.target.value); setPage(0); }} style={{
+                background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3, color: P.t2,
+                fontSize: 10, padding: "4px 6px", fontFamily: "monospace",
+              }}>
+                <option value="ALL">ALL COUNTRIES</option>
+                <option value="US">US</option>
+                <option value="MX">MX</option>
+                <option value="INT">INT</option>
+              </select>
+              <select value={priorityFilter} onChange={e => { setPriorityFilter(e.target.value); setPage(0); }} style={{
+                background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3, color: P.t2,
+                fontSize: 10, padding: "4px 6px", fontFamily: "monospace",
+              }}>
+                <option value="ALL">ALL PRIORITIES</option>
+                {["CRITICAL","HIGH","MEDIUM","LOW"].map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+              <span style={{ marginLeft: "auto", fontSize: 10, color: P.t3 }}>
+                {filtered.length} of {SOURCES.length} · Page {page + 1}/{totalPages || 1}
+              </span>
+            </div>
+
+            {/* Table */}
+            <div style={{ flex: 1, overflowY: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
+                <thead style={{ position: "sticky", top: 0, background: P.navy, zIndex: 2 }}>
+                  <tr>
+                    {["#", "SECTION", "SOURCE", "ACCESS", "COUNTRY", "DATA TYPE", "TE360 USE"].map(h => (
+                      <th key={h} style={{ padding: "6px 10px", textAlign: "left", fontSize: 9, color: P.t3, fontWeight: 700, letterSpacing: 0.5, borderBottom: `1px solid ${P.blue}33` }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginated.map((s, i) => {
+                    const sec = SECTIONS.find(x => x.id === s.section);
+                    return (
+                      <tr key={s.n} style={{ borderBottom: `1px solid ${P.blue}15`, background: i % 2 === 0 ? "transparent" : P.navy + "80" }}>
+                        <td style={{ padding: "5px 10px", color: P.t3, fontSize: 9 }}>{s.n}</td>
+                        <td style={{ padding: "5px 10px", fontSize: 9 }}>
+                          <Pill label={sec?.priority || "?"} color={PRIORITY_COLOR[sec?.priority] || P.t3} />
+                          <div style={{ color: P.t3, fontSize: 8, marginTop: 2 }}>§{s.section}</div>
+                        </td>
+                        <td style={{ padding: "5px 10px", maxWidth: 240 }}>
+                          <div style={{ color: P.t1, fontWeight: 600 }}>{s.name}</div>
+                          <div style={{ fontSize: 9, color: P.blue, marginTop: 1 }}>{s.url}</div>
+                        </td>
+                        <td style={{ padding: "5px 10px" }}>
+                          <Pill label={s.access.toUpperCase()} color={ACCESS_COLOR[s.access] || P.t3} />
+                        </td>
+                        <td style={{ padding: "5px 10px", fontSize: 10, color: P.t2 }}>
+                          {COUNTRY_FLAG[s.country]} {s.country}
+                        </td>
+                        <td style={{ padding: "5px 10px", fontSize: 9, color: P.t2, maxWidth: 160 }}>{s.data}</td>
+                        <td style={{ padding: "5px 10px", fontSize: 9, color: P.t3, maxWidth: 180 }}>{s.use}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div style={{ padding: "8px 14px", borderTop: `1px solid ${P.blue}22`, display: "flex", gap: 6, alignItems: "center", flexShrink: 0 }}>
+                <button onClick={() => setPage(0)} disabled={page === 0} style={{ background: "transparent", border: `1px solid ${P.blue}44`, color: page === 0 ? P.t3 : P.blue, borderRadius: 3, padding: "3px 8px", cursor: page === 0 ? "default" : "pointer", fontSize: 10, fontFamily: "monospace" }}>«</button>
+                <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0} style={{ background: "transparent", border: `1px solid ${P.blue}44`, color: page === 0 ? P.t3 : P.blue, borderRadius: 3, padding: "3px 8px", cursor: page === 0 ? "default" : "pointer", fontSize: 10, fontFamily: "monospace" }}>‹</button>
+                {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                  const p = Math.max(0, Math.min(page - 3, totalPages - 7)) + i;
+                  return (
+                    <button key={p} onClick={() => setPage(p)} style={{
+                      background: p === page ? P.blue + "33" : "transparent",
+                      border: `1px solid ${p === page ? P.blue : P.blue + "33"}`,
+                      color: p === page ? P.gold : P.t3, borderRadius: 3, padding: "3px 8px", cursor: "pointer", fontSize: 10, fontFamily: "monospace",
+                    }}>{p + 1}</button>
+                  );
+                })}
+                <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1} style={{ background: "transparent", border: `1px solid ${P.blue}44`, color: page >= totalPages - 1 ? P.t3 : P.blue, borderRadius: 3, padding: "3px 8px", cursor: page >= totalPages - 1 ? "default" : "pointer", fontSize: 10, fontFamily: "monospace" }}>›</button>
+                <button onClick={() => setPage(totalPages - 1)} disabled={page >= totalPages - 1} style={{ background: "transparent", border: `1px solid ${P.blue}44`, color: page >= totalPages - 1 ? P.t3 : P.blue, borderRadius: 3, padding: "3px 8px", cursor: page >= totalPages - 1 ? "default" : "pointer", fontSize: 10, fontFamily: "monospace" }}>»</button>
+                <span style={{ fontSize: 9, color: P.t3, marginLeft: 8 }}>
+                  Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, filtered.length)} of {filtered.length}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CONNECTOR QUEUE TAB */}
+        {tab === "connectors" && (
+          <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+            <div style={{ background: P.gold + "11", border: `1px solid ${P.gold}33`, borderRadius: 4, padding: "8px 14px", marginBottom: 14, fontSize: 11 }}>
+              <span style={{ color: P.gold, fontWeight: 700 }}>Top 25 Priority Connectors</span>
+              <span style={{ color: P.t2, marginLeft: 8 }}>APIs to build first for automated ingestion into TruthEngine360</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {CONNECTOR_QUEUE.map(c => (
+                <div key={c.id} style={{ background: P.navy, border: `1px solid ${P.blue}33`, borderRadius: 6, padding: "10px 14px", display: "flex", gap: 12, alignItems: "flex-start" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: c.rank <= 5 ? P.red : c.rank <= 10 ? P.gold : P.teal, width: 28, flexShrink: 0 }}>{c.rank}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: P.t1 }}>{c.name}</div>
+                    <div style={{ fontSize: 10, color: P.blue, marginTop: 2, fontFamily: "monospace" }}>{c.api}</div>
+                    <div style={{ marginTop: 6 }}>
+                      <Pill label={c.auth === "None" ? "NO AUTH" : c.auth.toUpperCase()} color={c.auth === "None" ? P.teal : P.gold} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Access type breakdown of all 565 */}
+            <div style={{ background: P.navy, border: `1px solid ${P.blue}22`, borderRadius: 6, padding: "12px 14px", marginTop: 14 }}>
+              <div style={{ fontSize: 11, color: P.gold, fontWeight: 700, marginBottom: 10 }}>ACCESS TYPE DISTRIBUTION (All {SOURCES.length} Sources)</div>
+              {["open","key","foia","manual","sub"].map(a => {
+                const count = SOURCES.filter(s => s.access === a).length;
+                return (
+                  <div key={a} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                    <Pill label={a.toUpperCase()} color={ACCESS_COLOR[a] || P.t3} />
+                    <div style={{ flex: 1, background: P.b, borderRadius: 2, height: 6 }}>
+                      <div style={{ width: `${(count / SOURCES.length) * 100}%`, background: ACCESS_COLOR[a] || P.t3, height: 6, borderRadius: 2 }} />
+                    </div>
+                    <span style={{ fontSize: 10, color: P.t2, width: 50, textAlign: "right" }}>{count}</span>
+                    <span style={{ fontSize: 10, color: P.t3, width: 40, textAlign: "right" }}>{((count / SOURCES.length) * 100).toFixed(1)}%</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* AI STRATEGY TAB */}
+        {tab === "ai" && (
+          <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+            <div style={{ background: P.navy, border: `1px solid ${P.gold}33`, borderRadius: 6, padding: "12px 14px", marginBottom: 14 }}>
+              <div style={{ fontSize: 11, color: P.gold, fontWeight: 700, marginBottom: 6 }}>AI DATABASE INTEGRATION STRATEGIST</div>
+              <div style={{ fontSize: 10, color: P.t3, marginBottom: 10 }}>
+                Ask about cross-referencing paths, API ingestion priorities, FOIA targeting, or connector sequencing across all 565 sources.
+              </div>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input value={aiQuery} onChange={e => setAiQuery(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && runAI()}
+                  placeholder="e.g. How do I cross-reference NARA draft records with INEGI to identify Mexican-national Vietnam KIA?"
+                  style={{
+                    flex: 1, background: P.bg, border: `1px solid ${P.blue}44`, borderRadius: 3,
+                    color: P.t1, fontSize: 10, padding: "6px 10px", fontFamily: "monospace", outline: "none",
+                  }} />
+                <button onClick={runAI} disabled={!aiQuery.trim() || aiLoading} style={{
+                  background: P.gold + "22", border: `1px solid ${P.gold}`, color: P.gold,
+                  fontSize: 10, padding: "6px 14px", borderRadius: 3, cursor: "pointer", fontFamily: "monospace",
+                  opacity: aiLoading ? 0.5 : 1,
+                }}>
+                  {aiLoading ? "ANALYZING..." : "ASK →"}
+                </button>
+              </div>
+            </div>
+
+            {aiResponse && (
+              <div style={{ background: P.navy, border: `1px solid ${P.blue}33`, borderRadius: 6, padding: "12px 14px" }}>
+                <div style={{ fontSize: 10, color: P.t3, marginBottom: 8 }}>AI RESPONSE</div>
+                <div style={{ fontSize: 11, color: P.t2, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{aiResponse}</div>
+              </div>
+            )}
+
+            {/* Quick prompts */}
+            <div style={{ marginTop: 14 }}>
+              <div style={{ fontSize: 10, color: P.t3, marginBottom: 8 }}>QUICK QUERY TEMPLATES</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                {[
+                  "Which 5 FOIA requests should be filed immediately for DCAS forensic support?",
+                  "How do I cross-reference NARA DCAS records with INEGI surname data for BISG scoring?",
+                  "Which Mexico federal databases have API access for automated ingestion?",
+                  "Build a connector priority order for the Vietnam-era KIA misclassification audit",
+                  "Which academic repositories have the best Chicano Vietnam-era coverage?",
+                  "How do I use OpenAlex to identify researchers working on deported veteran cases?",
+                ].map(q => (
+                  <div key={q} onClick={() => setAiQuery(q)} style={{
+                    background: P.navy, border: `1px solid ${P.blue}33`, borderRadius: 4,
+                    padding: "8px 12px", cursor: "pointer", fontSize: 10, color: P.t2,
+                    lineHeight: 1.4,
+                  }}>
+                    {q}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
       </div>
