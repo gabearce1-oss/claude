@@ -1,0 +1,133 @@
+sources:
+  - id: nara_catalog
+    rank: 1
+    name: "NARA Catalog API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://catalog.archives.gov/api/v1/"
+    docs_url: "https://www.archives.gov/research/catalog/help/api"
+    connector_class: api_crawler
+    rate_limit: null
+    update_frequency: variable
+    default_language: en
+    priority: CRITICAL
+
+  - id: loc_json
+    rank: 2
+    name: "Library of Congress JSON/YAML API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://www.loc.gov/apis/"
+    docs_url: "https://www.loc.gov/apis/json-and-yaml/"
+    connector_class: api_crawler
+    rate_limit: "rate-limited"
+    update_frequency: continuous
+    default_language: en
+    priority: CRITICAL
+
+  - id: congress_gov
+    rank: 3
+    name: "Congress.gov API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://api.congress.gov/"
+    docs_url: "https://www.loc.gov/apis/additional-apis/congress-dot-gov-api/"
+    connector_class: api_crawler
+    auth_type: api_key
+    rate_limit: "5000/hour"
+    update_frequency: daily
+    default_language: en
+    priority: CRITICAL
+
+  - id: census_api
+    rank: 4
+    name: "U.S. Census Data API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://api.census.gov/data.html"
+    docs_url: "https://www.census.gov/data/developers.html"
+    connector_class: api_crawler
+    auth_type: api_key
+    rate_limit: null
+    update_frequency: release-based
+    default_language: en
+    priority: CRITICAL
+
+  - id: inegi_indicators
+    rank: 5
+    name: "INEGI Indicators API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: MX
+    base_url: "https://www.inegi.org.mx/servicios/api_indicadores.html"
+    connector_class: api_crawler
+    auth_type: token
+    rate_limit: null
+    update_frequency: live
+    default_language: es
+    priority: CRITICAL
+
+  - id: data_gov
+    rank: 6
+    name: "Data.gov Catalog API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://catalog.data.gov"
+    docs_url: "https://resources.data.gov/catalog-api/"
+    connector_class: ckan_catalog_crawler
+    rate_limit: null
+    update_frequency: continuous
+    default_language: en
+    priority: HIGH
+
+  - id: ine_datos_abiertos
+    rank: 7
+    name: "INE Datos Abiertos (Electoral Data)"
+    class: OPEN_PUBLIC_MEDIUM_RISK
+    country: MX
+    base_url: "https://www.ine.mx/transparencia/datos-abiertos/"
+    connector_class: search_portal_crawler
+    rate_limit: null
+    update_frequency: cycle-based
+    default_language: es
+    priority: CRITICAL
+
+  - id: usaspending
+    rank: 8
+    name: "USAspending API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://api.usaspending.gov/"
+    docs_url: "https://api.usaspending.gov/docs/endpoints"
+    connector_class: api_crawler
+    rate_limit: null
+    update_frequency: daily
+    default_language: en
+    priority: HIGH
+
+  - id: bls_api
+    rank: 9
+    name: "BLS Public Data API"
+    class: OPEN_PUBLIC_LOW_RISK
+    country: US
+    base_url: "https://api.bls.gov/publicAPI/v2/"
+    docs_url: "https://www.bls.gov/bls/api_features.htm"
+    connector_class: api_crawler
+    auth_type: registered
+    rate_limit: "50 req/10s or 500/day"
+    update_frequency: schedule-based
+    default_language: en
+    priority: HIGH
+
+  - id: foia_gov
+    rank: 10
+    name: "FOIA.gov API"
+    class: OPEN_PUBLIC_MEDIUM_RISK
+    country: US
+    base_url: "https://api.foia.gov/"
+    docs_url: "https://www.foia.gov/developer/"
+    connector_class: api_crawler
+    auth_type: api_key
+    rate_limit: null
+    update_frequency: continuous
+    default_language: en
+    priority: HIGH

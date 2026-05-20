@@ -1,0 +1,122 @@
+{
+  "name": "EvidenceLink",
+  "type": "object",
+  "properties": {
+    "case_file_id": {
+      "type": "string",
+      "title": "Case File ID"
+    },
+    "source_a_type": {
+      "type": "string",
+      "title": "Source A Type",
+      "enum": [
+        "USCIS",
+        "DoD / DCAS",
+        "NARA",
+        "VA",
+        "ICE",
+        "DHS",
+        "EOIR",
+        "LOC",
+        "Congress",
+        "CBP",
+        "Manual Entry"
+      ]
+    },
+    "source_a_label": {
+      "type": "string",
+      "title": "Source A Label"
+    },
+    "source_a_ref": {
+      "type": "string",
+      "title": "Source A Reference (A-File, Record ID, URL)"
+    },
+    "source_a_excerpt": {
+      "type": "string",
+      "title": "Source A Excerpt"
+    },
+    "source_b_type": {
+      "type": "string",
+      "title": "Source B Type",
+      "enum": [
+        "USCIS",
+        "DoD / DCAS",
+        "NARA",
+        "VA",
+        "ICE",
+        "DHS",
+        "EOIR",
+        "LOC",
+        "Congress",
+        "CBP",
+        "Manual Entry"
+      ]
+    },
+    "source_b_label": {
+      "type": "string",
+      "title": "Source B Label"
+    },
+    "source_b_ref": {
+      "type": "string",
+      "title": "Source B Reference"
+    },
+    "source_b_excerpt": {
+      "type": "string",
+      "title": "Source B Excerpt"
+    },
+    "match_fields": {
+      "type": "string",
+      "title": "Matching Fields (e.g. name, DOB, service branch)"
+    },
+    "match_confidence": {
+      "type": "number",
+      "title": "Match Confidence (0\u2013100)"
+    },
+    "link_type": {
+      "type": "string",
+      "title": "Link Type",
+      "enum": [
+        "Identity Match",
+        "Service Corroboration",
+        "Deportation Confirmation",
+        "Death / KIA Corroboration",
+        "Legal Proceeding Link",
+        "FOIA Response Match",
+        "Contradiction",
+        "Supporting Evidence"
+      ]
+    },
+    "analyst_note": {
+      "type": "string",
+      "title": "Analyst Note"
+    },
+    "review_state": {
+      "type": "string",
+      "title": "Review State",
+      "enum": [
+        "Draft",
+        "Under Review",
+        "Confirmed",
+        "Disputed",
+        "Archived"
+      ],
+      "default": "Draft"
+    },
+    "subject_name": {
+      "type": "string",
+      "title": "Subject Name"
+    },
+    "subject_id": {
+      "type": "string",
+      "title": "Subject ID"
+    }
+  },
+  "required": [
+    "case_file_id",
+    "source_a_type",
+    "source_a_label",
+    "source_b_type",
+    "source_b_label",
+    "link_type"
+  ]
+}

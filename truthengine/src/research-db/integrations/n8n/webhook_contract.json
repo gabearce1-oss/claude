@@ -1,0 +1,155 @@
+{
+  "integration_type": "n8n_event_router",
+  "endpoint": "https://qt360.app.n8n.cloud/webhook/research-db-events",
+  "description": "Event routing for TruthEngine360 research database ingestion, review workflows, and report delivery",
+  
+  "event_types": {
+    "ingestion.discovered": {
+      "description": "Source family discovery completed",
+      "payload_schema": {
+        "event_id": "uuid - for idempotency",
+        "source_family_id": "uuid",
+        "source_family_name": "string",
+        "records_found": "integer",
+        "cursor": "string - pagination cursor if applicable",
+        "timestamp": "ISO8601"
+      }
+    },
+    
+    "ingestion.fetched": {
+      "description": "Raw objects fetched and stored",
+      "payload_schema": {
+        "event_id": "uuid",
+        "job_id": "uuid",
+        "source_family_id": "uuid",
+        "records_fetched": "integer",
+        "records_failed": "integer",
+        "errors": ["string"]
+      }
+    },
+    
+    "normalization.completed": {
+      "description": "Records normalized and indexed",
+      "payload_schema": {
+        "event_id": "uuid",
+        "job_id": "uuid",
+        "records_normalized": "integer",
+        "claims_extracted": "integer",
+        "entities_resolved": "integer"
+      }
+    },
+    
+    "contradiction.detected": {
+      "description": "Conflicting claims detected - requires analyst review",
+      "payload_schema": {
+        "event_id": "uuid",
+        "contradiction_id": "uuid",
+        "dimension": "string (e.g. 'birth_year', 'service_branch')",
+        "assertion_count": "integer",
+        "severity": "critical | high | medium",
+        "auto_routing": "analyst | escalate"
+      }
+    },
+    
+    "review.required": {
+      "description": "Entity assertion or claim needs analyst review",
+      "payload_schema": {
+        "event_id": "uuid",
+        "assertion_id": "uuid",
+        "confidence": "float 0.0-1.0",
+        "claim_excerpt": "string",
+        "source_url": "string",
+        "priority": "urgent | high | normal"
+      }
+    },
+    
+    "publication.ready": {
+      "description": "Report package ready for publication",
+      "payload_schema": {
+        "event_id": "uuid",
+        "report_id": "uuid",
+        "report_type": "string",
+        "scope": "string",
+        "artifact_uri": "s3:// URL"
+      }
+    }
+  },
+  
+  "transport": {
+    "method": "POST",
+    "content_type": "application/json",
+    "authentication": {
+      "type": "HMAC-SHA256",
+      "header_name": "X-Signature",
+      "secret_location": "GitHub Actions secret: N8N_WEBHOOK_SECRET"
+    },
+    "headers": {
+      "X-Event-ID": "unique event UUID",
+      "X-Event-Type": "one of event_types above",
+      "X-Timestamp": "ISO8601 UTC",
+      "X-Source": "github-ci-pipeline"
+    },
+    "timeout_seconds": 30,
+    "retry_policy": {
+      "max_retries": 3,
+      "backoff_strategy": "exponential",
+      "backoff_base_ms": 1000
+    }
+  },
+  
+  "response": {
+    "success": {
+      "status_code": 200,
+      "body": {
+        "acknowledged": true,
+        "event_id": "echo back the X-Event-ID"
+      }
+    },
+    "processing": {
+      "status_code": 202,
+      "body": {
+        "message": "Event queued for async processing"
+      }
+    }
+  },
+  
+  "workflows": [
+    {
+      "name": "source_registry_changed",
+      "trigger": "ingestion.discovered",
+      "downstream_actions": [
+        "log_discovery",
+        "notify_ops",
+        "trigger_fetch_job"
+      ]
+    },
+    {
+      "name": "contradiction_detected",
+      "trigger": "contradiction.detected",
+      "downstream_actions": [
+        "open_analyst_ticket",
+        "email_analyst",
+        "escalate_if_critical"
+      ]
+    },
+    {
+      "name": "review_required",
+      "trigger": "review.required",
+      "downstream_actions": [
+        "create_review_task",
+        "route_to_analyst",
+        "set_priority"
+      ]
+    },
+    {
+      "name": "report_delivery",
+      "trigger": "publication.ready",
+      "downstream_actions": [
+        "validate_artifact",
+        "generate_summary",
+        "publish_to_s3",
+        "notify_stakeholders"
+      ]
+    }
+  ]
+}

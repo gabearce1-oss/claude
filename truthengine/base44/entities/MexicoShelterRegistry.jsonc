@@ -1,0 +1,164 @@
+{
+  "name": "MexicoShelterRegistry",
+  "type": "object",
+  "properties": {
+    "shelter_id": {
+      "type": "string",
+      "title": "Shelter ID (e.g. SH-TIJ-001)"
+    },
+    "organization_name": {
+      "type": "string",
+      "title": "Organization / Shelter Name"
+    },
+    "city": {
+      "type": "string",
+      "title": "City"
+    },
+    "state_region": {
+      "type": "string",
+      "title": "State / Region",
+      "enum": [
+        "Baja California",
+        "Sonora",
+        "Chihuahua",
+        "Coahuila",
+        "Tamaulipas",
+        "Nuevo Le\u00f3n",
+        "Other"
+      ]
+    },
+    "country": {
+      "type": "string",
+      "title": "Country",
+      "default": "Mexico"
+    },
+    "address": {
+      "type": "string",
+      "title": "Address (public)"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "url": {
+      "type": "string",
+      "title": "Website URL"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone / Contact"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "provider_type": {
+      "type": "string",
+      "title": "Provider Type",
+      "enum": [
+        "Veteran Resource Center",
+        "General Migrant Shelter",
+        "Faith-Based Shelter",
+        "Government Reception Center",
+        "Legal Aid Organization",
+        "Health / Mental Health Clinic",
+        "NGO / Advocacy",
+        "University / Research",
+        "Other"
+      ]
+    },
+    "veteran_specific": {
+      "type": "boolean",
+      "title": "Veteran-Specific Services"
+    },
+    "services_offered": {
+      "type": "string",
+      "title": "Services Offered"
+    },
+    "housing_available": {
+      "type": "boolean",
+      "title": "Housing / Shelter Available"
+    },
+    "legal_services": {
+      "type": "boolean",
+      "title": "Legal Services Available"
+    },
+    "mental_health_services": {
+      "type": "boolean",
+      "title": "Mental Health / Medical Services"
+    },
+    "repatriation_support": {
+      "type": "boolean",
+      "title": "Repatriation / Return Support"
+    },
+    "imss_seguro_social_link": {
+      "type": "string",
+      "title": "IMSS / Seguro Social Coordination Notes"
+    },
+    "ife_ine_link": {
+      "type": "string",
+      "title": "INE / IFE Coordination Notes (Identity Docs)"
+    },
+    "comar_link": {
+      "type": "string",
+      "title": "COMAR Coordination (Refugee)"
+    },
+    "inm_link": {
+      "type": "string",
+      "title": "INM Coordination Notes"
+    },
+    "known_subjects_served": {
+      "type": "string",
+      "title": "Known AUMER Subjects Served (case IDs, comma-sep)"
+    },
+    "data_source": {
+      "type": "string",
+      "title": "Data Source",
+      "enum": [
+        "Cross-Border Blueprint (verified)",
+        "COMAR Portal",
+        "OMI Shelter Directory",
+        "CNDH Report",
+        "Municipal Portal",
+        "Field Report",
+        "Self-Reported",
+        "Other"
+      ]
+    },
+    "verification_status": {
+      "type": "string",
+      "title": "Verification Status",
+      "enum": [
+        "Verified Public",
+        "Unverified \u2013 Needs Confirmation",
+        "Inactive / Closed"
+      ],
+      "default": "Unverified \u2013 Needs Confirmation"
+    },
+    "risk_flag": {
+      "type": "string",
+      "title": "Case Risk Flag",
+      "enum": [
+        "None",
+        "No Veteran Contact Logged",
+        "Subject Missing \u2013 Last Known Location",
+        "Needs Follow-Up"
+      ],
+      "default": "None"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Research Notes"
+    }
+  },
+  "required": [
+    "organization_name",
+    "city",
+    "state_region",
+    "provider_type"
+  ]
+}

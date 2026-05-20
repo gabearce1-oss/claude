@@ -1,0 +1,38 @@
+{
+  "mappings": {
+    "properties": {
+      "record_id": { "type": "keyword" },
+      "source_family_id": { "type": "keyword" },
+      "source_family_name": { "type": "keyword" },
+      "title": { "type": "text", "analyzer": "standard" },
+      "summary": { "type": "text", "analyzer": "standard" },
+      "canonical_url": { "type": "keyword" },
+      "record_type": { "type": "keyword" },
+      "language": { "type": "keyword" },
+      "publish_date": { "type": "date" },
+      "fetched_at": { "type": "date" },
+      "original_text": { "type": "text", "analyzer": "spanish" },
+      "translated_text": { "type": "text", "analyzer": "english" },
+      "claim_excerpt": { "type": "text", "analyzer": "standard" },
+      "claim_type": { "type": "keyword" },
+      "entity_names": { "type": "keyword" },
+      "entity_types": { "type": "keyword" },
+      "sensitivity_class": { "type": "keyword" },
+      "review_state": { "type": "keyword" },
+      "evidence_score": { "type": "float" },
+      "confidence": { "type": "float" }
+    }
+  },
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "spanish": {
+          "type": "standard",
+          "stopwords": "_spanish_"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "name": "CaseFile",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "title": "Case ID (e.g. CF-001)"
+    },
+    "subject_name": {
+      "type": "string",
+      "title": "Subject Full Name"
+    },
+    "subject_aliases": {
+      "type": "string",
+      "title": "Known Aliases"
+    },
+    "dob": {
+      "type": "string",
+      "format": "date",
+      "title": "Date of Birth"
+    },
+    "birth_country": {
+      "type": "string",
+      "title": "Birth Country"
+    },
+    "service_branch": {
+      "type": "string",
+      "title": "Military Branch",
+      "enum": [
+        "Army",
+        "Navy",
+        "Marine Corps",
+        "Air Force",
+        "Coast Guard",
+        "National Guard",
+        "Unknown"
+      ]
+    },
+    "service_years": {
+      "type": "string",
+      "title": "Service Years (e.g. 1968\u20131971)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Case Status",
+      "enum": [
+        "Active",
+        "Under Review",
+        "Closed \u2013 Confirmed",
+        "Closed \u2013 Unverified",
+        "Archived"
+      ],
+      "default": "Active"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "Critical",
+        "High",
+        "Medium",
+        "Low"
+      ],
+      "default": "Medium"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Case Summary"
+    },
+    "dcas_match": {
+      "type": "boolean",
+      "title": "DCAS Record Match"
+    },
+    "uscis_afile": {
+      "type": "string",
+      "title": "USCIS A-File Number"
+    },
+    "deportation_confirmed": {
+      "type": "boolean",
+      "title": "Deportation Confirmed"
+    },
+    "linked_evidence_count": {
+      "type": "number",
+      "title": "Linked Evidence Count"
+    },
+    "analyst_owner": {
+      "type": "string",
+      "title": "Assigned Analyst"
+    },
+    "tags": {
+      "type": "string",
+      "title": "Tags (comma-separated)"
+    }
+  },
+  "required": [
+    "subject_name",
+    "case_id"
+  ]
+}

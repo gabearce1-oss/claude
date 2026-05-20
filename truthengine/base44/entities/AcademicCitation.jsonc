@@ -1,0 +1,77 @@
+{
+  "name": "AcademicCitation",
+  "type": "object",
+  "properties": {
+    "citation_type": {
+      "type": "string",
+      "title": "Citation Type",
+      "enum": [
+        "Book",
+        "Journal Article",
+        "Report",
+        "Encyclopedia",
+        "Government Report",
+        "Thesis"
+      ]
+    },
+    "authors": {
+      "type": "string",
+      "title": "Authors"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "publication": {
+      "type": "string",
+      "title": "Publication / Publisher"
+    },
+    "year": {
+      "type": "number",
+      "title": "Year"
+    },
+    "doi": {
+      "type": "string",
+      "title": "DOI"
+    },
+    "source_url": {
+      "type": "string",
+      "title": "Source URL"
+    },
+    "relevance_to_project": {
+      "type": "string",
+      "title": "Relevance to DCAS / Deported Veterans Research"
+    },
+    "validation_role": {
+      "type": "string",
+      "title": "Validation Role",
+      "enum": [
+        "BISG Methodology",
+        "DCAS Anomaly Context",
+        "Deportation Framework",
+        "Policy Engagement",
+        "Historical Context",
+        "Oxford Network"
+      ]
+    },
+    "tier": {
+      "type": "string",
+      "title": "Validation Tier",
+      "enum": [
+        "Primary Source",
+        "Secondary Source",
+        "Academic Context",
+        "Government Record"
+      ]
+    },
+    "tags": {
+      "type": "string",
+      "title": "Tags (comma-separated)"
+    }
+  },
+  "required": [
+    "title",
+    "authors",
+    "year"
+  ]
+}

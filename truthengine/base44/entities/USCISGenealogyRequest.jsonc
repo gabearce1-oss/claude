@@ -1,0 +1,90 @@
+{
+  "name": "USCISGenealogyRequest",
+  "type": "object",
+  "properties": {
+    "subject_name": {
+      "type": "string",
+      "title": "Subject Name"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Birth Date"
+    },
+    "death_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Death Date"
+    },
+    "request_type": {
+      "type": "string",
+      "title": "Request Type",
+      "enum": [
+        "Index Search",
+        "A-File Request",
+        "NARA ARC Search",
+        "USCIS FOIA"
+      ]
+    },
+    "request_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Request Date"
+    },
+    "expected_response_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Expected Response Date"
+    },
+    "actual_response_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Actual Response Date"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Pending",
+        "A-Number Obtained",
+        "File Received",
+        "No Record Found",
+        "FOIA Submitted"
+      ]
+    },
+    "a_file_number": {
+      "type": "string",
+      "title": "A-File Number"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "High",
+        "Medium",
+        "Low"
+      ]
+    },
+    "aclu_case_ref": {
+      "type": "string",
+      "title": "ACLU Case Reference"
+    },
+    "dcas_match": {
+      "type": "boolean",
+      "title": "DCAS Match Found"
+    },
+    "white_folding_confirmed": {
+      "type": "boolean",
+      "title": "White Folding Confirmed"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Research Notes"
+    }
+  },
+  "required": [
+    "subject_name",
+    "request_type",
+    "request_date"
+  ]
+}

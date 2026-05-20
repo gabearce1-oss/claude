@@ -1,0 +1,32 @@
+{
+  "name": "ResearchDoc",
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "title": "Document Title" },
+    "tldr": { "type": "string", "title": "TL;DR" },
+    "conclusions": { "type": "string", "title": "Conclusions" },
+    "results": { "type": "string", "title": "Results" },
+    "methods_used": { "type": "string", "title": "Methods Used" },
+    "findings": { "type": "string", "title": "Findings" },
+    "problem_statement": { "type": "string", "title": "Problem Statement" },
+    "dataset": { "type": "string", "title": "Dataset" },
+    "population_sample": { "type": "string", "title": "Population Sample" },
+    "limitations": { "type": "string", "title": "Limitations" },
+    "contributions": { "type": "string", "title": "Contributions" },
+    "research_gap": { "type": "string", "title": "Research Gap" },
+    "future_research": { "type": "string", "title": "Future Research" },
+    "practical_implications": { "type": "string", "title": "Practical Implications" },
+    "literature_survey": { "type": "string", "title": "Literature Survey" },
+    "summarized_abstract": { "type": "string", "title": "Summarized Abstract" },
+    "summarized_introduction": { "type": "string", "title": "Summarized Introduction" },
+    "applications": { "type": "string", "title": "Applications" },
+    "objectives": { "type": "string", "title": "Objectives" },
+    "challenges": { "type": "string", "title": "Challenges" },
+    "independent_variables": { "type": "string", "title": "Independent Variables" },
+    "dependent_variables": { "type": "string", "title": "Dependent Variables" },
+    "cluster_tags": { "type": "string", "title": "Cluster Tags" },
+    "relevance_score": { "type": "number", "title": "Relevance Score" },
+    "source_url": { "type": "string", "title": "Source URL" }
+  },
+  "required": ["title"]
+}

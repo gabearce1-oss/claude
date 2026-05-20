@@ -1,0 +1,48 @@
+{
+  "name": "KnowledgeFile",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Document Title"
+    },
+    "file_url": {
+      "type": "string",
+      "title": "File URL"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "tags": {
+      "type": "string",
+      "title": "Tags (comma-separated)"
+    },
+    "file_size_kb": {
+      "type": "number",
+      "title": "File Size (KB)"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "Case Files",
+        "FOIA",
+        "Legal",
+        "Academic",
+        "DCAS",
+        "Veterans",
+        "Mexico",
+        "Congressional",
+        "Other"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Research Notes"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

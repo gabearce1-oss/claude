@@ -1,0 +1,163 @@
+{
+  "name": "DeportationProceeding",
+  "type": "object",
+  "properties": {
+    "case_file_id": {
+      "type": "string",
+      "title": "Case File ID (e.g. CF-001)"
+    },
+    "subject_name": {
+      "type": "string",
+      "title": "Subject Full Name"
+    },
+    "subject_id": {
+      "type": "string",
+      "title": "Subject ID"
+    },
+    "eoir_case_number": {
+      "type": "string",
+      "title": "EOIR Case Number"
+    },
+    "charge_type": {
+      "type": "string",
+      "title": "Primary Charge / Ground",
+      "enum": [
+        "Aggravated Felony \u2013 Drug",
+        "Aggravated Felony \u2013 Violence",
+        "Aggravated Felony \u2013 Other",
+        "Controlled Substance",
+        "Crime Involving Moral Turpitude",
+        "Firearms",
+        "Document Fraud",
+        "Unlawful Presence",
+        "Public Charge",
+        "National Security",
+        "Other"
+      ]
+    },
+    "charge_statute": {
+      "type": "string",
+      "title": "Statute / INA Section (e.g. INA \u00a7237(a)(2)(A)(iii))"
+    },
+    "retroactive_iirira": {
+      "type": "boolean",
+      "title": "Retroactive IIRIRA Application (pre-1996 offense)"
+    },
+    "nta_issued_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Notice to Appear (NTA) Issued Date"
+    },
+    "initial_hearing_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Initial Hearing Date"
+    },
+    "removal_order_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Removal Order Date"
+    },
+    "deportation_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Actual Deportation Date"
+    },
+    "destination_country": {
+      "type": "string",
+      "title": "Destination Country"
+    },
+    "destination_state_region": {
+      "type": "string",
+      "title": "Destination State / Region"
+    },
+    "judicial_discretion_available": {
+      "type": "boolean",
+      "title": "Judicial Discretion Was Available (pre-IIRIRA)"
+    },
+    "judicial_discretion_exercised": {
+      "type": "boolean",
+      "title": "Judicial Discretion Was Exercised"
+    },
+    "appeal_filed": {
+      "type": "boolean",
+      "title": "Appeal Filed (BIA)"
+    },
+    "appeal_outcome": {
+      "type": "string",
+      "title": "Appeal Outcome",
+      "enum": [
+        "Pending",
+        "Denied",
+        "Granted \u2013 Relief",
+        "Granted \u2013 Remand",
+        "Withdrawn",
+        "N/A"
+      ]
+    },
+    "court_location": {
+      "type": "string",
+      "title": "Immigration Court Location"
+    },
+    "attorney_of_record": {
+      "type": "string",
+      "title": "Attorney of Record (if known)"
+    },
+    "prosecutorial_discretion_requested": {
+      "type": "boolean",
+      "title": "Prosecutorial Discretion Requested"
+    },
+    "prosecutorial_discretion_granted": {
+      "type": "boolean",
+      "title": "Prosecutorial Discretion Granted"
+    },
+    "military_service_raised": {
+      "type": "boolean",
+      "title": "Military Service Raised in Proceedings"
+    },
+    "ina_329_claim": {
+      "type": "boolean",
+      "title": "INA \u00a7329 Naturalization Claim Made"
+    },
+    "ice_hq_review": {
+      "type": "string",
+      "title": "ICE HQ Review Status",
+      "enum": [
+        "Bypassed (no review)",
+        "Reviewed \u2013 Deportation Ordered",
+        "Reviewed \u2013 Deferred",
+        "Reviewed \u2013 Terminated",
+        "Unknown"
+      ]
+    },
+    "source_documents": {
+      "type": "string",
+      "title": "Source Documents / Citations"
+    },
+    "confidence_score": {
+      "type": "number",
+      "title": "Confidence Score (0\u2013100)"
+    },
+    "review_state": {
+      "type": "string",
+      "title": "Review State",
+      "enum": [
+        "Draft",
+        "Under Review",
+        "Confirmed",
+        "Disputed",
+        "Archived"
+      ],
+      "default": "Draft"
+    },
+    "analyst_notes": {
+      "type": "string",
+      "title": "Analyst Notes"
+    }
+  },
+  "required": [
+    "subject_name",
+    "case_file_id",
+    "charge_type"
+  ]
+}
