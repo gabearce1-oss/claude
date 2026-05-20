@@ -127,6 +127,17 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Seed the running dedupe Set from the initial Evidence snapshot.
+    // After each successful create we add the new pageUrl to this set
+    // so duplicates within a single run are caught too.
+    const ingestedPageUrls = new Set();
+    for (const e of existing) {
+      if (e.notes) {
+        const m = String(e.notes).match(/Source page:\s*(\S+)/);
+        if (m) ingestedPageUrls.add(m[1]);
+      }
+    }
+
     async function allocateEvidenceNumber() {
       // Page through every Evidence row before scanning for the max
       // CA-#### number. Base44 list() defaults to ~50 rows; without
@@ -166,9 +177,12 @@ Deno.serve(async (req) => {
 
         const pageUrl = target.url;
 
-        // Dedupe by source URL
-        const dupe = existing.find((e) => e.notes && e.notes.includes(pageUrl));
-        if (dupe) {
+        // Dedupe by source URL. Use a running Set that we add to after
+        // each successful create — otherwise the second occurrence of
+        // the same pageUrl within a single run (getItemIds can return
+        // repeated items across paginated LoC results) wouldn't see
+        // the first insert and would create a duplicate.
+        if (ingestedPageUrls.has(pageUrl)) {
           skipped.push({ itemUrl, reason: 'already ingested' });
           continue;
         }
@@ -256,6 +270,7 @@ Deno.serve(async (req) => {
         }
 
         created.push({ id: evidence.id, evidence_number: evidenceNumber, page_url: pageUrl });
+        ingestedPageUrls.add(pageUrl);
       } catch (e) {
         errors.push({ itemUrl, error: e.message });
       }

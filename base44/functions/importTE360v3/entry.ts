@@ -245,8 +245,23 @@ Deno.serve(async (req) => {
       }
     }
 
-    // 8. Add this v3 matrix itself as a KnowledgeDocument
-    const existingDocs = await base44.asServiceRole.entities.KnowledgeDocument.list();
+    // 8. Add this v3 matrix itself as a KnowledgeDocument.
+    //    Paginate the dedupe-by-title lookup — Base44 list() defaults
+    //    to ~50 rows, so once KnowledgeDocument crosses one page the
+    //    existing matrix row would no longer be visible and reruns
+    //    would create duplicates.
+    const existingDocs = [];
+    {
+      const docPageSize = 200;
+      let docSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.KnowledgeDocument.list(null, docPageSize, docSkip);
+        if (!batch || batch.length === 0) break;
+        existingDocs.push(...batch);
+        if (batch.length < docPageSize) break;
+        docSkip += docPageSize;
+      }
+    }
     const title = 'TE360 Master Evidence Matrix v3 — 75 Claims (May 20 2026)';
     if (!existingDocs.find((d) => d.title === title)) {
       await base44.asServiceRole.entities.KnowledgeDocument.create({
