@@ -95,6 +95,53 @@ export default function PlaybookPage() {
         <EntityRegistry />
       </div>
 
+      {/* Working Notebook (external Perplexity Space) */}
+      <div className="max-w-7xl mx-auto px-8 pt-8">
+        <h2
+          className="mb-3"
+          style={{
+            color: '#1a1815',
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.72rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Working Notebook
+        </h2>
+        <a
+          href="https://www.perplexity.ai/spaces/aviana-nela-terminel-sagasta-y-UGfhxZVBT4OogGKpHxmAbg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block p-4 rounded hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: '#ffffff', border: '1px solid #1a1815' }}
+        >
+          <div
+            className="text-xs mb-2 inline-block px-1.5 py-0.5 rounded"
+            style={{
+              backgroundColor: '#1a1815',
+              color: '#f4ede0',
+              fontFamily: 'JetBrains Mono, monospace',
+              letterSpacing: '0.1em',
+              fontSize: '0.65rem',
+            }}
+          >
+            Perplexity Space · External
+          </div>
+          <h3
+            className="text-lg mb-1 font-light"
+            style={{ color: '#1a1815', fontFamily: 'Cormorant Garamond' }}
+          >
+            Aviana &amp; Nela Terminel–Sagasta Workspace
+          </h3>
+          <p className="text-xs" style={{ color: '#6b6559', lineHeight: 1.55 }}>
+            Live research notebook with the Deep Research threads behind the
+            FINAL Intelligence Report, the master matrix, and the protocol
+            iterations committed here. Auth-walled — opens in a new tab.
+          </p>
+        </a>
+      </div>
+
       {/* Protocol Library */}
       <div className="max-w-7xl mx-auto px-8 pt-10">
         <h2
