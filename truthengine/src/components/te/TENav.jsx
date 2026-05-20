@@ -7,10 +7,11 @@ const TAB_GROUPS = {
     icon: "🎯",
     color: "#60A5FA",
     tabs: [
-      { id:"home", icon:"🏠", label:"Dashboard" },
-      { id:"insights-overview", icon:"📊", label:"Analytics Overview" },
-      { id:"assistant", icon:"🔍", label:"AI Research" },
-      { id:"knowledgebase", icon:"📚", label:"Knowledge Base" },
+      { id:"home",            icon:"🏠", label:"Dashboard"          },
+      { id:"insights-overview",icon:"📊",label:"Analytics Overview" },
+      { id:"assistant",       icon:"🔍", label:"AI Research"         },
+      { id:"knowledgebase",   icon:"📚", label:"Knowledge Base"      },
+      { id:"dcas-analytics",  icon:"🧮", label:"DCAS Analytics"      },
     ]
   },
   "case-management": {
@@ -18,12 +19,13 @@ const TAB_GROUPS = {
     icon: "📋",
     color: "#34D399",
     tabs: [
-      { id:"caseexplorer", icon:"🎖️", label:"Case Explorer" },
-      { id:"casetimeline", icon:"📅", label:"Case Timeline" },
-      { id:"evidence", icon:"🔗", label:"Evidence Viewer" },
-      { id:"casedetail", icon:"📄", label:"Case Detail" },
-      { id:"gaptracker", icon:"⚠️", label:"Gap Tracker" },
-      { id:"actionrequired", icon:"⚡", label:"Action Required" },
+      { id:"caseboard",    icon:"🃏", label:"Case Board"       },
+      { id:"caseexplorer", icon:"🎖️", label:"Case Explorer"   },
+      { id:"casetimeline", icon:"📅", label:"Case Timeline"   },
+      { id:"evidence",     icon:"🔗", label:"Evidence Viewer" },
+      { id:"casedetail",   icon:"📄", label:"Case Detail"     },
+      { id:"gaptracker",   icon:"⚠️", label:"Gap Tracker"    },
+      { id:"actionrequired",icon:"⚡",label:"Action Required" },
     ]
   },
   "geospatial-analysis": {
@@ -150,14 +152,15 @@ const TAB_GROUPS = {
     icon: "🏛️",
     color: "#DC2626",
     tabs: [
-      { id:"insights", icon:"📈", label:"Insights Dashboard" },
-      { id:"policy", icon:"🗣️", label:"Policy Impact" },
-      { id:"outreach", icon:"📣", label:"Outreach Dashboard" },
-      { id:"policymap", icon:"🗣️", label:"Policy Map" },
-      { id:"researchsearch", icon:"🔬", label:"Research Search" },
-      { id:"legislative", icon:"🏛️", label:"Legislative Briefing" },
-      { id:"canton", icon:"🚨", label:"CANTON URGENT" },
-      { id:"exile", icon:"🇺🇸", label:"Exile Patriot" },
+      { id:"congressional",  icon:"🏛️", label:"Congressional Action" },
+      { id:"insights",       icon:"📈", label:"Insights Dashboard"   },
+      { id:"policy",         icon:"🗣️", label:"Policy Impact"        },
+      { id:"outreach",       icon:"📣", label:"Outreach Dashboard"   },
+      { id:"policymap",      icon:"🗣️", label:"Policy Map"           },
+      { id:"researchsearch", icon:"🔬", label:"Research Search"      },
+      { id:"legislative",    icon:"🏛️", label:"Legislative Briefing" },
+      { id:"canton",         icon:"🚨", label:"CANTON URGENT"        },
+      { id:"exile",          icon:"🇺🇸", label:"Exile Patriot"       },
     ]
   },
 };

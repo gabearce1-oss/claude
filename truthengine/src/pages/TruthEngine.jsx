@@ -140,6 +140,9 @@ import MilitaryResearchDBPanel from "../components/te/MilitaryResearchDBPanel";
 import DeportedMarinesExpansionPanel from "../components/te/DeportedMarinesExpansionPanel";
 import VeteranPtsdAnalysisReport from "../components/te/VeteranPtsdAnalysisReport";
 import PublicationCalendarPlanner from "../components/te/PublicationCalendarPlanner";
+import DCASForensicDashboard from "../components/te/DCASForensicDashboard";
+import CongressionalActionCenter from "../components/te/CongressionalActionCenter";
+import VeteranCaseBoard from "../components/te/VeteranCaseBoard";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -307,6 +310,9 @@ export default function TruthEngine() {
       {tab === "sheltercluster"      && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ShelterMapView /></div>}
       {tab === "research-compare"    && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ResearchSearch /></div>}
       {tab === "insights-overview"   && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><InsightsDashboard /></div>}
+      {tab === "dcas-analytics"      && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><DCASForensicDashboard /></div>}
+      {tab === "caseboard"           && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><VeteranCaseBoard setTab={setTab} /></div>}
+      {tab === "congressional"       && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><CongressionalActionCenter setTab={setTab} /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />
