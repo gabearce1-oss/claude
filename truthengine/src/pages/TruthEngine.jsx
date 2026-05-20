@@ -138,6 +138,8 @@ import EvidenceVaultPanel from "../components/te/EvidenceVaultPanel";
 import ClaimEnginePanel from "../components/te/ClaimEnginePanel";
 import MilitaryResearchDBPanel from "../components/te/MilitaryResearchDBPanel";
 import DeportedMarinesExpansionPanel from "../components/te/DeportedMarinesExpansionPanel";
+import VeteranPtsdAnalysisReport from "../components/te/VeteranPtsdAnalysisReport";
+import PublicationCalendarPlanner from "../components/te/PublicationCalendarPlanner";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -295,6 +297,16 @@ export default function TruthEngine() {
       {tab === "claimengine" && <div style={{ padding:"0", height:"calc(100vh - 118px)", display:"flex", overflow:"hidden" }}><ClaimEnginePanel /></div>}
       {tab === "milresearchdb" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><MilitaryResearchDBPanel /></div>}
       {tab === "deportedmarines" && <div style={{ padding:"0", height:"calc(100vh - 118px)", display:"flex", flexDirection:"column", overflow:"hidden" }}><DeportedMarinesExpansionPanel /></div>}
+
+      {/* ── NEW TABS FROM UPDATED NAV ── */}
+      {tab === "veteranreporting"    && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><VeteranPtsdAnalysisReport /></div>}
+      {tab === "ptsd-analysis"       && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><VeteranPtsdAnalysisReport /></div>}
+      {tab === "publication-calendar"&& <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><PublicationCalendarPlanner /></div>}
+      {tab === "template-generator"  && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ReportBuilder /></div>}
+      {tab === "veteranmap"          && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><VeteranMap /></div>}
+      {tab === "sheltercluster"      && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ShelterMapView /></div>}
+      {tab === "research-compare"    && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ResearchSearch /></div>}
+      {tab === "insights-overview"   && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><InsightsDashboard /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />
