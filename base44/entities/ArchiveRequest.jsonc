@@ -1,0 +1,78 @@
+{
+  "name": "ArchiveRequest",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "default": "Terminel-Sagasta"
+    },
+    "request_number": {
+      "type": "string",
+      "description": "Catalog number (e.g., AR-001)"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "AGN",
+        "AHES",
+        "HNDM",
+        "Chronicling America",
+        "Library of Congress",
+        "FamilySearch",
+        "UNISON",
+        "COLSON",
+        "Bancroft",
+        "U Arizona Special Collections",
+        "NARA",
+        "Wells Fargo Archives",
+        "Other"
+      ],
+      "description": "Target archive or repository"
+    },
+    "record_target": {
+      "type": "string",
+      "description": "What kind of record is being requested (e.g., escritura, parish register)"
+    },
+    "query_used": {
+      "type": "string",
+      "description": "Exact search string submitted"
+    },
+    "submitted_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "follow_up_due": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "draft",
+        "submitted",
+        "running",
+        "responded",
+        "completed",
+        "blocked",
+        "no_result"
+      ],
+      "default": "planned"
+    },
+    "result_summary": {
+      "type": "string",
+      "description": "Outcome description"
+    },
+    "linked_evidence_id": {
+      "type": "string",
+      "description": "Evidence produced by this request"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "record_target"
+  ]
+}

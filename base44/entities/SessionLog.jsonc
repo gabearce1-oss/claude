@@ -1,0 +1,101 @@
+{
+  "name": "SessionLog",
+  "type": "object",
+  "description": "Daily archive of verified evidence and claims captured at the end of each work session.",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "default": "Terminel-Sagasta"
+    },
+    "session_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Calendar date the session covers (America/Los_Angeles)"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_verified_count": {
+      "type": "number",
+      "default": 0
+    },
+    "claims_verified_count": {
+      "type": "number",
+      "default": 0
+    },
+    "claims_corroborated_count": {
+      "type": "number",
+      "default": 0
+    },
+    "claims_quarantined_count": {
+      "type": "number",
+      "default": 0
+    },
+    "audit_score": {
+      "type": "number",
+      "description": "Pass 3.1 audit score at end of session (0-100)"
+    },
+    "evidence_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "evidence_number": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "verified_at": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Evidence verified during this session"
+    },
+    "claim_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "claim_text": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "reviewed_at": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Claims verified, corroborated, or quarantined during this session"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line summary of the day's progress"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "manual"
+      ],
+      "default": "scheduled"
+    }
+  },
+  "required": [
+    "session_date",
+    "generated_at"
+  ]
+}

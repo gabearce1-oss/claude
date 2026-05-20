@@ -1,0 +1,186 @@
+{
+  "name": "Evidence",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "description": "Case identifier (e.g., Terminel-Sagasta)"
+    },
+    "evidence_number": {
+      "type": "string",
+      "description": "Unique evidence catalog number"
+    },
+    "title": {
+      "type": "string",
+      "description": "Brief title or name of evidence item"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of evidence"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "document",
+        "photograph",
+        "artifact",
+        "testimony",
+        "correspondence",
+        "report",
+        "physical_item",
+        "other"
+      ],
+      "description": "Category of evidence"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "unreviewed",
+        "reviewed",
+        "verified",
+        "disputed",
+        "archived"
+      ],
+      "default": "unreviewed",
+      "description": "Current status in audit process"
+    },
+    "date_acquired": {
+      "type": "string",
+      "format": "date"
+    },
+    "date_created": {
+      "type": "string",
+      "format": "date"
+    },
+    "record_date_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Earliest date touched by the document"
+    },
+    "record_date_end": {
+      "type": "string",
+      "format": "date",
+      "description": "Latest date touched by the document"
+    },
+    "source": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_people": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 hash of the stored file for integrity"
+    },
+    "source_system": {
+      "type": "string",
+      "description": "Originating system (google_drive, gmail, hndm, agn, nara, familysearch, etc.)"
+    },
+    "archive_name": {
+      "type": "string",
+      "description": "Repository (e.g., AGN, HNDM, Bancroft)"
+    },
+    "collection_name": {
+      "type": "string",
+      "description": "Fondo / series"
+    },
+    "box_number": {
+      "type": "string"
+    },
+    "folder_number": {
+      "type": "string"
+    },
+    "call_number": {
+      "type": "string"
+    },
+    "language_code": {
+      "type": "string",
+      "description": "en, es, bilingual"
+    },
+    "is_primary_source": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_original_scan": {
+      "type": "boolean",
+      "default": false
+    },
+    "chain_of_custody_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "tracked",
+        "sealed",
+        "quarantined"
+      ],
+      "default": "draft"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "triaged",
+        "under_review",
+        "accepted",
+        "rejected",
+        "quarantined"
+      ],
+      "default": "new"
+    },
+    "provenance_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "description": "Provenance strength (0-100)"
+    },
+    "authenticity_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "description": "Forensic trust (0-100)"
+    },
+    "contamination_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 0,
+      "description": "AI/fabrication risk (0-100). 60+ should be quarantined."
+    },
+    "access_level": {
+      "type": "string",
+      "enum": [
+        "public",
+        "internal",
+        "restricted",
+        "sealed"
+      ],
+      "default": "internal"
+    }
+  },
+  "required": [
+    "case_id",
+    "evidence_number",
+    "title",
+    "type"
+  ]
+}

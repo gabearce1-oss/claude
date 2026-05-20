@@ -1,0 +1,107 @@
+{
+  "name": "KnowledgeDocument",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "default": "Terminel-Sagasta",
+      "description": "Case this document belongs to"
+    },
+    "title": {
+      "type": "string",
+      "description": "Document title"
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "mvp_plan",
+        "forensic_report",
+        "source_authentication",
+        "dataset_audit",
+        "archival_research",
+        "official_records_search",
+        "evidence_assessment",
+        "informe_forense",
+        "other"
+      ],
+      "description": "Category of knowledge document"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short summary of the document's purpose and key findings"
+    },
+    "key_findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Bullet list of the most important conclusions"
+    },
+    "trust_tier": {
+      "type": "string",
+      "enum": [
+        "verified",
+        "plausible",
+        "fabricated_risk",
+        "mixed",
+        "methodology"
+      ],
+      "default": "mixed",
+      "description": "Overall evidentiary trust classification"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL to the original uploaded file"
+    },
+    "file_type": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "docx",
+        "txt",
+        "other"
+      ],
+      "description": "File format"
+    },
+    "page_count": {
+      "type": "number",
+      "description": "Number of pages (for PDFs)"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "bilingual"
+      ],
+      "default": "en"
+    },
+    "author_source": {
+      "type": "string",
+      "description": "Author or generating source (e.g., ChatGPT, Claude, human analyst)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Topic tags for retrieval"
+    },
+    "related_archives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Archives referenced (AGN, AHES, NARA RG 84, etc.)"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When added to knowledge base"
+    }
+  },
+  "required": [
+    "title",
+    "doc_type"
+  ]
+}

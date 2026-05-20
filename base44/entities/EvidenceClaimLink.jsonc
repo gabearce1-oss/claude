@@ -1,0 +1,51 @@
+{
+  "name": "EvidenceClaimLink",
+  "type": "object",
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "description": "Evidence record id"
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "Claim record id"
+    },
+    "support_role": {
+      "type": "string",
+      "enum": [
+        "supports",
+        "contradicts",
+        "mentions",
+        "contextualizes",
+        "duplicates",
+        "derived_from"
+      ],
+      "default": "supports"
+    },
+    "excerpt_text": {
+      "type": "string",
+      "description": "Quoted passage from the evidence"
+    },
+    "page_ref": {
+      "type": "string"
+    },
+    "line_ref": {
+      "type": "string"
+    },
+    "weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.5,
+      "description": "Strength of the link (0.0 - 1.0)"
+    },
+    "created_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "claim_id",
+    "support_role"
+  ]
+}
