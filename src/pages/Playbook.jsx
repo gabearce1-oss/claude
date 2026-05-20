@@ -165,6 +165,12 @@ export default function PlaybookPage() {
               title: 'SciELO Bibliometrics — Citation Data',
               desc: 'JOURNAL TELEMETRY endpoint, not narrative evidence. SciELO Analytics (Beta) — citation counts and bibliometric indicators at the journal level. Populates the metrics lane only: fetch timestamp + journal id + period + raw payload + normalized summary. Useful for reporting on the scholarly footprint of the sources cited in the LEGAL pipe; does not verify any case-specific claim. Opens in a new tab.',
             },
+            {
+              href: '/docs/Sarker_2021_Machine_Learning_Review.pdf',
+              tag: 'Technical Ref · ML Methods',
+              title: 'Sarker 2021 · Machine Learning Review (SN Computer Science)',
+              desc: 'Sarker, I. H. (2021). "Machine Learning: Algorithms, Real-World Applications and Research Directions." SN Computer Science 2:160. DOI 10.1007/s42979-021-00592-x. Springer Nature. SYSTEM-DESIGN reference, NOT case evidence — covers supervised / unsupervised / semi-supervised / reinforcement learning, structured vs semi-structured vs unstructured data, and applications. Anchors the crawler / NER / semantic-search / auto-pipe-tag / drift-detection options discussed for TE360. Bundled in /public/docs/.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
