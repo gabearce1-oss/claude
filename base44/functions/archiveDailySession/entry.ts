@@ -14,7 +14,7 @@ function pacificDate(d = new Date()) {
 
 function isSameDay(iso, ymd) {
   if (!iso) return false;
-  return iso.slice(0, 10) === ymd;
+  return pacificDate(new Date(iso)) === ymd;
 }
 
 function computeAuditScore(claims) {

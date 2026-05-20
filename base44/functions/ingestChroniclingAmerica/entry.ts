@@ -21,7 +21,7 @@ async function getItemIds(url, maxItems = 25) {
       if (fmt.includes('collection') || fmt.includes('web page')) continue;
       const id = res.id;
       if (typeof id !== 'string') continue;
-      if (id.startsWith('http://www.loc.gov/item') || id.startsWith('http://www.loc.gov/resource')) {
+      if (/^https?:\/\/www\.loc\.gov\/(item|resource)/.test(id)) {
         items.push(id);
         if (items.length >= maxItems) break;
       }
@@ -71,12 +71,22 @@ Deno.serve(async (req) => {
     const skipped = [];
     const errors = [];
 
-    // Find next evidence number
+    // Snapshot existing Evidence (used for dedupe by source URL).
+    // The CA-#### number itself is re-derived from a fresh server read
+    // immediately before each create (see below) so concurrent ingest
+    // runs are far less likely to collide. This is a tight mitigation,
+    // not a true atomic allocation — backend-side counter or unique
+    // constraint is the correct long-term fix.
     const existing = await base44.entities.Evidence.list();
-    let nextN = 1;
-    for (const e of existing) {
-      const m = /^CA-(\d+)$/.exec(e.evidence_number || '');
-      if (m) nextN = Math.max(nextN, parseInt(m[1], 10) + 1);
+
+    async function allocateEvidenceNumber() {
+      const fresh = await base44.entities.Evidence.list();
+      let max = 0;
+      for (const e of fresh) {
+        const m = /^CA-(\d+)$/.exec(e.evidence_number || '');
+        if (m) max = Math.max(max, parseInt(m[1], 10));
+      }
+      return `CA-${String(max + 1).padStart(4, '0')}`;
     }
 
     for (const itemUrl of itemIds) {
@@ -139,8 +149,7 @@ Deno.serve(async (req) => {
           }
         }
 
-        const evidenceNumber = `CA-${String(nextN).padStart(4, '0')}`;
-        nextN += 1;
+        const evidenceNumber = await allocateEvidenceNumber();
 
         const evidence = await base44.entities.Evidence.create({
           case_id: caseId,
