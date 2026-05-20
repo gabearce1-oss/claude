@@ -183,6 +183,12 @@ export default function PlaybookPage() {
               title: 'GeeksforGeeks · AI Algorithms',
               desc: 'GeeksforGeeks reference on AI algorithms (search, optimization, classification, NLP, neural networks). SYSTEM-DESIGN reference, NOT case evidence — practitioner-style overview of the algorithm families useful for the TE360 infrastructure tier (NER on archive responses, semantic search, classifier-assisted pipe tagging). Same Technical Reference lane as Sarker 2021 and IBM Think. Opens in a new tab.',
             },
+            {
+              href: 'https://blogs.sas.com/content/subconsciousmusings/2020/12/09/machine-learning-algorithm-use/',
+              tag: 'Technical Ref · SAS Blogs',
+              title: 'SAS · Which ML Algorithm Should I Use?',
+              desc: 'SAS Subconscious Musings (Dec 2020). Decision-flow guide for choosing ML algorithms by problem type (regression / classification / clustering / dimensionality reduction / anomaly detection). SYSTEM-DESIGN reference, NOT case evidence — useful for picking the right method per TE360 task (NER vs classifier vs clustering vs anomaly). Same Technical Reference lane as Sarker / IBM / GeeksforGeeks. Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
