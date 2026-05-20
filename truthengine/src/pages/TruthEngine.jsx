@@ -133,6 +133,10 @@ import OmegaResearchEngine from "../components/te/OmegaResearchEngine";
 import CrossBorderPhase1Panel from "../components/te/CrossBorderPhase1Panel";
 import BehaviorVectorDashboard from "../components/te/BehaviorVectorDashboard";
 import FOIAEscalationLetters from "../components/te/FOIAEscalationLetters";
+import ForensicCommandCenter from "../components/te/ForensicCommandCenter";
+import EvidenceVaultPanel from "../components/te/EvidenceVaultPanel";
+import ClaimEnginePanel from "../components/te/ClaimEnginePanel";
+import MilitaryResearchDBPanel from "../components/te/MilitaryResearchDBPanel";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -285,6 +289,10 @@ export default function TruthEngine() {
       {tab === "cbphase1" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><CrossBorderPhase1Panel /></div>}
       {tab === "behaviorvectors" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><BehaviorVectorDashboard /></div>}
       {tab === "foiaescalation" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><FOIAEscalationLetters /></div>}
+      {tab === "forensiccc" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><ForensicCommandCenter /></div>}
+      {tab === "evidencevault" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><EvidenceVaultPanel /></div>}
+      {tab === "claimengine" && <div style={{ padding:"0", height:"calc(100vh - 118px)", display:"flex", overflow:"hidden" }}><ClaimEnginePanel /></div>}
+      {tab === "milresearchdb" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><MilitaryResearchDBPanel /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />
