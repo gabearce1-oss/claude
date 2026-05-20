@@ -128,11 +128,23 @@ Deno.serve(async (req) => {
     }
 
     async function allocateEvidenceNumber() {
-      const fresh = await base44.entities.Evidence.list();
+      // Page through every Evidence row before scanning for the max
+      // CA-#### number. Base44 list() defaults to ~50 rows; without
+      // pagination this would re-use existing catalog numbers once
+      // Evidence grows past one page, breaking idempotency and
+      // producing duplicate/ambiguous CA-#### identifiers downstream.
       let max = 0;
-      for (const e of fresh) {
-        const m = /^CA-(\d+)$/.exec(e.evidence_number || '');
-        if (m) max = Math.max(max, parseInt(m[1], 10));
+      const pageSize = 200;
+      let skipN = 0;
+      for (let i = 0; i < 100; i++) {
+        const fresh = await base44.entities.Evidence.list(null, pageSize, skipN);
+        if (!fresh || fresh.length === 0) break;
+        for (const e of fresh) {
+          const m = /^CA-(\d+)$/.exec(e.evidence_number || '');
+          if (m) max = Math.max(max, parseInt(m[1], 10));
+        }
+        if (fresh.length < pageSize) break;
+        skipN += pageSize;
       }
       return `CA-${String(max + 1).padStart(4, '0')}`;
     }
