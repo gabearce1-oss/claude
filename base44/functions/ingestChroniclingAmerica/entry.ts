@@ -128,13 +128,22 @@ Deno.serve(async (req) => {
     }
 
     // Seed the running dedupe Set from the initial Evidence snapshot.
-    // After each successful create we add the new pageUrl to this set
-    // so duplicates within a single run are caught too.
+    // Canonicalize each seeded URL through assertLocHost() so the Set
+    // is uniformly normalized — older rows may have been saved with
+    // http:// URLs before the host-validation fix, and the dedupe
+    // check downstream compares against validatedPageUrl (always
+    // https). Drop any URL that no longer passes the host allowlist.
     const ingestedPageUrls = new Set();
     for (const e of existing) {
       if (e.notes) {
         const m = String(e.notes).match(/Source page:\s*(\S+)/);
-        if (m) ingestedPageUrls.add(m[1]);
+        if (m) {
+          try {
+            ingestedPageUrls.add(assertLocHost(m[1]).toString());
+          } catch (_) {
+            // legacy seed with disallowed host — skip silently
+          }
+        }
       }
     }
 
@@ -177,12 +186,27 @@ Deno.serve(async (req) => {
 
         const pageUrl = target.url;
 
-        // Dedupe by source URL. Use a running Set that we add to after
-        // each successful create — otherwise the second occurrence of
-        // the same pageUrl within a single run (getItemIds can return
-        // repeated items across paginated LoC results) wouldn't see
-        // the first insert and would create a duplicate.
-        if (ingestedPageUrls.has(pageUrl)) {
+        // Canonicalize pageUrl BEFORE the dedupe check. The Set is
+        // populated with normalized HTTPS URLs (validatedPageUrl), so
+        // checking the raw pageUrl would miss when LoC returns a
+        // legacy http:// page URL for an item already stored as
+        // https://. Validate first; on disallowed host, push error
+        // and skip. Then use validatedPageUrl for both the dedupe
+        // check AND the running-set insert.
+        let validatedPageUrl = null;
+        try {
+          validatedPageUrl = assertLocHost(pageUrl).toString();
+        } catch (e) {
+          errors.push({ itemUrl, error: `disallowed pageUrl: ${e.message}` });
+          continue;
+        }
+
+        // Dedupe by canonical source URL. Set is populated with
+        // validatedPageUrl after each successful create — guarantees
+        // the second occurrence of the same item within a single run
+        // (getItemIds can return repeats across paginated LoC results)
+        // is caught even if its raw URL differs in protocol or host.
+        if (ingestedPageUrls.has(validatedPageUrl)) {
           skipped.push({ itemUrl, reason: 'already ingested' });
           continue;
         }
@@ -199,19 +223,8 @@ Deno.serve(async (req) => {
         const pageNum = (meta.pagination && meta.pagination.current) || null;
 
         // Fetch the page file, hash it, optionally upload to Base44 storage.
-        // Validate pageUrl against the LoC host allowlist FIRST — without
-        // this the LoC metadata could point us at an off-domain or
-        // http:// URL and we'd plaintext-fetch (or worse) into the
-        // SHA-256 provenance chain, undermining the very hash we use to
-        // anchor evidence integrity.
         let sha256 = null;
         let fileUrl = null;
-        let validatedPageUrl = null;
-        try {
-          validatedPageUrl = assertLocHost(pageUrl).toString();
-        } catch (e) {
-          errors.push({ itemUrl, error: `disallowed pageUrl: ${e.message}` });
-          continue;
         }
         if (!metadataOnly) {
           try {
