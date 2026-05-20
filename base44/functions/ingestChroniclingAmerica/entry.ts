@@ -84,8 +84,30 @@ function urlWithJson(itemUrl) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    // Auth gate: admin user OR shared automation secret. Headless n8n /
+    // scheduler invocations run without an end-user session, so accept
+    // x-automation-secret / Authorization: Bearer matching AUTOMATION_SECRET.
+    let user = null;
+    try {
+      user = await base44.auth.me();
+    } catch (_) {
+      // anonymous — fall through to secret check
+    }
+    if (user && user.role !== 'admin') {
+      return Response.json({ error: 'Admin only' }, { status: 403 });
+    }
+    if (!user) {
+      const expected = Deno.env.get('AUTOMATION_SECRET');
+      const presented =
+        req.headers.get('x-automation-secret') ||
+        (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+      if (!expected || !presented || presented !== expected) {
+        return Response.json(
+          { error: 'Unauthorized — admin session or automation secret required' },
+          { status: 401 }
+        );
+      }
+    }
 
     const body = await req.json().catch(() => ({}));
     const {
@@ -119,7 +141,7 @@ Deno.serve(async (req) => {
       const pageSize = 200;
       let skip = 0;
       for (let i = 0; i < 100; i++) {
-        const batch = await base44.entities.Evidence.list(null, pageSize, skip);
+        const batch = await base44.asServiceRole.entities.Evidence.list(null, pageSize, skip);
         if (!batch || batch.length === 0) break;
         existing.push(...batch);
         if (batch.length < pageSize) break;
@@ -157,7 +179,7 @@ Deno.serve(async (req) => {
       const pageSize = 200;
       let skipN = 0;
       for (let i = 0; i < 100; i++) {
-        const fresh = await base44.entities.Evidence.list(null, pageSize, skipN);
+        const fresh = await base44.asServiceRole.entities.Evidence.list(null, pageSize, skipN);
         if (!fresh || fresh.length === 0) break;
         for (const e of fresh) {
           const m = /^CA-(\d+)$/.exec(e.evidence_number || '');
@@ -225,7 +247,6 @@ Deno.serve(async (req) => {
         // Fetch the page file, hash it, optionally upload to Base44 storage.
         let sha256 = null;
         let fileUrl = null;
-        }
         if (!metadataOnly) {
           try {
             const pageRes = await fetch(validatedPageUrl);
@@ -258,7 +279,7 @@ Deno.serve(async (req) => {
         for (let attempt = 0; attempt < 5; attempt++) {
           const evidenceNumber = await allocateEvidenceNumber();
           try {
-            evidence = await base44.entities.Evidence.create({
+            evidence = await base44.asServiceRole.entities.Evidence.create({
               case_id: caseId,
               evidence_number: evidenceNumber,
               title: `${newspaperTitle} — ${issueDate || 'n.d.'}${pageNum ? ` p. ${pageNum}` : ''}`,
@@ -294,7 +315,7 @@ Deno.serve(async (req) => {
 
             if (linkedRequestId) {
               try {
-                await base44.entities.ArchiveRequest.update(linkedRequestId, {
+                await base44.asServiceRole.entities.ArchiveRequest.update(linkedRequestId, {
                   status: 'responded',
                   linked_evidence_id: evidence.id,
                   result_summary: `Auto-ingested ${evidenceNumber} via LoC search.`,
