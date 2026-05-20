@@ -303,6 +303,13 @@ export default function PlaybookPage() {
               desc: 'Comprehensive catalog of candidate archival sources across newspapers, regional, banking, immigration, Mexican national, mining/bullion, and US diplomatic. Access-classified (API / browse / scrape / auth / paid) with TE360 pipe relevance per row.',
               band: '#5a6b7a',
             },
+            {
+              to: '/playbook/foia-crawlers',
+              tag: 'FOIA · Exile Patriot',
+              title: 'FOIA Requests & n8n Crawlers',
+              desc: '5 INAI requests + 3 US FOIA filings + 3 university outreach drafts + 4 n8n crawler configs (qt360.app.n8n.cloud, 30 active). Belongs to the Exile Patriot Project corpus; shares infrastructure with TE360 but keeps evidence separate. PDF bundled in /public/docs/.',
+              band: '#6b1f1f',
+            },
           ].map((p) => (
             <Link
               key={p.to}

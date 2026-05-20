@@ -26,6 +26,7 @@ import CatalogProgress from './pages/CatalogProgress';
 import FamilyGenealogy from './pages/protocols/FamilyGenealogy';
 import PascuaYaquiLetter from './pages/protocols/PascuaYaquiLetter';
 import DatabaseRegistry from './pages/protocols/DatabaseRegistry';
+import FOIACrawlers from './pages/protocols/FOIACrawlers';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -74,6 +75,7 @@ const AuthenticatedApp = () => {
       <Route path="/playbook/family-genealogy" element={<FamilyGenealogy />} />
       <Route path="/playbook/pascua-yaqui" element={<PascuaYaquiLetter />} />
       <Route path="/playbook/database-registry" element={<DatabaseRegistry />} />
+      <Route path="/playbook/foia-crawlers" element={<FOIACrawlers />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
