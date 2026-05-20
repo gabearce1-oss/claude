@@ -64,10 +64,57 @@ async function findOrCreateFolder(accessToken, name, parentId) {
   return created.id;
 }
 
+// Drive multipart upload caps out around 5 MiB per API guidance. For larger
+// payloads use the resumable session flow so evidence scans above that
+// threshold don't fail with 413/400.
+const MULTIPART_LIMIT = 5 * 1024 * 1024;
+
+async function uploadResumable(accessToken, { name, mimeType, parentId, bytes }) {
+  const initRes = await fetch(
+    'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,webViewLink',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Upload-Content-Type': mimeType,
+        'X-Upload-Content-Length': String(bytes.length),
+      },
+      body: JSON.stringify({ name, parents: [parentId], mimeType }),
+    }
+  );
+  if (!initRes.ok) {
+    const t = await initRes.text().catch(() => '');
+    throw new Error(
+      `Drive resumable init failed for ${name}: ${initRes.status} ${initRes.statusText} ${t}`.trim()
+    );
+  }
+  const sessionUrl = initRes.headers.get('location');
+  if (!sessionUrl) throw new Error(`Drive resumable init for ${name}: missing Location header`);
+  const putRes = await fetch(sessionUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': mimeType, 'Content-Length': String(bytes.length) },
+    body: bytes,
+  });
+  if (!putRes.ok) {
+    const t = await putRes.text().catch(() => '');
+    throw new Error(
+      `Drive resumable upload failed for ${name}: ${putRes.status} ${putRes.statusText} ${t}`.trim()
+    );
+  }
+  return putRes.json();
+}
+
 async function uploadFile(accessToken, { name, mimeType, parentId, body }) {
+  const isBinary = body instanceof Uint8Array;
+  // Route large binary payloads to resumable; small payloads (metadata JSON
+  // or modest binaries) stay on multipart for a single round-trip.
+  if (isBinary && body.length > MULTIPART_LIMIT) {
+    return uploadResumable(accessToken, { name, mimeType, parentId, bytes: body });
+  }
+
   const boundary = '-------te360' + Math.random().toString(36).slice(2);
   const metadata = { name, parents: [parentId], mimeType };
-  const isBinary = body instanceof Uint8Array;
   const head =
     `--${boundary}\r\n` +
     `Content-Type: application/json; charset=UTF-8\r\n\r\n` +

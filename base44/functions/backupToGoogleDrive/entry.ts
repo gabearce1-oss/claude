@@ -54,36 +54,85 @@ Deno.serve(async (req) => {
     // Convert base64 to bytes
     const binaryData = Uint8Array.from(atob(fileData), (c) => c.charCodeAt(0));
 
-    // Upload file to folder
-    const metadata = {
-      name: fileName,
-      parents: [folderId],
-    };
+    // Drive caps uploadType=multipart at ~5 MiB. Switch to resumable for
+    // anything larger so PDF/scan backups above that threshold don't fail
+    // with 413/400. Threshold matches Drive API guidance.
+    const MULTIPART_LIMIT = 5 * 1024 * 1024;
+    const useResumable = binaryData.length > MULTIPART_LIMIT;
 
-    const formData = new FormData();
-    formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-    formData.append('file', new Blob([binaryData], { type: mimeType }));
-
-    const uploadRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
-      method: 'POST',
-      headers,
-      body: formData,
-    });
-
-    // Fail fast on Drive errors. Without this check, expired tokens, quota
-    // exhaustion, or malformed multipart payloads would still be reported
-    // as successful uploads while the backup was actually lost.
-    if (!uploadRes.ok) {
-      const errText = await uploadRes.text().catch(() => '');
-      return Response.json(
+    let uploadData;
+    if (useResumable) {
+      const initRes = await fetch(
+        'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id',
         {
-          success: false,
-          error: `Drive upload failed: ${uploadRes.status} ${uploadRes.statusText} ${errText}`.trim(),
-        },
-        { status: 502 }
+          method: 'POST',
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json; charset=UTF-8',
+            'X-Upload-Content-Type': mimeType,
+            'X-Upload-Content-Length': String(binaryData.length),
+          },
+          body: JSON.stringify({ name: fileName, parents: [folderId] }),
+        }
       );
+      if (!initRes.ok) {
+        const errText = await initRes.text().catch(() => '');
+        return Response.json(
+          {
+            success: false,
+            error: `Drive resumable init failed: ${initRes.status} ${initRes.statusText} ${errText}`.trim(),
+          },
+          { status: 502 }
+        );
+      }
+      const sessionUrl = initRes.headers.get('location');
+      if (!sessionUrl) {
+        return Response.json(
+          { success: false, error: 'Drive resumable init: missing Location header' },
+          { status: 502 }
+        );
+      }
+      const putRes = await fetch(sessionUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': mimeType,
+          'Content-Length': String(binaryData.length),
+        },
+        body: binaryData,
+      });
+      if (!putRes.ok) {
+        const errText = await putRes.text().catch(() => '');
+        return Response.json(
+          {
+            success: false,
+            error: `Drive resumable upload failed: ${putRes.status} ${putRes.statusText} ${errText}`.trim(),
+          },
+          { status: 502 }
+        );
+      }
+      uploadData = await putRes.json();
+    } else {
+      const metadata = { name: fileName, parents: [folderId] };
+      const formData = new FormData();
+      formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+      formData.append('file', new Blob([binaryData], { type: mimeType }));
+
+      const uploadRes = await fetch(
+        'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',
+        { method: 'POST', headers, body: formData }
+      );
+      if (!uploadRes.ok) {
+        const errText = await uploadRes.text().catch(() => '');
+        return Response.json(
+          {
+            success: false,
+            error: `Drive upload failed: ${uploadRes.status} ${uploadRes.statusText} ${errText}`.trim(),
+          },
+          { status: 502 }
+        );
+      }
+      uploadData = await uploadRes.json();
     }
-    const uploadData = await uploadRes.json();
 
     return Response.json({
       success: true,
