@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { ArrowLeft, ArrowLeftRight } from 'lucide-react';
 import EvidencePane from '../components/verify/EvidencePane';
 import ChecklistPane from '../components/verify/ChecklistPane';
-import { listAll } from '@/lib/base44/pagination';
+import { listAll, filterAll } from '@/lib/base44/pagination';
 
 export default function VerifyPage() {
   const { evidenceId } = useParams();
@@ -29,7 +29,7 @@ export default function VerifyPage() {
 
   const { data: links = [] } = useQuery({
     queryKey: ['evidenceClaimLinks', evidenceId],
-    queryFn: () => base44.entities.EvidenceClaimLink.filter({ evidence_id: evidenceId }),
+    queryFn: () => filterAll(base44.entities.EvidenceClaimLink, { evidence_id: evidenceId }),
   });
 
   const { data: claims = [] } = useQuery({
