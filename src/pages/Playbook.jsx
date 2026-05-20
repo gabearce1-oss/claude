@@ -95,7 +95,7 @@ export default function PlaybookPage() {
         <EntityRegistry />
       </div>
 
-      {/* Working Notebook (external Perplexity Space) */}
+      {/* Working Notebooks (external) */}
       <div className="max-w-7xl mx-auto px-8 pt-8">
         <h2
           className="mb-3"
@@ -107,39 +107,55 @@ export default function PlaybookPage() {
             textTransform: 'uppercase',
           }}
         >
-          Working Notebook
+          Working Notebooks
         </h2>
-        <a
-          href="https://www.perplexity.ai/spaces/aviana-nela-terminel-sagasta-y-UGfhxZVBT4OogGKpHxmAbg"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block p-4 rounded hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: '#ffffff', border: '1px solid #1a1815' }}
-        >
-          <div
-            className="text-xs mb-2 inline-block px-1.5 py-0.5 rounded"
-            style={{
-              backgroundColor: '#1a1815',
-              color: '#f4ede0',
-              fontFamily: 'JetBrains Mono, monospace',
-              letterSpacing: '0.1em',
-              fontSize: '0.65rem',
-            }}
-          >
-            Perplexity Space · External
-          </div>
-          <h3
-            className="text-lg mb-1 font-light"
-            style={{ color: '#1a1815', fontFamily: 'Cormorant Garamond' }}
-          >
-            Aviana &amp; Nela Terminel–Sagasta Workspace
-          </h3>
-          <p className="text-xs" style={{ color: '#6b6559', lineHeight: 1.55 }}>
-            Live research notebook with the Deep Research threads behind the
-            FINAL Intelligence Report, the master matrix, and the protocol
-            iterations committed here. Auth-walled — opens in a new tab.
-          </p>
-        </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            {
+              href: 'https://www.perplexity.ai/spaces/aviana-nela-terminel-sagasta-y-UGfhxZVBT4OogGKpHxmAbg',
+              tag: 'Perplexity Space · External',
+              title: 'Aviana & Nela Terminel–Sagasta Workspace',
+              desc: 'Deep Research threads behind the FINAL Intelligence Report, the master matrix, and the protocol iterations committed here. Auth-walled — opens in a new tab.',
+            },
+            {
+              href: 'https://docs.google.com/spreadsheets/d/1O1j8oJKjIZY0ch6ZKPnsryXEHZkxIcFjT8MZBlQVN7o/edit?gid=1843674911#gid=1843674911',
+              tag: 'Google Sheet · External',
+              title: 'TE360 Live Spreadsheet',
+              desc: 'Live Google Sheet companion to the in-repo CSV / XLSX snapshots. Source of truth for claim status edits before they are re-imported via importTE360v3. Opens in a new tab.',
+            },
+          ].map((nb) => (
+            <a
+              key={nb.href}
+              href={nb.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-4 rounded hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#ffffff', border: '1px solid #1a1815' }}
+            >
+              <div
+                className="text-xs mb-2 inline-block px-1.5 py-0.5 rounded"
+                style={{
+                  backgroundColor: '#1a1815',
+                  color: '#f4ede0',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  letterSpacing: '0.1em',
+                  fontSize: '0.65rem',
+                }}
+              >
+                {nb.tag}
+              </div>
+              <h3
+                className="text-lg mb-1 font-light"
+                style={{ color: '#1a1815', fontFamily: 'Cormorant Garamond' }}
+              >
+                {nb.title}
+              </h3>
+              <p className="text-xs" style={{ color: '#6b6559', lineHeight: 1.55 }}>
+                {nb.desc}
+              </p>
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* Protocol Library */}
