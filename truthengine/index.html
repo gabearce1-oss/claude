@@ -5,7 +5,39 @@
     <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.json" />
-    <title>Base44 APP</title>
+    <title>TruthEngine360 | AUMER Foundation</title>
+
+    <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your GA4 Measurement ID -->
+    <!-- Target domains: albavoice.org AND qtruthengine360.org -->
+    <!-- Configure VITE_GA4_ID in .env; injected at build via vite.config.js define -->
+    <script>
+      // Resolve GA4 ID: env-injected at build OR placeholder for dev
+      var _GA4_ID = (typeof __GA4_ID__ !== 'undefined' && __GA4_ID__) || 'G-XXXXXXXXXX';
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', _GA4_ID, {
+        custom_map: {
+          dimension1: 'case_id',
+          dimension2: 'research_action',
+          dimension3: 'foia_status',
+          dimension4: 'evidence_tier',
+          dimension5: 'bisg_anomaly_flag'
+        },
+        send_page_view: true,
+        anonymize_ip: true
+      });
+      // TruthEngine360 event tracker — use anywhere in the app:
+      // window.te360track('foia_submitted', { agency: 'VA', case_id: 'AR-001' })
+      window.te360track = function(action, params) {
+        if (typeof gtag === 'function') {
+          gtag('event', action, Object.assign({ platform: 'TruthEngine360' }, params || {}));
+        }
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>

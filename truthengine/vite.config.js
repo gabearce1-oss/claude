@@ -5,6 +5,9 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   logLevel: 'error', // Suppress warnings, only show errors
+  define: {
+    __GA4_ID__: JSON.stringify(process.env.VITE_GA4_ID || 'G-XXXXXXXXXX'),
+  },
   plugins: [
     base44({
       // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.

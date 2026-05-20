@@ -131,6 +131,8 @@ import ExpansionRoadmap from "../components/te/ExpansionRoadmap";
 import DatabaseMasterIndex from "../components/te/DatabaseMasterIndex";
 import OmegaResearchEngine from "../components/te/OmegaResearchEngine";
 import CrossBorderPhase1Panel from "../components/te/CrossBorderPhase1Panel";
+import BehaviorVectorDashboard from "../components/te/BehaviorVectorDashboard";
+import FOIAEscalationLetters from "../components/te/FOIAEscalationLetters";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -281,6 +283,8 @@ export default function TruthEngine() {
       {tab === "dbmaster" && <DatabaseMasterIndex />}
       {tab === "omega" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><OmegaResearchEngine /></div>}
       {tab === "cbphase1" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><CrossBorderPhase1Panel /></div>}
+      {tab === "behaviorvectors" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><BehaviorVectorDashboard /></div>}
+      {tab === "foiaescalation" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><FOIAEscalationLetters /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />

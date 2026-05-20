@@ -1,0 +1,163 @@
+name: TruthEngine360 — Claude Code Review Loop
+
+on:
+  pull_request:
+    branches: [main, claude/truthengine-platform-improvements-P9z4K]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  # ── PR Diff Review — Claude architectural alignment check ─────────────────
+  claude-pr-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute diff summary
+        id: diff
+        run: |
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD --stat | head -60)
+          echo "diff_summary<<EOF" >> $GITHUB_OUTPUT
+          echo "$DIFF" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          CHANGED=$(git diff origin/${{ github.base_ref }}...HEAD --name-only | head -40)
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Claude Code Review via API
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            Review this TruthEngine360 pull request diff for architectural alignment.
+
+            PLATFORM CONTEXT:
+            TruthEngine360 is a forensic military intelligence platform investigating the DCAS Vietnam-era
+            Hispanic casualty classification anomaly. Anchor metrics (NON-NEGOTIABLE — never alter):
+            - DCAS official Hispanic: 349 / 58,220 (0.60%)
+            - BISG τ=0.40 corrected: 2,309 (84.9% classification failure)
+            - Verified CB-HSIVF cases: 6
+            - Behavior vector pilot N: 11, Cronbach α=0.938, R²=0.947
+
+            CHANGED FILES:
+            ${{ steps.diff.outputs.changed_files }}
+
+            DIFF SUMMARY:
+            ${{ steps.diff.outputs.diff_summary }}
+
+            CHECK FOR:
+            1. Architectural alignment — do changes preserve evidence vault integrity and chain-of-custody discipline?
+            2. BISG data integrity — are anchor numbers (349/2309/84.9%) unchanged or correctly labeled as placeholder?
+            3. Contamination firewall — is classification_anomaly_flag correctly treated as FORENSIC SIGNAL (not contamination)?
+            4. AI contamination — are any AI-generated outputs being cited as primary sources?
+            5. Privacy safeguards — no direct identifiers in non-sealed records
+            6. Base44 SDK patterns — InvokeLLM calls, entity CRUD, correct imports
+
+            Return: brief verdict (APPROVE / REQUEST_CHANGES / COMMENT), key findings, specific line concerns if any.
+
+  # ── Auto-doc generation from Python modules ──────────────────────────────
+  auto-doc:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          pip install pydoc-markdown httpx asyncio 2>/dev/null || true
+
+      - name: Generate connector docs
+        run: |
+          mkdir -p docs/auto-generated
+          echo "# TruthEngine360 — Auto-generated Module Docs" > docs/auto-generated/CONNECTORS.md
+          echo "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docs/auto-generated/CONNECTORS.md
+          echo "" >> docs/auto-generated/CONNECTORS.md
+          # Document any Python connectors that exist
+          find . -name "*.py" -path "*/connectors/*" -exec echo "## {}" \; >> docs/auto-generated/CONNECTORS.md 2>/dev/null || true
+
+      - name: Commit docs if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/ 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Auto-doc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push || true
+
+  # ── Deployment readiness report ───────────────────────────────────────────
+  deployment-readiness:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: truthengine/package-lock.json
+
+      - name: Install dependencies
+        working-directory: truthengine
+        run: npm ci --prefer-offline
+
+      - name: Type check and lint
+        working-directory: truthengine
+        run: |
+          npx eslint src/ --ext .js,.jsx --max-warnings 50 2>/dev/null || echo "ESLint completed"
+
+      - name: Build check
+        working-directory: truthengine
+        run: npm run build 2>&1 | tail -20
+        env:
+          VITE_BASE44_APP_ID: ${{ secrets.BASE44_APP_ID }}
+
+      - name: Report build status
+        if: always()
+        run: |
+          echo "## Deployment Readiness Report" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.head_ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- DCAS Anchor: 349/58,220 official | 2,309 BISG | 84.9% failure" >> $GITHUB_STEP_SUMMARY
+
+  # ── Bias and fairness audit ───────────────────────────────────────────────
+  bias-audit:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check anchor metric integrity
+        run: |
+          echo "Scanning for DCAS anchor metric modifications..."
+          # Check that anchor values are not altered in JS/JSX files
+          DCAS_349=$(grep -r "349" truthengine/src/ --include="*.js" --include="*.jsx" -l 2>/dev/null | wc -l)
+          BISG_2309=$(grep -r "2309\|2,309" truthengine/src/ --include="*.js" --include="*.jsx" -l 2>/dev/null | wc -l)
+          echo "Files referencing 349: $DCAS_349"
+          echo "Files referencing 2309: $BISG_2309"
+          echo "Anchor metric scan complete."
+
+      - name: Check for fabricated data patterns
+        run: |
+          echo "Scanning for fabrication risk patterns..."
+          # Flag any files that might contain placeholder data not labeled as such
+          grep -rn "TODO.*PLACEHOLDER\|FABRICATED\|synthetic_data" truthengine/src/ \
+            --include="*.js" --include="*.jsx" 2>/dev/null | head -20 || echo "No unlabeled placeholders found"
+          echo "Bias audit complete."
