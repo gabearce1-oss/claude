@@ -1,0 +1,31 @@
+entity_id,entity_name,entity_type,linked_claim_id
+ENT-0001,"San Javier, Sonora",location,GEO-001
+ENT-0005,Luis Porchas,person,MIN-002
+ENT-0008,Francisco L. Terminel,person,POL-001
+ENT-0011,Verminel (telegraphic variant),unknown,POL-003
+ENT-0014,Gabriel T. Arce Jr.,person,LAND-002
+ENT-0018,Aviana/Avina Sagasta,person,IND-001
+ENT-0020,Névome Pima Bajo,group,IND-001
+ENT-0021,Yaqui people,group,IND-002
+ENT-0026,María Manuela (Nela) Terminel Sagasta,person,GEN-001
+ENT-0031,Wells Fargo Express,organization,WF-001
+ENT-0040,Manuel Terminel hijo,person,LAND-001
+ENT-0041,Nicolás C. Terminel,person,LAND-001
+ENT-0042,Plutarco Elías Calles,person,POL-001
+ENT-0043,Gov. Rafael Izábal (Sonora 1903–07),person,IND-002
+ENT-0044,Álvaro Obregón,person,POL-005
+ENT-0045,Carmelita Terango,person,FAM-001
+ENT-0046,Leonor Terminel,person,FAM-001
+ENT-0047,Rosa Terminel,person,FAM-001
+ENT-0048,Francisco Terminel Jr.,person,FAM-001
+ENT-0049,Don José Santos Terminel Félix,person,GEN-003
+ENT-0050,Huntington Library (San Marino CA),institution,WF-009
+ENT-0051,Bancroft Library (UC Berkeley),institution,WF-010
+ENT-0052,Dra. María Inés Aragón Salcido (Dir. Gral. Notarías Sonora),person,ARCH-005
+ENT-0053,Comisión Agraria Mixta del Estado de Sonora,institution,LAND-001
+ENT-0054,Manuel Riva Palacio (co-desaforado),person,POL-002
+ENT-0055,Bernardo L. Bandala (co-desaforado),person,POL-002
+ENT-0056,American Cordage Trust / Standard Oil,organization,WF-011
+ENT-0057,Lázaro Cárdenas,person,POL-004
+ENT-0058,John Kenneth Turner (Barbarous Mexico 1910),person,WF-011
+ENT-0059,A. Willard (WF Guaymas agent 1890),person,WF-002

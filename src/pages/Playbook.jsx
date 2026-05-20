@@ -136,6 +136,12 @@ export default function PlaybookPage() {
               desc: 'Peer-reviewed article (NCBI PMC). Use as a corroborating source for the demographic / genetic / displacement analysis. Verify relevance to the specific IND / GEN claim before citing. Opens in a new tab.',
             },
             {
+              href: '/docs/Terminel_Sagasta_Silver_Trail_Timeline.png',
+              tag: 'Diagram · Follow the Silver',
+              title: 'Terminel–Sagasta · Silver Trail Timeline 1880–1965',
+              desc: 'Visual timeline diagram joining six lanes — political events, mining-law framework, Francisco operations, WF corporate succession, the silver-trail (mine → market), and Aviana legal standing. Colored by evidence tier (A verified · B asserted · C unverified · RED fabricated/disconfirmed). Two anchor legal questions at the bottom: could Francisco move silver without Aviana\'s knowledge? Could WF accept it without her consent? Bundled in /public/docs/.',
+            },
+            {
               href: '/docs/IFDP-599_Robitaille_Banco_Central_Mexicano.pdf',
               tag: 'Reference · Fed IFDP',
               title: 'IFDP-599 · Banco Central Mexicano (Robitaille 1997)',

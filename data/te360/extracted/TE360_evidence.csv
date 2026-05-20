@@ -1,0 +1,47 @@
+evidence_id,linked_claim_id,source_name,source_system,storage_uri,provenance_score,authenticity_score,contamination_score,review_status
+EV-0001,GEO-001,Wikipedia / INEGI / Sonora96 / FamilySearch catalog,Multiple independent institutional sources,INEGI code 260541; FamilySearch region Centro Costa,10,10,0,verified
+EV-0002,GEO-002,Pass 3 Forensic Update — San Javier Geography,"Verified institutional sources (INEGI, geographic analysis)",INEGI municipal data,10,10,0,verified
+EV-0003,GEO-003,Pass 3 Forensic Update — administrative history,"Verified — State Law 109, December 22, 1934",Sonora State legislature records; AHES,10,10,0,verified
+EV-0004,MIN-001,SGM 2006 mineral inventory — federal government work product,VERIFIED — Mexican federal government (Servicio Geológico Mexicano),"SGM Inventario de Recursos Minerales, San Javier, March 2006",10,10,0,verified
+EV-0005,MIN-002,SGM 2006 mineral inventory,VERIFIED — Mexican federal government document,"SGM inventory, authored Ing. José Antonio Sánchez González",10,10,0,verified
+EV-0006,MIN-003,SGM 2006 mineral inventory,VERIFIED — federal government document,SGM 2006 inventory land-tenure column,10,10,0,verified
+EV-0007,POL-001,UNAM-IIS institutional repository (Uruchurtu biography) + INEHRM-adjacent source,VERIFIED — institutional academic source,ru.iis.sociales.unam.mx; INEHRM archive,10,10,0,verified
+EV-0008,POL-002,INEHRM-adjacent source + UNAM-IIS,VERIFIED — institutional source,FAPECFT correspondence files,10,10,0,verified
+EV-0009,POL-003,UNAM-IIS repository (Uruchurtu biography),VERIFIED — UNAM institutional source,FAPECFT; AGN Fondo Gobernación; HNDM,10,10,0,verified
+EV-0010,LAND-001,University of Arizona peer-reviewed dissertation citing primary archival source,VERIFIED — peer-reviewed academic source citing primary archive,"AGES, Ramo Ejido-Dotaciones, expediente 411.123/2174",10,10,0,verified
+EV-0011,LAND-002,Gabriel T. Arce Jr. — private family holdings,"PARTIALLY VERIFIED — private documents, not yet externally authenticated",AHES Registro Público de la Propiedad; AGES Ramo Fomento hydraulic concessions,5,5,3,triaged
+EV-0012,LAND-003,Pass 3 Forensic Update — inference from Bacobampo pattern,PLAUSIBLE — logical inference from verified Bacobampo expediente pattern,"AGES, Ramo Ejido-Dotaciones — San Javier municipality search",5,5,3,triaged
+EV-0013,IND-001,Pass 3 Forensic Update — geographic and ethnographic analysis,VERIFIED GEOGRAPHIC FRAMEWORK — indigenous group homeland boundaries from peer-reviewed sources,San Javier parish/civil records; AGN Gobernación indigenous classification files,5,5,3,triaged
+EV-0014,IND-002,Multiple peer-reviewed sources; Wikipedia Yaqui article citing Spicer/Hu-DeHart scholarship,VERIFIED — independent scholarly consensus,UA Special Collections — Spicer Yaqui papers,10,10,0,verified
+EV-0015,IND-003,Multiple peer-reviewed historical sources; Dataset Audit Report,VERIFIED — independently documented historical practice,AGN Notarías; AGN Gobernación; AHES Registro Público,10,10,0,verified
+EV-0016,DNA-001,23andMe ancestry report — Space file,VERIFIED — scientific instrument,23andMe report on file,10,10,0,verified
+EV-0017,DNA-002,Dataset Audit Report,VERIFIED — established legal principle,Legal precedent — must be paired with archival genealogical chain,10,10,0,verified
+EV-0018,GEN-001,Family oral history + Gabriel personal site visit (~2005) + SGM inventory confirms Bajada de la Santa Cruz tradition,ORANGE — oral history corroborated by site visit; civil registration not yet found,FamilySearch catalog 704679 — San Javier civil registry 1868–1993,5,5,3,triaged
+EV-0019,GEN-002,"Gabriel T. Arce Jr. personal site visit, ~2005",ORANGE — oral/observational; not documented in public record,Panteón Municipal San Javier; FindAGrave cemetery 2740823,5,5,3,triaged
+EV-0020,WF-001,Pass 3 Forensic Update; Phase 1 Wells Fargo Express Evidence; 1890 WF corporate directory,VERIFIED — corporate publications and historical record,1890 Wells Fargo Express & Banking Official Directory (on file),10,10,0,verified
+EV-0021,WF-002,1890 Wells Fargo Express & Banking Official Directory,VERIFIED — corporate primary source,1890 WF directory (on file),10,10,0,verified
+EV-0022,WF-003,Pass 3 Forensic Update — banking law analysis,"VERIFIED — Mexican banking law, corroborated by Pass 3 forensic analysis",Mexican banking statutes Porfiriato era; Pass 3 document,10,10,0,verified
+EV-0023,WF-004,Pass 3 Forensic Update,VERIFIED — corporate historical record,Wells Fargo Historical Services; philatelic/express company records,10,10,0,verified
+EV-0024,WF-005,Pass 3 Forensic Update — philatelic/express company record,VERIFIED — physical document (1910 WF Co. Express receipt for gold bullion),Philatelic/express company collections; WF Historical Services,10,10,0,verified
+EV-0025,WF-006,Family oral history (4-generation transmission from Nela through family),ORAL HISTORY — unverified; historically coherent,Wells Fargo Historical Services (Wiltsee Collection; Mexico Division files); AHES Fondo Judicial,5,5,3,triaged
+EV-0026,WF-007,Dataset Audit Report — Section III column-by-column audit,CONFIRMED FABRICATION — no known WF archive uses this format,N/A — fabricated; do not search,0,0,10,quarantined
+EV-0027,WF-008,"Dataset Audit Report — Section V, Anomaly 1",CONFIRMED AI FABRICATION — never issued by Wells Fargo,N/A — does not exist,0,0,10,quarantined
+EV-0028,LEGAL-001,Dataset Audit Report — Section VIII,VERIFIED — international law instruments,UN treaty database; ILO; OAS,10,10,0,verified
+EV-0029,ARCH-001,Terminel-Sagasta Family History (Claude AI) — but detail flagged as possible oral history ingestion,ORAL HISTORY LEAD — requires archival verification,"AHES Fondo Judicial, Hermosillo — search Avina/Aviana Sagasta petitions 1912–1915",5,5,3,triaged
+EV-0030,ARCH-002,Terminel-Sagasta Family History (Claude AI) — cow detail likely from family oral history input,ORAL HISTORY LEAD — detail too specific for pure AI invention; requires census verification,Hermosillo municipal census padrones 1913–1915; AHES Padrón Municipal,5,5,3,triaged
+EV-0031,ARCH-003,Prior AI-generated documents,DISCONFIRMED — Grijalva Díaz 2024 peer-reviewed scholarship names only five founding associations; Terminel absent,"AGES FN, Álvarez, escritura 21, 1933 — read to formally close",0,0,10,quarantined
+EV-0032,ARCH-004,Prior reports,"UNVERIFIED — DOWNGRADED: Mexican Chamber Diario XXXVI Leg. Sept. 6, 1934 names Francisco López, not Terminel",Memoria Política de México — search XXXVI–XXXVII Legislaturas,5,5,3,triaged
+EV-0033,INST-001,HMKP-117-AP00 Pascua Yaqui CHNA — Space file,VERIFIED — official U.S. government health document,On file,10,10,0,verified
+EV-0034,INST-002,Space file — academic chapter,VERIFIED — peer-reviewed academic source,On file,10,10,0,verified
+EV-0040,TRADE-001,INEHRM official chronology + UNAM-IIS Uruchurtu biography vs. family oral history (Nela),Cross-reference verified record vs. oral tradition,knowledge_base,9,9,0,reviewed_session_20260520
+EV-0041,TRADE-003,Session 20260520 analytical model — liquidation logic + incentive mechanism,Analytical inference from macro-timeline + oral history + legal framework,master_report_20260520,7,7,1,reviewed_session_20260520
+EV-0042,TRADE-004,Mexican Civil Code (Porfiriato era) — concubine property rights; Article 2163 fraudulent conveyance,Legal framework — established law,legal_reference,10,10,0,reviewed_session_20260520
+EV-0043,TRADE-005,US common-carrier law + Bank Secrecy Act 1970 (absence before that date),Legal framework — established law,legal_reference,10,10,0,reviewed_session_20260520
+EV-0044,WF-009,"OAC finding aid: Wells, Fargo & Company records, 1839–1911, Huntington Library",Online Archive of California,https://oac.cdlib.org/findaid/ark:/13030/tf4489n6g1/,10,10,0,reviewed_session_20260520
+EV-0045,WF-010,1999 secondary report on Villa 122 silver bars + Bancroft Library WF Mexican subsidiary documents,Secondary source — Terminel-Sagasta and Wells Fargo Research Directive,knowledge_base,6,6,1,reviewed_session_20260520
+EV-0046,WF-011,"John Kenneth Turner, Barbarous Mexico (1910) — on file at barbarousmexico_jkt.pdf",Published book — verified primary historical source,knowledge_base/barbarousmexico_jkt.pdf,10,10,0,reviewed_session_20260520
+EV-0047,FAM-001,"Direct family report from Gabriel T. Arce Jr. — Carmelita Terango, Leonor, Rosa, Francisco Jr. identified",Principal direct testimony,session_20260520_transcript,8,8,1,reviewed_session_20260520
+EV-0048,ARCH-005,GOB.mx Directorio Nacional de Archivos — Sonora; Deep Archival Search report May 2026,Mexican government directory,knowledge_base + uploaded_deep_archival_search.pdf,10,10,0,reviewed_session_20260520
+EV-0049,GEN-003,FamilySearch genealogy record + Mowry 1864 American mining report,Genealogical database + published primary source,familysearch.org,8,8,0,reviewed_session_20260520
+EV-0050,SMOKE-001,Session 20260520 three-document analytical framework,Analytical model — probability assessment,master_report_20260520,7,7,2,reviewed_session_20260520
+EV-0051,WF-012,"NYT report: ""WELLS FARGO SELLS BANKING BUSINESS; Interests in Mexico and Cuba to American Express""",New York Times historical archive,nytimes_archive_1920,9,9,0,reviewed_session_20260520

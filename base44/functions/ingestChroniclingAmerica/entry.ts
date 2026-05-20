@@ -198,19 +198,30 @@ Deno.serve(async (req) => {
         const contributor = (item.contributor_names && item.contributor_names[0]) || null;
         const pageNum = (meta.pagination && meta.pagination.current) || null;
 
-        // Fetch the page file, hash it, optionally upload to Base44 storage
-        // Skip entirely in metadata-only mode (tertiary catalog hits).
+        // Fetch the page file, hash it, optionally upload to Base44 storage.
+        // Validate pageUrl against the LoC host allowlist FIRST — without
+        // this the LoC metadata could point us at an off-domain or
+        // http:// URL and we'd plaintext-fetch (or worse) into the
+        // SHA-256 provenance chain, undermining the very hash we use to
+        // anchor evidence integrity.
         let sha256 = null;
         let fileUrl = null;
+        let validatedPageUrl = null;
+        try {
+          validatedPageUrl = assertLocHost(pageUrl).toString();
+        } catch (e) {
+          errors.push({ itemUrl, error: `disallowed pageUrl: ${e.message}` });
+          continue;
+        }
         if (!metadataOnly) {
           try {
-            const pageRes = await fetch(pageUrl);
+            const pageRes = await fetch(validatedPageUrl);
             if (pageRes.ok) {
               const arrBuf = await pageRes.arrayBuffer();
               sha256 = await sha256Hex(arrBuf);
 
               if (uploadFiles) {
-                const filename = pageUrl.split('/').pop() || `page.${fileExtension}`;
+                const filename = validatedPageUrl.split('/').pop() || `page.${fileExtension}`;
                 const fileBlob = new File([arrBuf], filename, {
                   type: fileExtension === 'pdf' ? 'application/pdf' : 'application/octet-stream',
                 });
@@ -223,54 +234,76 @@ Deno.serve(async (req) => {
           }
         }
 
-        const evidenceNumber = await allocateEvidenceNumber();
-
-        const evidence = await base44.entities.Evidence.create({
-          case_id: caseId,
-          evidence_number: evidenceNumber,
-          title: `${newspaperTitle} — ${issueDate || 'n.d.'}${pageNum ? ` p. ${pageNum}` : ''}`,
-          description: `Newspaper page ingested from Chronicling America via search query. ${
-            contributor ? `Contributor: ${contributor}.` : ''
-          }`,
-          type: 'document',
-          status: 'unreviewed',
-          review_status: 'new',
-          chain_of_custody_status: 'tracked',
-          date_created: issueDate || undefined,
-          record_date_start: issueDate || undefined,
-          record_date_end: issueDate || undefined,
-          source: 'Library of Congress · Chronicling America',
-          source_system: 'loc_chronam',
-          archive_name: 'Library of Congress',
-          collection_name: 'Chronicling America',
-          call_number: lccn || undefined,
-          box_number: batch || undefined,
-          location: [city, state].filter(Boolean).join(', ') || undefined,
-          language_code: 'en',
-          is_primary_source: true,
-          is_original_scan: true,
-          file_url: fileUrl || undefined,
-          sha256: sha256 || undefined,
-          tags: ['chronicling-america', 'newspaper', metadataOnly ? 'catalog-hit' : null, lccn].filter(Boolean),
-          notes: `Source page: ${pageUrl}\nItem record: ${itemUrl}${metadataOnly ? '\n\nMETADATA-ONLY catalog hit. Page contains the query phrase per LoC OCR but relevance has not been verified by reading the page itself.' : ''}`,
-          provenance_score: metadataOnly ? 40 : 80,
-          authenticity_score: metadataOnly ? 40 : 75,
-          contamination_score: 0,
-          access_level: 'public',
-        });
-
-        if (linkedRequestId) {
+        // Atomic CA-#### allocation via retry-on-conflict. Pure read-max-
+        // then-write is racy under concurrency — two callers can compute
+        // the same max and create duplicate evidence_numbers. We can't
+        // add a backend counter from here, so we wrap the create() in a
+        // bounded retry: on a uniqueness conflict, re-allocate from a
+        // fresh server read and try again. Up to 5 retries before
+        // surfacing the error.
+        let evidence = null;
+        let lastErr = null;
+        for (let attempt = 0; attempt < 5; attempt++) {
+          const evidenceNumber = await allocateEvidenceNumber();
           try {
-            await base44.entities.ArchiveRequest.update(linkedRequestId, {
-              status: 'responded',
-              linked_evidence_id: evidence.id,
-              result_summary: `Auto-ingested ${evidenceNumber} via LoC search.`,
+            evidence = await base44.entities.Evidence.create({
+              case_id: caseId,
+              evidence_number: evidenceNumber,
+              title: `${newspaperTitle} — ${issueDate || 'n.d.'}${pageNum ? ` p. ${pageNum}` : ''}`,
+              description: `Newspaper page ingested from Chronicling America via search query. ${
+                contributor ? `Contributor: ${contributor}.` : ''
+              }`,
+              type: 'document',
+              status: 'unreviewed',
+              review_status: 'new',
+              chain_of_custody_status: 'tracked',
+              date_created: issueDate || undefined,
+              record_date_start: issueDate || undefined,
+              record_date_end: issueDate || undefined,
+              source: 'Library of Congress · Chronicling America',
+              source_system: 'loc_chronam',
+              archive_name: 'Library of Congress',
+              collection_name: 'Chronicling America',
+              call_number: lccn || undefined,
+              box_number: batch || undefined,
+              location: [city, state].filter(Boolean).join(', ') || undefined,
+              language_code: 'en',
+              is_primary_source: true,
+              is_original_scan: true,
+              file_url: fileUrl || undefined,
+              sha256: sha256 || undefined,
+              tags: ['chronicling-america', 'newspaper', metadataOnly ? 'catalog-hit' : null, lccn].filter(Boolean),
+              notes: `Source page: ${validatedPageUrl}\nItem record: ${itemUrl}${metadataOnly ? '\n\nMETADATA-ONLY catalog hit. Page contains the query phrase per LoC OCR but relevance has not been verified by reading the page itself.' : ''}`,
+              provenance_score: metadataOnly ? 40 : 80,
+              authenticity_score: metadataOnly ? 40 : 75,
+              contamination_score: 0,
+              access_level: 'public',
             });
-          } catch (_) { /* non-fatal */ }
-        }
 
-        created.push({ id: evidence.id, evidence_number: evidenceNumber, page_url: pageUrl });
-        ingestedPageUrls.add(pageUrl);
+            if (linkedRequestId) {
+              try {
+                await base44.entities.ArchiveRequest.update(linkedRequestId, {
+                  status: 'responded',
+                  linked_evidence_id: evidence.id,
+                  result_summary: `Auto-ingested ${evidenceNumber} via LoC search.`,
+                });
+              } catch (_) { /* non-fatal */ }
+            }
+
+            created.push({ id: evidence.id, evidence_number: evidenceNumber, page_url: validatedPageUrl });
+            ingestedPageUrls.add(validatedPageUrl);
+            break; // success — exit the retry loop
+          } catch (e) {
+            // Treat any create() failure as a potential conflict and retry
+            // with a freshly allocated number. The allocator re-reads from
+            // the server, so concurrent racers naturally diverge.
+            lastErr = e;
+            if (attempt === 4) {
+              errors.push({ itemUrl, error: `create after 5 retries: ${e && e.message}` });
+            }
+          }
+        }
+        if (!evidence) continue;
       } catch (e) {
         errors.push({ itemUrl, error: e.message });
       }
