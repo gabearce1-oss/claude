@@ -117,8 +117,23 @@ Deno.serve(async (req) => {
       });
     }
 
-    // 5. Load existing claims keyed by subject (source ID)
-    const existingClaims = await base44.asServiceRole.entities.Claim.list();
+    // 5. Load existing claims keyed by subject (source ID).
+    //    Must paginate — the v3 matrix alone has 75 claims, which is past
+    //    Base44 list()'s default first page. Without pagination, claims
+    //    beyond page 1 are not indexed and get re-created on rerun,
+    //    breaking idempotency and producing duplicate rows.
+    const existingClaims = [];
+    {
+      let page = 1;
+      const limit = 200;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.Claim.list(null, limit, page);
+        if (!batch || batch.length === 0) break;
+        existingClaims.push(...batch);
+        if (batch.length < limit) break;
+        page++;
+      }
+    }
     const claimBySubject = {};
     for (const c of existingClaims) if (c.subject) claimBySubject[c.subject] = c;
 

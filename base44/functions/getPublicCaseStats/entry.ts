@@ -1,14 +1,32 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// Page through Base44 list() until the server returns less than a full
+// page. Without this, totals reflect only the first page once the
+// underlying entity grows past the default page size.
+async function listAll(entity) {
+  const all = [];
+  let page = 1;
+  const limit = 200;
+  // Cap iterations to defend against runaway loops on bad SDK responses.
+  for (let i = 0; i < 100; i++) {
+    const batch = await entity.list(null, limit, page);
+    if (!batch || batch.length === 0) break;
+    all.push(...batch);
+    if (batch.length < limit) break;
+    page++;
+  }
+  return all;
+}
+
 // Public endpoint: returns aggregate case stats only (no record content).
 // Safe to expose to unauthenticated visitors of the marketing/home page.
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const [evidence, claims, requests] = await Promise.all([
-      base44.asServiceRole.entities.Evidence.list(),
-      base44.asServiceRole.entities.Claim.list(),
-      base44.asServiceRole.entities.ArchiveRequest.list(),
+      listAll(base44.asServiceRole.entities.Evidence),
+      listAll(base44.asServiceRole.entities.Claim),
+      listAll(base44.asServiceRole.entities.ArchiveRequest),
     ]);
 
     const verifiedEvidence = evidence.filter((e) => e.status === 'verified').length;

@@ -41,7 +41,10 @@ async function getItemIds(url, maxItems = 25) {
   let next = u.toString();
 
   while (next && items.length < maxItems) {
-    assertLocHost(next); // re-validate pagination links from API responses
+    // Re-validate pagination links from API responses AND use the
+    // normalized HTTPS URL for the fetch — otherwise an http://
+    // pagination.next would still be fetched over plaintext transport.
+    next = assertLocHost(next).toString();
     const r = await fetch(next, { headers: { Accept: 'application/json' } });
     if (!r.ok) throw new Error(`LoC search failed: ${r.status}`);
     const data = await r.json();
