@@ -135,6 +135,24 @@ export default function PlaybookPage() {
               title: 'PMC5362358 — NCBI / PubMed Central',
               desc: 'Peer-reviewed article (NCBI PMC). Use as a corroborating source for the demographic / genetic / displacement analysis. Verify relevance to the specific IND / GEN claim before citing. Opens in a new tab.',
             },
+            {
+              href: '/docs/IFDP-599_Robitaille_Banco_Central_Mexicano.pdf',
+              tag: 'Reference · Fed IFDP',
+              title: 'IFDP-599 · Banco Central Mexicano (Robitaille 1997)',
+              desc: 'Federal Reserve Board International Finance Discussion Paper No. 599 (Dec 1997). Studies the Banco Central Mexicano note-redemption and clearing system 1899–1913 — the exact window of Aviana’s 1907 asserted deeds and Francisco’s mining operations. Anchors the WF / LEGAL pipes’ monetary-system context. Bundled in /public/docs/.',
+            },
+            {
+              href: 'https://www.banxico.org.mx/getting-to-know-banco-de-mexico/history-hierarchical-history-.html',
+              tag: 'Reference · Banxico',
+              title: 'Banco de México — Hierarchical History',
+              desc: 'Official Banxico timeline of Mexico’s central-banking institutions. Pre-Banxico era (pre-1925) covered here is the regime under which Banco Central Mexicano and Banco Nacional de México operated; useful for sourcing the LEGAL / WF pipe claims. Opens in a new tab.',
+            },
+            {
+              href: 'https://www.minneapolisfed.org/about-us/our-history/history-of-central-banking',
+              tag: 'Reference · MinFed',
+              title: 'Minneapolis Fed — History of Central Banking',
+              desc: 'Minneapolis Fed primer on central-banking history. Cross-reference for the comparative framing of the Robitaille / IFDP-599 analysis (Suffolk Bank of Boston, free-banking era, etc.). Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
