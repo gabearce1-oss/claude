@@ -25,6 +25,7 @@ import ResearchProtocol from './pages/protocols/ResearchProtocol';
 import CatalogProgress from './pages/CatalogProgress';
 import FamilyGenealogy from './pages/protocols/FamilyGenealogy';
 import PascuaYaquiLetter from './pages/protocols/PascuaYaquiLetter';
+import DatabaseRegistry from './pages/protocols/DatabaseRegistry';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
       <Route path="/catalog-progress" element={<CatalogProgress />} />
       <Route path="/playbook/family-genealogy" element={<FamilyGenealogy />} />
       <Route path="/playbook/pascua-yaqui" element={<PascuaYaquiLetter />} />
+      <Route path="/playbook/database-registry" element={<DatabaseRegistry />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

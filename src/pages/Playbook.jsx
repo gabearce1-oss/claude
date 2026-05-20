@@ -296,6 +296,13 @@ export default function PlaybookPage() {
               desc: 'Six generations Terminel–Sagasta with evidentiary status, displacement timeline, and a live TSU B412 generational displacement calculator.',
               band: '#4a5d3a',
             },
+            {
+              to: '/playbook/database-registry',
+              tag: 'REGISTRY · 50+ Sources',
+              title: 'Database Registry',
+              desc: 'Comprehensive catalog of candidate archival sources across newspapers, regional, banking, immigration, Mexican national, mining/bullion, and US diplomatic. Access-classified (API / browse / scrape / auth / paid) with TE360 pipe relevance per row.',
+              band: '#5a6b7a',
+            },
           ].map((p) => (
             <Link
               key={p.to}
