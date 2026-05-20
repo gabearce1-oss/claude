@@ -123,6 +123,12 @@ export default function PlaybookPage() {
               title: 'TE360 Live Spreadsheet',
               desc: 'Live Google Sheet companion to the in-repo CSV / XLSX snapshots. Source of truth for claim status edits before they are re-imported via importTE360v3. Opens in a new tab.',
             },
+            {
+              href: 'https://ww2.tnstate.edu/ganter/B412%20Extra%20PopGrowthModel.html',
+              tag: 'Reference · External',
+              title: 'Population Growth Model (TSU B412)',
+              desc: 'Tennessee State University reference on population-growth modeling. Useful for sanity-checking demographic estimates against the Sonora / Yaqui / Pima-Bajo cohorts referenced in the IND, GEN, and LAND pipes. Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
