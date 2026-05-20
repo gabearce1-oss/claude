@@ -1,6 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-// SSRF guard — only allow ingest URLs on official LoC hosts.
+// SSRF guard — only allow ingest URLs on official LoC hosts, and only
+// over HTTPS. Plaintext HTTP transport would let an on-path attacker
+// tamper with search results or linked page URLs before the SHA-256
+// hashing step, breaking provenance integrity on forensic evidence.
 const LOC_HOSTS = new Set([
   'www.loc.gov',
   'loc.gov',
@@ -14,7 +17,11 @@ function assertLocHost(rawUrl) {
   } catch {
     throw new Error('searchURL is not a valid URL');
   }
-  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+  if (parsed.protocol === 'http:') {
+    // Upgrade legacy http://loc.gov/... to https before fetching.
+    parsed.protocol = 'https:';
+  }
+  if (parsed.protocol !== 'https:') {
     throw new Error(`Disallowed protocol: ${parsed.protocol}`);
   }
   if (!LOC_HOSTS.has(parsed.hostname)) {
@@ -44,10 +51,12 @@ async function getItemIds(url, maxItems = 25) {
       if (fmt.includes('collection') || fmt.includes('web page')) continue;
       const id = res.id;
       if (typeof id !== 'string') continue;
-      // Accept both www.loc.gov and bare loc.gov, http or https — the LoC
-      // API mixes these in results[].id across older vs. newer endpoints.
-      if (/^https?:\/\/(?:www\.)?loc\.gov\/(item|resource)/.test(id)) {
-        items.push(id);
+      // Accept both www.loc.gov and bare loc.gov over https. Legacy
+      // identifiers returned as http:// are normalized to https below.
+      const m = id.match(/^https?:\/\/(?:www\.)?loc\.gov\/(item|resource)/);
+      if (m) {
+        const httpsId = id.replace(/^http:\/\//, 'https://');
+        items.push(httpsId);
         if (items.length >= maxItems) break;
       }
     }

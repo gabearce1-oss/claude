@@ -70,6 +70,19 @@ Deno.serve(async (req) => {
       body: formData,
     });
 
+    // Fail fast on Drive errors. Without this check, expired tokens, quota
+    // exhaustion, or malformed multipart payloads would still be reported
+    // as successful uploads while the backup was actually lost.
+    if (!uploadRes.ok) {
+      const errText = await uploadRes.text().catch(() => '');
+      return Response.json(
+        {
+          success: false,
+          error: `Drive upload failed: ${uploadRes.status} ${uploadRes.statusText} ${errText}`.trim(),
+        },
+        { status: 502 }
+      );
+    }
     const uploadData = await uploadRes.json();
 
     return Response.json({

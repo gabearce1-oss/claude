@@ -184,9 +184,21 @@ Deno.serve(async (req) => {
       const nameLower = ac.name.toLowerCase();
       const match = existingArchives.find((a) => {
         const tgt = (a.record_target || '').toLowerCase();
-        // Match on first significant word (AHES, AGES, FamilySearch, etc.)
-        const acFirst = nameLower.split(/[—–\-:]/)[0].trim().split(/\s+/)[0];
-        return acFirst && acFirst.length > 2 && tgt.includes(acFirst);
+        // Try every whitespace-delimited token from the contact name (after
+        // stripping the leading dash/colon-delimited prefix). Skip very
+        // short prepositions but keep meaningful short tokens like "UC"
+        // so rows like "UC Berkeley Bancroft Library" still match an
+        // existing target whose record_target mentions "Bancroft" or "UC".
+        const SKIP = new Set([
+          'the', 'of', 'a', 'an', 'and', 'or', 'de', 'del', 'la', 'el',
+          'los', 'las', 'y',
+        ]);
+        const tokens = nameLower
+          .split(/[—–\-:]/)[0]
+          .trim()
+          .split(/\s+/)
+          .filter((t) => t.length >= 2 && !SKIP.has(t));
+        return tokens.some((tok) => tgt.includes(tok));
       });
       if (!match) { report.skipped.push(`no archive match for "${ac.name}"`); continue; }
       const newNotes = [
