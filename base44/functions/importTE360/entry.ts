@@ -189,8 +189,21 @@ Deno.serve(async (req) => {
       report.claims++;
     }
 
-    // 4. Insert Entities
-    const existingEntities = await base44.asServiceRole.entities.Entity.list();
+    // 4. Insert Entities. Paginate the dedupe lookup — Base44 list()
+    //    defaults to ~50 rows, so without this reruns past page 1 would
+    //    duplicate entities by normalized_key.
+    const existingEntities = [];
+    {
+      const entPageSize = 200;
+      let entSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.Entity.list(null, entPageSize, entSkip);
+        if (!batch || batch.length === 0) break;
+        existingEntities.push(...batch);
+        if (batch.length < entPageSize) break;
+        entSkip += entPageSize;
+      }
+    }
     const existingEntityByKey = {};
     for (const e of existingEntities) if (e.normalized_key) existingEntityByKey[e.normalized_key] = e;
     const entityIdMap = {};
@@ -209,8 +222,24 @@ Deno.serve(async (req) => {
       report.entities++;
     }
 
-    // 5. Insert Evidence
-    const existingEvidence = await base44.asServiceRole.entities.Evidence.list();
+    // 5. Insert Evidence.
+    //    Paginate the dedupe lookup — Base44 list() defaults to ~50 rows,
+    //    and the v3 import alone seeds 34 evidence rows on top of any
+    //    existing newspaper-ingest output (CA-#### catalog can grow
+    //    quickly). Without pagination, reruns past page 1 silently fail
+    //    to recognize existing evidence_numbers and create duplicates.
+    const existingEvidence = [];
+    {
+      const evPageSize = 200;
+      let evSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.Evidence.list(null, evPageSize, evSkip);
+        if (!batch || batch.length === 0) break;
+        existingEvidence.push(...batch);
+        if (batch.length < evPageSize) break;
+        evSkip += evPageSize;
+      }
+    }
     const existingEvBySubject = {};
     for (const e of existingEvidence) if (e.evidence_number) existingEvBySubject[e.evidence_number] = e;
     const evidenceIdMap = {};
@@ -236,8 +265,19 @@ Deno.serve(async (req) => {
       report.evidence++;
     }
 
-    // 6. Insert Archive Requests
-    const existingArchives = await base44.asServiceRole.entities.ArchiveRequest.list();
+    // 6. Insert Archive Requests. Paginate dedupe.
+    const existingArchives = [];
+    {
+      const arPageSize = 200;
+      let arSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.ArchiveRequest.list(null, arPageSize, arSkip);
+        if (!batch || batch.length === 0) break;
+        existingArchives.push(...batch);
+        if (batch.length < arPageSize) break;
+        arSkip += arPageSize;
+      }
+    }
     const existingArchByNum = {};
     for (const a of existingArchives) if (a.request_number) existingArchByNum[a.request_number] = a;
     for (const row of archivesCSV) {
@@ -291,8 +331,20 @@ Deno.serve(async (req) => {
       report.links++;
     }
 
-    // 8. Knowledge documents (Deep Archival Search + Silver Trail timeline + WF letter)
-    const existingDocs = await base44.asServiceRole.entities.KnowledgeDocument.list();
+    // 8. Knowledge documents (Deep Archival Search + Silver Trail timeline + WF letter).
+    //    Paginate dedupe — same Base44 list() page-size trap.
+    const existingDocs = [];
+    {
+      const docPageSize = 200;
+      let docSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.KnowledgeDocument.list(null, docPageSize, docSkip);
+        if (!batch || batch.length === 0) break;
+        existingDocs.push(...batch);
+        if (batch.length < docPageSize) break;
+        docSkip += docPageSize;
+      }
+    }
     const existingDocTitles = new Set(existingDocs.map(d => d.title));
     const docs = [
       {
