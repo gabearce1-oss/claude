@@ -143,8 +143,23 @@ Deno.serve(async (req) => {
     const expandedById = {};
     for (const r of expandedCSV) expandedById[r.Claim_ID] = r;
 
-    // 2. Load existing records to avoid duplicates (subject field holds source ID)
-    const existingClaims = await base44.asServiceRole.entities.Claim.list();
+    // 2. Load existing records to avoid duplicates (subject field holds source ID).
+    //    Must paginate — Base44 list() defaults to 50 rows and the v3 matrix
+    //    alone has 75 claims, so a single list() call would only see the first
+    //    page and re-create the rest on rerun. Signature is list(sort, limit,
+    //    skip) where skip is a record offset.
+    const existingClaims = [];
+    {
+      const limit = 200;
+      let skip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.Claim.list(null, limit, skip);
+        if (!batch || batch.length === 0) break;
+        existingClaims.push(...batch);
+        if (batch.length < limit) break;
+        skip += limit;
+      }
+    }
     const existingClaimBySubject = {};
     for (const c of existingClaims) if (c.subject) existingClaimBySubject[c.subject] = c;
 

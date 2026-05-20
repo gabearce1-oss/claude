@@ -8,6 +8,7 @@ import { CLAIM_STATUS } from '../components/forensic/statusConfig';
 import ClaimRow from '../components/claims/ClaimRow';
 import ClaimModal from '../components/claims/ClaimModal';
 import EvidenceLinkModal from '../components/claims/EvidenceLinkModal';
+import SemanticSearchBox from '../components/ml/SemanticSearchBox';
 
 export default function ClaimsPage() {
   const qc = useQueryClient();
@@ -130,6 +131,53 @@ export default function ClaimsPage() {
               <p className="text-2xl font-light" style={{ fontFamily: 'Cormorant Garamond' }}>{matrix[k] || 0}</p>
             </button>
           ))}
+        </div>
+
+        {/* Semantic search */}
+        <div
+          className="p-5 rounded mb-6"
+          style={{ backgroundColor: '#ffffff', border: '1px solid #d4cdb8' }}
+        >
+          <SemanticSearchBox
+            rows={(claims || []).map((c) => ({
+              id: c.id,
+              text: [c.claim_text, c.subject, c.predicate, c.rationale, (c.needed_proof || []).join(' ')]
+                .filter(Boolean).join(' · '),
+              subject: c.subject,
+              status: c.status,
+              claim_text: c.claim_text,
+            }))}
+            placeholder='Search claims by meaning… e.g. "concubine no property rights"'
+            renderResult={({ row, score }) => (
+              <div
+                className="px-3 py-2 rounded cursor-pointer hover:opacity-90"
+                style={{ backgroundColor: '#f9f5ed', border: '1px solid #d4cdb8' }}
+                onClick={() => {
+                  const claim = (claims || []).find((c) => c.id === row.id);
+                  if (claim) { setEditing(claim); setShowModal(true); }
+                }}
+              >
+                <div className="flex items-baseline justify-between gap-3 flex-wrap mb-0.5">
+                  <span
+                    className="text-xs"
+                    style={{ color: '#1a1815', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.05em' }}
+                  >
+                    {row.subject || row.id.slice(0, 8)} · {row.status || 'unset'}
+                  </span>
+                  <span
+                    className="text-xs"
+                    style={{ color: '#6b6559', fontFamily: 'JetBrains Mono, monospace' }}
+                  >
+                    sim {(score * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <p className="text-sm" style={{ color: '#1a1815', lineHeight: 1.45 }}>
+                  {(row.claim_text || '').slice(0, 200)}
+                  {(row.claim_text || '').length > 200 ? '…' : ''}
+                </p>
+              </div>
+            )}
+          />
         </div>
 
         {/* Claim list */}

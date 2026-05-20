@@ -11,6 +11,7 @@ import ReadinessScore from '../../forensic/ReadinessScore';
 import QuarantinePanel from '../../forensic/QuarantinePanel';
 import CustodySummary from '../../custody/CustodySummary';
 import CustodyChain from '../../custody/CustodyChain';
+import AuditDriftBanner from '../../ml/AuditDriftBanner';
 
 export default function OverviewTab({ allEvidence, allClaims, verifiedOnly, setVerifiedOnly }) {
   const qc = useQueryClient();
@@ -30,6 +31,8 @@ export default function OverviewTab({ allEvidence, allClaims, verifiedOnly, setV
       animate={{ opacity: 1, y: 0 }}
       className="space-y-6"
     >
+      <AuditDriftBanner />
+
       <KeyDocumentsPanel claims={allClaims} links={links} onUnpin={(c) => unpin.mutate(c)} />
 
       <PipesSummary claims={allClaims} />

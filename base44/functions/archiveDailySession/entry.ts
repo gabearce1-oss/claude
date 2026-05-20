@@ -112,10 +112,27 @@ Deno.serve(async (req) => {
     const sessionDate = pacificDate();
     const generatedAt = new Date().toISOString();
 
-    // Load today's verified/updated records via service role
+    // Page through every Evidence and Claim row — Base44 list() defaults to
+    // 50 records, so audit_score / evidenceEntries / claimEntries would be
+    // computed from a truncated subset once either entity grows past 50.
+    // Signature is list(sort, limit, skip) where skip is a record offset.
+    async function listAll(entity) {
+      const all = [];
+      const limit = 200;
+      let skip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await entity.list(null, limit, skip);
+        if (!batch || batch.length === 0) break;
+        all.push(...batch);
+        if (batch.length < limit) break;
+        skip += limit;
+      }
+      return all;
+    }
+
     const [allEvidence, allClaims, existingLogs] = await Promise.all([
-      base44.asServiceRole.entities.Evidence.list(),
-      base44.asServiceRole.entities.Claim.list(),
+      listAll(base44.asServiceRole.entities.Evidence),
+      listAll(base44.asServiceRole.entities.Claim),
       base44.asServiceRole.entities.SessionLog.filter({ session_date: sessionDate }),
     ]);
 
