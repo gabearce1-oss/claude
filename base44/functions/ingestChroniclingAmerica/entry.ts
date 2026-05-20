@@ -1,17 +1,40 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
+// SSRF guard — only allow ingest URLs on official LoC hosts.
+const LOC_HOSTS = new Set([
+  'www.loc.gov',
+  'loc.gov',
+  'chroniclingamerica.loc.gov',
+]);
+
+function assertLocHost(rawUrl) {
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    throw new Error('searchURL is not a valid URL');
+  }
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    throw new Error(`Disallowed protocol: ${parsed.protocol}`);
+  }
+  if (!LOC_HOSTS.has(parsed.hostname)) {
+    throw new Error(`Disallowed host: ${parsed.hostname}. Only LoC endpoints are permitted.`);
+  }
+  return parsed;
+}
+
 // Pull item IDs from a Chronicling America / loc.gov search URL.
 async function getItemIds(url, maxItems = 25) {
   const items = [];
-  let next = url;
   // Force JSON + pagination params
-  const u = new URL(next);
+  const u = assertLocHost(url);
   u.searchParams.set('fo', 'json');
   u.searchParams.set('c', '100');
   u.searchParams.set('at', 'results,pagination');
-  next = u.toString();
+  let next = u.toString();
 
   while (next && items.length < maxItems) {
+    assertLocHost(next); // re-validate pagination links from API responses
     const r = await fetch(next, { headers: { Accept: 'application/json' } });
     if (!r.ok) throw new Error(`LoC search failed: ${r.status}`);
     const data = await r.json();

@@ -5,6 +5,8 @@ const XLSX_URL = 'https://media.base44.com/files/public/6a0ca84fc17e790fce3ccf92
 
 function mapClaimStatus(s) {
   const up = (s || '').toUpperCase();
+  // UNVERIFIED must be checked before VERIFIED because includes() matches substrings
+  if (up.includes('UNVERIFIED')) return 'unverified';
   if (up.includes('VERIFIED')) return 'verified';
   if (up.includes('QUARANTINED') || up.includes('FABRICATED')) return 'fabricated_risk';
   if (up.includes('DISCONFIRMED') || up.includes('REJECTED')) return 'rejected';

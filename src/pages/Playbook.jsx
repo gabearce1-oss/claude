@@ -193,6 +193,13 @@ export default function PlaybookPage() {
               desc: 'TSK-001/002, TSK-004, TSK-005, TSK-006 + LAND-004/005. Model letters included.',
               band: '#1a1815',
             },
+            {
+              to: '/playbook/research-protocol',
+              tag: 'DOCTRINE',
+              title: 'Research Protocol — Omega Doctrine',
+              desc: 'Five-gate admissibility · claim classification · adversarial verification · AI contamination firewall · reference-template integration.',
+              band: '#1a1815',
+            },
           ].map((p) => (
             <Link
               key={p.to}
