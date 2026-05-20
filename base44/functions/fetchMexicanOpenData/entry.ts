@@ -53,8 +53,27 @@ async function fetchInegiIndicator(indicator, geo = '0700002604') {
 async function fetchIneOpenData(endpoint) {
   // INE serves Open-Data via various endpoints; treat caller-supplied path as a known dataset slug.
   // The endpoint is constructed from a known dataset id; arbitrary strings are NOT allowed.
-  const u = new URL(`https://www.ine.mx/datos-abiertos/${endpoint}`);
-  return fetchJson(u.toString());
+  // INE datasets may be served as JSON or CSV depending on the endpoint, so
+  // parse by Content-Type / extension rather than forcing r.json() — otherwise
+  // a valid CSV dataset surfaces as an "error" in the response.
+  const u = assertHost(`https://www.ine.mx/datos-abiertos/${endpoint}`);
+  const r = await fetch(u.toString(), { headers: { Accept: 'application/json, text/csv;q=0.9, */*;q=0.5' } });
+  if (!r.ok) {
+    const t = await r.text().catch(() => '');
+    throw new Error(`${u.hostname} → ${r.status} ${r.statusText} ${t}`.trim());
+  }
+  const ct = (r.headers.get('content-type') || '').toLowerCase();
+  const isCsv = ct.includes('csv') || /\.csv($|\?)/i.test(u.pathname);
+  if (isCsv) {
+    const text = await r.text();
+    return { format: 'csv', content_type: ct || 'text/csv', csv: text };
+  }
+  if (ct.includes('json')) {
+    return { format: 'json', content_type: ct, data: await r.json() };
+  }
+  // Unknown content type — return text body so the caller can inspect.
+  const text = await r.text();
+  return { format: 'text', content_type: ct || 'application/octet-stream', text };
 }
 
 Deno.serve(async (req) => {

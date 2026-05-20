@@ -109,15 +109,27 @@ function mapArchiveSource(name) {
 }
 
 function mapRequestStatus(s) {
+  const raw = (s || '').toLowerCase().trim();
   const m = {
     not_submitted: 'planned',
+    planned: 'planned',
+    letter_drafted: 'draft',
+    drafted: 'draft',
+    draft: 'draft',
+    letter_sent: 'submitted',
+    sent: 'submitted',
     submitted: 'submitted',
+    in_progress: 'running',
+    running: 'running',
+    received: 'responded',
     responded: 'responded',
+    closed: 'completed',
     completed: 'completed',
     blocked: 'blocked',
     no_result: 'no_result',
+    null_result: 'no_result',
   };
-  return m[(s || '').toLowerCase()] || 'planned';
+  return m[raw] || 'planned';
 }
 
 Deno.serve(async (req) => {
