@@ -155,9 +155,15 @@ export default function PlaybookPage() {
             },
             {
               href: 'https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-22532015000100002',
-              tag: 'Reference · Gerber & Passananti 2015',
+              tag: 'Document Lane · Gerber & Passananti 2015',
               title: 'Economic Consequences of Financial Regimes — Mexico & Brazil 1890–1910',
-              desc: 'Gerber, J. & Passananti, T. (2015). *América Latina en la historia económica* 22(1), 35–58. SDSU. Compares Porfirian Mexican banking restriction (1897 Limantour law, Banamex / Banco de Londres / state banks) with Brazil\'s Encilhamento liberalization (1889). Directly anchors the LEGAL / WF pipes — covers the exact 1890–1910 window of Aviana\'s 1907 asserted deeds, Francisco\'s mining operations, the 1907 Panic, and the agrarian-bank reform that followed. Cites Ludlow on Banamex origins, Marichal on the 1885 crisis, AGES references throughout. PDF and Spanish abstract available on SciELO. Opens in a new tab.',
+              desc: 'Gerber, J. & Passananti, T. (2015). *América Latina en la historia económica* 22(1), 35–58. SDSU. Anchors the LEGAL / WF pipes for the 1890–1910 regulatory window (1897 Limantour law, Banamex monopoly, 1907 Panic). Classified as SECONDARY SCHOLARLY CONTEXT — partially harvested (article + PDF confirmed; XML structured-export tab pending). NOT case-specific financial evidence.',
+            },
+            {
+              href: 'https://analytics.scielo.org/w/bibliometrics/journal/citation_data',
+              tag: 'Metrics Lane · SciELO Analytics',
+              title: 'SciELO Bibliometrics — Citation Data',
+              desc: 'JOURNAL TELEMETRY endpoint, not narrative evidence. SciELO Analytics (Beta) — citation counts and bibliometric indicators at the journal level. Populates the metrics lane only: fetch timestamp + journal id + period + raw payload + normalized summary. Useful for reporting on the scholarly footprint of the sources cited in the LEGAL pipe; does not verify any case-specific claim. Opens in a new tab.',
             },
           ].map((nb) => (
             <a

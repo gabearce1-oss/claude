@@ -1,6 +1,27 @@
 # Gerber & Passananti (2015) — Economic Consequences of Financial Regimes
 ## Mexico and Brazil, 1890–1910
 
+## Classification — DOCUMENT LANE
+
+- **Record type:** `KnowledgeDocument` + raw file asset (PDF, when harvested)
+- **Confidence:** High
+- **Role:** SECONDARY SCHOLARLY CONTEXT — not case-specific financial evidence.
+- **Use:** supports historical propositions about the Mexican banking regime under which Aviana's 1907 asserted deeds and Francisco's mining operations operated. Does NOT verify any case-specific transaction. Mixing case claims with this article's narrative would contaminate the corpus.
+- **Provenance gate:** any specific financial claim about Wells Fargo Express, Banamex, Banco de Londres, or the Sonora state banks remains blocked behind higher provenance thresholds — citing this paper does not lift those gates.
+
+## Harvest Status — PARTIAL
+
+| Asset | Status |
+|---|---|
+| SciELO article landing page (HTML) | ✅ Confirmed (this document) |
+| SciELO article PDF | ✅ Confirmed in upstream harvest run |
+| SciELO Analytics journal shell | ✅ Confirmed (Beta — metrics lane) |
+| SciELO XML structured-export tab | ⚠️ Failed (cache miss); needs second pass in live implementation |
+
+Until the XML tab is re-harvested, this record stays labeled **partially harvested**. Fraudulent certainty is still fraud even when it wears a nice schema.
+
+---
+
 ## Citation
 
 Gerber, James & Passananti, Thomas. (April 2015). "The Economic Consequences of Financial Regimes: A New Look at the Banking Policies of Mexico and Brazil, 1890–1910." *América Latina en la historia económica* (Am. Lat. Hist. Econ.), Vol. 22, No. 1, pp. 35–58. Instituto de Investigaciones Dr. José María Luis Mora. ISSN 1405-2253. Article ID S1405-22532015000100002.
