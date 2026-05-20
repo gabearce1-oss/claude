@@ -215,6 +215,13 @@ export default function PlaybookPage() {
               band: '#8a6e3c',
             },
             {
+              to: '/playbook/pascua-yaqui',
+              tag: 'ORAL · CONSULTATION',
+              title: 'Pascua Yaqui Cultural Resources Letter',
+              desc: 'Tribal-sovereign consultation request to ANARÓ — five questions, no-claim disclaimers, enclosures list. Print-ready.',
+              band: '#8a6e3c',
+            },
+            {
               to: '/playbook/priority-actions',
               tag: 'Master Brief',
               title: 'Priority Action Execution Package',
