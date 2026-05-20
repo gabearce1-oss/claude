@@ -108,13 +108,24 @@ Deno.serve(async (req) => {
     const skipped = [];
     const errors = [];
 
-    // Snapshot existing Evidence (used for dedupe by source URL).
-    // The CA-#### number itself is re-derived from a fresh server read
-    // immediately before each create (see below) so concurrent ingest
-    // runs are far less likely to collide. This is a tight mitigation,
-    // not a true atomic allocation — backend-side counter or unique
-    // constraint is the correct long-term fix.
-    const existing = await base44.entities.Evidence.list();
+    // Snapshot existing Evidence for dedupe by source URL. Must paginate —
+    // Base44 list() defaults to 50 rows, so once Evidence grows past one
+    // page the dedupe set misses older ingested URLs and the loop
+    // re-creates duplicates of already-ingested Chronicling America
+    // pages. Signature is list(sort, limit, skip) with skip = record
+    // offset.
+    const existing = [];
+    {
+      const pageSize = 200;
+      let skip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.entities.Evidence.list(null, pageSize, skip);
+        if (!batch || batch.length === 0) break;
+        existing.push(...batch);
+        if (batch.length < pageSize) break;
+        skip += pageSize;
+      }
+    }
 
     async function allocateEvidenceNumber() {
       const fresh = await base44.entities.Evidence.list();

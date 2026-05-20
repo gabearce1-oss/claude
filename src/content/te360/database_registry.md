@@ -108,29 +108,140 @@ Every row is classified by **access pattern** so you know which can become an au
 | [HathiTrust](https://www.hathitrust.org) | Digitized diplomatic books | ✅ HathiTrust APIs | POL / LEGAL |
 | [Internet Archive](https://archive.org) | Rare regime-era texts | ✅ IA Items API + S3-compatible — public-domain books fully programmable | POL / LEGAL / WF |
 
+## 9. Geospatial / GIS
+
+| Database | Focus | Access | Pipe |
+|---|---|---|---|
+| [USGS Earth Explorer](https://earthexplorer.usgs.gov) | Satellite + historical imagery | ✅ M2M API (account required) | GEO / LAND |
+| [NOAA Climate Data Online](https://www.ncei.noaa.gov/access/search-service-api-user-documentation) | Environmental history | ✅ Search Service API | GEO |
+| [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API) | Open mapping | ✅ Overpass + Nominatim APIs | GEO |
+| [ArcGIS Open Data](https://hub.arcgis.com/search) | Public GIS datasets | ✅ ArcGIS REST + OGC API | GEO |
+| [INEGI Geospatial Services](https://www.inegi.org.mx/servicios/api_indicadores.html) | Mexican GIS | ✅ Public API | GEO / LAND |
+| [SIAP Mexico](https://www.gob.mx/siap) | Agricultural mapping | 🔓 Open browse + dataset downloads | LAND |
+
+## 10. Financial / Securities APIs
+
+| Database | Use | Access | Pipe |
+|---|---|---|---|
+| [FRED API](https://fred.stlouisfed.org/docs/api/fred/) | Economic indicators | ✅ Free API key | WF / MIN |
+| [NASDAQ Data Link](https://data.nasdaq.com) | Financial datasets | ⚠️ Free tier + paid premium series | WF |
+| [OpenFIGI](https://www.openfigi.com/api) | Securities mapping | ✅ Free API | LEGAL |
+| [SEC EDGAR API](https://www.sec.gov/edgar/sec-api-documentation) | Corporate filings | ✅ Free, rate-limited | WF / LEGAL |
+| [FINRA API Center](https://developer.finra.org) | Broker/dealer data | 🔒 Registration required | WF |
+| [CFPB Consumer Complaint DB](https://www.consumerfinance.gov/data-research/consumer-complaints/) | Consumer financial data | ✅ Open API | General |
+
+## 11. Latin American Scholarly Repositories
+
+| Database | Focus | Access | Pipe |
+|---|---|---|---|
+| [SciELO](https://scielo.org) | LatAm scholarship | ✅ articlemeta.scielo.org REST + OAI-PMH | LEGAL / POL / IND |
+| [Redalyc](https://www.redalyc.org) | Mexican/LatAm journals | 🔓 OAI-PMH | LEGAL / IND |
+| [Dialnet](https://dialnet.unirioja.es) | Spanish-language scholarship | 🔓 Open browse + REST search | LEGAL / IND |
+| [CLACSO Biblioteca](https://www.clacso.org.ar/biblioteca) | LatAm social sciences | 🔓 OAI-PMH | IND / POL |
+| [Repositorio UNAM](https://ru.dgb.unam.mx) | UNAM institutional archive | 🔓 OAI-PMH | LEGAL / GEN |
+| [Repositorio Colegio de México](https://repositorio.colmex.mx) | Mexican historical/social research | 🔓 OAI-PMH | LEGAL / POL |
+
+## 12. General Scholarly APIs
+
+| Database | Specialty | Access | Pipe |
+|---|---|---|---|
+| [Google Scholar](https://scholar.google.com) | General scholarship | ⚠️ No official API; scraping blocked | General |
+| [Semantic Scholar](https://www.semanticscholar.org/product/api) | AI-enhanced research | ✅ Free API key | General / IND |
+| [Crossref API](https://www.crossref.org/documentation/retrieve-metadata/rest-api/) | DOI metadata | ✅ Open, polite-rate | General |
+| [OpenAlex](https://openalex.org) | Massive scholarly graph (200M+ works) | ✅ Open API, no auth | General — **strongest single replacement for Google Scholar** |
+| [CORE](https://core.ac.uk/services/api) | Open-access papers | ✅ Free API key | General |
+| [DOAJ](https://doaj.org/api/v2/docs) | Open-access journals | ✅ Open API | General |
+| [ERIC](https://eric.ed.gov) | Education research | ✅ Open API | General |
+| [PubMed API / E-Utils](https://pubmed.ncbi.nlm.nih.gov/help/) | Medical research | ✅ Open API (Europe PMC also a clean alt) | IND (genetic / haplogroup B2) |
+| [SSRN](https://www.ssrn.com) | Social sciences/legal | 🔓 Browse, no API | LEGAL |
+| [JSTOR Open Content](https://about.jstor.org/oa-and-free/) | Humanities/history | 🔓 Open browse | LEGAL / POL |
+
+## 13. Mexico Archives — Additional Specialized
+
+| Database | Focus | Access | Pipe |
+|---|---|---|---|
+| [Archivo Histórico de Sonora (AHES)](https://isc.sonora.edu.mx/ahes.html) | Sonora notarial/judicial — **primary TE360 target** | ⚠️ Browse + written requests | LEGAL / LAND |
+| [FamilySearch Mexico Collections](https://www.familysearch.org/search/collection/location/1927054) | Parish/civil records | 🔒 Developer agreement for API | GEN / IND |
+| [Mexican Catholic Parish Archives (FS catalog)](https://www.familysearch.org/search/catalog) | Baptism/marriage/death — **catalogs 704679 / 704681 already in TE360** | 🔒 Same | GEN / IND |
+| [HNDM](https://hndm.iib.unam.mx) | Historic newspapers | ⚠️ Browse + paywalled full text | POL / GEN |
+| [Colecciones UNAM — Datos Abiertos](https://datosabiertos.unam.mx) | Scholarly/open data | ✅ Some open datasets | General |
+| [Archivo General Agrario / RAN](https://www.gob.mx/ran) | Ejido/land redistribution — **anchors `LAND-001` Bacobampo 411.123/2174** | ⚠️ Browse + written requests | LAND |
+| [Sistema Nacional de Fototecas INAH](https://fototeca.inah.gob.mx) | Historic photography | 🔓 Open browse | IND / GEN |
+| [Mapoteca Manuel Orozco y Berra](https://mapoteca.siap.gob.mx) | Historic land maps | 🔓 Open browse | GEO / LAND |
+
+## 14. Mexico Open-Data APIs
+
+| Database | Type | Access | Pipe |
+|---|---|---|---|
+| [Datos Abiertos México](https://datos.gob.mx) | Master open-data portal | ✅ CKAN API | General |
+| [INEGI](https://www.inegi.org.mx/app/api/denue/v1/) | Census/economic/geospatial | ✅ Public API | GEO / GEN |
+| [Banco de México API](https://www.banxico.org.mx/SieAPIRest/service/v1/) | Financial/economic series (SIE API) | ✅ Free token, REST | WF / MIN / LEGAL |
+| [Registro Agrario Nacional (RAN)](https://www.gob.mx/ran) | Agrarian/ejido land records | ⚠️ Partial open | LAND |
+| [PARES / AGN México](https://www.gob.mx/agn) | National archive | 🔓 Open browse | LEGAL / POL |
+| [INFOMEX / Plataforma Nacional de Transparencia](https://www.plataformadetransparencia.org.mx) | FOIA/transparency | 🔓 Open browse | POL / LEGAL |
+| [INE (Instituto Nacional Electoral)](https://www.ine.mx/datos-abiertos/) | Electoral/public datasets | ✅ Open API | POL |
+| [SAT Datos Abiertos](https://www.sat.gob.mx/aplicacion/79615/datos-abiertos) | Tax/customs/business | ✅ Open API | LEGAL |
+| [Registro Público de Comercio (SIGER 2)](https://rpc.economia.gob.mx/siger2-web/publico) | Corporate registry | ⚠️ Partial open | LEGAL |
+| [CNBV Datos Abiertos](https://portafolioinfo.cnbv.gob.mx/Paginas/Inicio.aspx) | Banking/financial regulation | ✅ Open datasets | WF / LEGAL |
+
+## 15. US Military / Immigration / Security
+
+| Database | Focus | Access | Pipe |
+|---|---|---|---|
+| [National Personnel Records Center](https://www.archives.gov/personnel-records-center) | Military service records | 🔒 Records request, fee | POL / GEN |
+| [VA Open Data Portal](https://www.data.va.gov) | Veteran data | ✅ Open API | General |
+| [Defense Technical Information Center (DTIC)](https://discover.dtic.mil) | Pentagon research | 🔓 Open browse | General |
+| [Selective Service Data](https://www.sss.gov/open-government/) | Draft records | 🔓 Open browse | POL / GEN |
+| [USCIS Genealogy Program](https://www.uscis.gov/history-and-genealogy/genealogy) | Immigration records | 🔒 Records request, fee | GEN |
+| [CBP Stats and Data](https://www.cbp.gov/newsroom/stats) | Border statistics | ✅ Open data | GEN |
+| [ICE FOIA Library](https://www.ice.gov/foia/library) | Deportation/immigration docs | 🔓 Open browse | GEN |
+| [Homeland Security Data Framework](https://www.dhs.gov/data-statistics) | DHS datasets | ✅ Open data | General |
+
+## 16. US Master Open-Data Portals
+
+| Database | Type | Access | Pipe |
+|---|---|---|---|
+| [Data.gov](https://www.data.gov) | Master US open-data portal | ✅ CKAN API | General |
+| [U.S. Census Bureau API](https://www.census.gov/data/developers/data-sets.html) | Census / demographics | ✅ Open API, free key | GEN / GEO |
+| [Library of Congress Digital Collections](https://www.loc.gov/collections/) | Historical archives | ✅ Same loc.gov API as Chronicling America | General |
+| [National Archives (NARA) Catalog](https://catalog.archives.gov) | Military / immigration / federal records | ✅ NARA Catalog API | LEGAL / POL / GEN |
+| [Chronicling America](https://chroniclingamerica.loc.gov) | Historic newspapers | ✅ Already wired (`ingestChroniclingAmerica`) | WF / POL / TRADE |
+| [Smithsonian Open Access](https://www.si.edu/openaccess) | Museum/media collections | ✅ Open API | IND |
+| [Federal Reserve Economic Data (FRED)](https://fred.stlouisfed.org) | Economic/financial | ✅ Open API | WF / MIN |
+| [SEC EDGAR](https://www.sec.gov/edgar/search/) | Corporate filings | ✅ Open API | LEGAL |
+| [USAspending.gov](https://www.usaspending.gov) | Federal contracts/grants | ✅ Open API | General |
+| [OpenSecrets](https://www.opensecrets.org/open-data/api) | Political finance | ✅ Open API | POL |
+
 ---
 
 ## Crawler-readiness summary
 
-| Class | Count | What's tractable |
+Updated with 16 categories and 90+ databases:
+
+| Class | Count | Notable examples |
 |---|---|---|
-| ✅ Open API | ~12 | Real candidates for scheduled functions. **Top 3**: FRED (silver/gold series), HathiTrust (digitized banking + diplomatic books), Internet Archive (regime-era rare texts). All have stable APIs and no auth. |
-| 🔓 Open browse / OAI-PMH | ~20 | Possible scrapers; fragile. Realistically used as targeted human-driven searches with manual save into TE360. |
-| ⚠️ Scrape-only with friction | ~6 | Mexican national archives (AGN, SRE, INM, HNDM). Stay on the paper trail. |
-| 🔒 Auth-walled | ~2 | USCIS Genealogy (fee per file), FamilySearch (developer agreement). |
-| 💰 Paid | ~5 | Newspapers.com, ProQuest, JSTOR, Ancestry, Fold3. Not crawler candidates; relevant only if you have an institutional subscription. |
+| ✅ Open API | ~40 | FRED, OpenAlex, Crossref, Semantic Scholar, CORE, DOAJ, ERIC, PubMed, SEC EDGAR, NARA Catalog, US Census, INEGI, Banxico SIE, USGS, NOAA, OSM, INE, SAT, CBP, CNBV, Smithsonian Open Access, World Digital Library, Internet Archive, HathiTrust, USAspending, OpenSecrets — most have free keys or no auth |
+| 🔓 Open browse / OAI-PMH | ~25 | SciELO, Redalyc, Dialnet, CLACSO, Repositorio UNAM, Colegio de México, BNM, Memórica, INAH Mediateca, Mapoteca, LoC Hispanic Reading Room — scrapable through standard catalog endpoints |
+| ⚠️ Scrape-only / friction | ~10 | AGN, SRE, HNDM, NASDAQ Data Link free tier, RAN partial, RPC SIGER 2 — possible but fragile |
+| 🔒 Auth-walled | ~4 | FamilySearch (dev key), USCIS Genealogy (fee), NPRC (fee), FINRA |
+| 💰 Paid | ~6 | Newspapers.com, ProQuest, JSTOR (full), Ancestry, Fold3, Mining Data Online |
 
-## Recommended next-build shortlist
+## Recommended next-build shortlist (refined)
 
-If you want **two more crawlers** (beyond the existing `ingestChroniclingAmerica`), the highest-yield additions from this catalog are:
+Six concrete crawler / metric-pull candidates, ranked by signal-to-noise for the TE360 case:
 
-1. **FRED precious-metals series** — historical silver/gold pricing API. Drops daily data into a new `EconomicSeries` entity, anchors WF / MIN pipe quantitative context.
-2. **Internet Archive items search** — keyword-polled (`"Terminel" "Sonora" "Wells Fargo"`) writes PDF and metadata into existing Evidence flow. Same shape as Chronicling America — minimal new code.
+1. **OpenAlex** — single API replaces Google Scholar; semantic scholarly graph polled by keyword. Highest catch-rate for "Yaqui dispossession 1900s," "Sonora mining 1907," "Terminel," "Pima Bajo demographics" etc.
+2. **FRED + Banxico SIE** — economic-series tile on the Dashboard. Banxico SIE gives Mexican silver/peso historical series; FRED gives US silver/gold. Joined → anchors the 1907 valuation math on the Family Genealogy displacement calculator.
+3. **NARA Catalog API** — direct hit on RG 84 Hermosillo (11 cu.ft.) and Nogales (42 cu.ft.) — already the WF letter's pipe-defining target.
+4. **Internet Archive items search** — keyword-polled for regime-era books and pamphlets that name Terminel, Verminel, Calles, Cárdenas senators 1935.
+5. **Crossref + Semantic Scholar** — DOI / citation graph enrichment for any peer-reviewed paper we already cite. Cheap to add alongside OpenAlex.
+6. **INEGI + INE** — Mexican census and electoral series for the GEO and POL pipes (San Javier population time series, 1932–34 elections).
 
-Or **two scheduled metric pulls** on the Metrics Lane:
+## What NOT to crawl
 
-1. **Banxico** historical peso / silver series — joins the WF pipe context.
-2. **LBMA bullion prices** CSV — daily silver-fix series for the 1907 deed valuation math.
+- Mexican national archives (AGN, RAN, SRE, AHES, INM, HNDM) — stay on the **letter / written-request** trail. These have no stable APIs and their browse interfaces change. Manual searches save into TE360 via the Archive Requests workflow.
+- Paid services (Newspapers.com, JSTOR full, Ancestry, Fold3, ProQuest) — outside the open-API budget. Use only when an institutional subscription is available, with manual save into TE360.
+- Google Scholar — explicitly blocks programmatic access. Use OpenAlex instead.
 
 ---
 

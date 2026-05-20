@@ -196,7 +196,21 @@ Deno.serve(async (req) => {
     }
 
     // 7. Update ArchiveRequest notes with v3 contact info (match by name substring)
-    const existingArchives = await base44.asServiceRole.entities.ArchiveRequest.list();
+    // Paginate — Base44 list() defaults to 50 rows. Without this, archive
+    // targets past the first page never match the spreadsheet's
+    // contact/status updates so their notes stay stale on rerun.
+    const existingArchives = [];
+    {
+      const arPageSize = 200;
+      let arSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.ArchiveRequest.list(null, arPageSize, arSkip);
+        if (!batch || batch.length === 0) break;
+        existingArchives.push(...batch);
+        if (batch.length < arPageSize) break;
+        arSkip += arPageSize;
+      }
+    }
     for (const ac of archiveContacts) {
       const nameLower = ac.name.toLowerCase();
       const match = existingArchives.find((a) => {

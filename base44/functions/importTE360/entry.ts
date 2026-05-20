@@ -255,8 +255,23 @@ Deno.serve(async (req) => {
       report.archives++;
     }
 
-    // 7. Insert Evidence-Claim links
-    const existingLinks = await base44.asServiceRole.entities.EvidenceClaimLink.list();
+    // 7. Insert Evidence-Claim links.
+    //    Must paginate — Base44 list() defaults to 50 rows. Without
+    //    pagination the dedupe set covers only the first page and reruns
+    //    duplicate every link beyond it, skewing downstream
+    //    claim-evidence weighting. Signature is list(sort, limit, skip).
+    const existingLinks = [];
+    {
+      const linkPageSize = 200;
+      let linkSkip = 0;
+      for (let i = 0; i < 100; i++) {
+        const batch = await base44.asServiceRole.entities.EvidenceClaimLink.list(null, linkPageSize, linkSkip);
+        if (!batch || batch.length === 0) break;
+        existingLinks.push(...batch);
+        if (batch.length < linkPageSize) break;
+        linkSkip += linkPageSize;
+      }
+    }
     const existingLinkKeys = new Set(existingLinks.map(l => `${l.evidence_id}|${l.claim_id}`));
     for (const row of evClaimCSV) {
       const evId = evidenceIdMap[row.evidence_id];
