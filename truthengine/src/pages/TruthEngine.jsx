@@ -129,6 +129,7 @@ import ShelterMapView from "../components/te/ShelterMapView";
 import IntelReportGenerator from "../components/te/IntelReportGenerator";
 import ExpansionRoadmap from "../components/te/ExpansionRoadmap";
 import DatabaseMasterIndex from "../components/te/DatabaseMasterIndex";
+import OmegaResearchEngine from "../components/te/OmegaResearchEngine";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -277,6 +278,7 @@ export default function TruthEngine() {
       {tab === "intelreport" && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><IntelReportGenerator /></div>}
       {tab === "expansionroadmap" && <ExpansionRoadmap />}
       {tab === "dbmaster" && <DatabaseMasterIndex />}
+      {tab === "omega" && <div style={{ padding:"0", overflowY:"auto", height:"calc(100vh - 118px)" }}><OmegaResearchEngine /></div>}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />
