@@ -29,12 +29,20 @@ function mapClaimType(claimId) {
 
 // Match the ArchiveRequest.status enum: planned, draft, submitted, running,
 // responded, completed, blocked, no_result. The v3 workbook uses free-form
-// labels per archive contact (e.g. "letter drafted", "in progress",
-// "received", "closed"); map them to valid enum values so the importer can
-// propagate state transitions during refresh. Unknown values return null
-// so the importer leaves the existing status untouched.
+// labels per archive contact (e.g. "NOT SUBMITTED", "letter drafted",
+// "in progress", "received", "closed", and sometimes annotated forms like
+// "NOT SUBMITTED — TSK-005"); normalize aggressively before lookup so we
+// don't silently drop real workbook transitions. Unknown values return
+// null so the importer leaves the existing status untouched.
 function mapRequestStatus(s) {
-  const raw = (s || '').toLowerCase().trim();
+  if (!s) return null;
+  // Strip annotation tails after em-dash / en-dash / dash / colon / parens —
+  // e.g. "NOT SUBMITTED — TSK-005" → "NOT SUBMITTED",
+  // "drafted (pending)" → "drafted".
+  let raw = String(s).toLowerCase().split(/[—–\-:(]/)[0].trim();
+  // Collapse whitespace and dashes to single underscores so "letter drafted"
+  // and "letter  -  drafted" both reduce to "letter_drafted".
+  raw = raw.replace(/[\s_\-]+/g, '_').replace(/^_+|_+$/g, '');
   if (!raw) return null;
   const m = {
     not_submitted: 'planned',
@@ -46,14 +54,18 @@ function mapRequestStatus(s) {
     sent: 'submitted',
     submitted: 'submitted',
     in_progress: 'running',
+    inprogress: 'running',
     running: 'running',
     received: 'responded',
     responded: 'responded',
+    response_received: 'responded',
     closed: 'completed',
     completed: 'completed',
+    complete: 'completed',
     blocked: 'blocked',
     no_result: 'no_result',
     null_result: 'no_result',
+    no_results: 'no_result',
   };
   return m[raw] || null;
 }
@@ -244,24 +256,57 @@ Deno.serve(async (req) => {
     }
     for (const ac of archiveContacts) {
       const nameLower = ac.name.toLowerCase();
-      const match = existingArchives.find((a) => {
+      // Tokenize the contact name (after stripping a leading dash/colon-
+      // delimited prefix). Drop short prepositions but keep meaningful
+      // short tokens like "UC" so rows like "UC Berkeley Bancroft Library"
+      // still tie back to a target whose record_target says "Bancroft".
+      const STOPWORDS = new Set([
+        'the', 'of', 'a', 'an', 'and', 'or', 'de', 'del', 'la', 'el',
+        'los', 'las', 'y',
+      ]);
+      // Generic institutional words that are too common to disambiguate
+      // on their own — "library", "historical", "archive", "national"
+      // would each match dozens of unrelated archives. Allow these as
+      // bonus matches but never as the sole match.
+      const GENERIC = new Set([
+        'library', 'libraries', 'archive', 'archives', 'archivo', 'archivos',
+        'historical', 'historic', 'history', 'national', 'nacional',
+        'museum', 'museo', 'university', 'universidad', 'college',
+        'department', 'office', 'collection', 'collections', 'institute',
+        'institution', 'society', 'center', 'centre', 'records', 'record',
+        'special', 'public', 'general', 'state', 'estatal',
+      ]);
+      const tokens = nameLower
+        .split(/[—–\-:]/)[0]
+        .trim()
+        .split(/\s+/)
+        .filter((t) => t.length >= 2 && !STOPWORDS.has(t));
+      const specificTokens = tokens.filter((t) => !GENERIC.has(t));
+      // Score every candidate by overlap and pick the strongest match.
+      // A specific token is worth 2; a generic token is worth 1. Require
+      // at least one specific-token hit, or a score >= 2 when only
+      // generic tokens are available, to avoid the old failure mode
+      // where any single generic token like "library" tied the patch
+      // to an unrelated ArchiveRequest.
+      let bestMatch = null;
+      let bestScore = 0;
+      for (const a of existingArchives) {
         const tgt = (a.record_target || '').toLowerCase();
-        // Try every whitespace-delimited token from the contact name (after
-        // stripping the leading dash/colon-delimited prefix). Skip very
-        // short prepositions but keep meaningful short tokens like "UC"
-        // so rows like "UC Berkeley Bancroft Library" still match an
-        // existing target whose record_target mentions "Bancroft" or "UC".
-        const SKIP = new Set([
-          'the', 'of', 'a', 'an', 'and', 'or', 'de', 'del', 'la', 'el',
-          'los', 'las', 'y',
-        ]);
-        const tokens = nameLower
-          .split(/[—–\-:]/)[0]
-          .trim()
-          .split(/\s+/)
-          .filter((t) => t.length >= 2 && !SKIP.has(t));
-        return tokens.some((tok) => tgt.includes(tok));
-      });
+        if (!tgt) continue;
+        let score = 0;
+        let specificHit = false;
+        for (const tok of tokens) {
+          if (!tgt.includes(tok)) continue;
+          if (GENERIC.has(tok)) score += 1;
+          else { score += 2; specificHit = true; }
+        }
+        const meetsBar = specificTokens.length > 0 ? specificHit : score >= 2;
+        if (meetsBar && score > bestScore) {
+          bestScore = score;
+          bestMatch = a;
+        }
+      }
+      const match = bestMatch;
       if (!match) { report.skipped.push(`no archive match for "${ac.name}"`); continue; }
       const newNotes = [
         ac.address && `Address: ${ac.address}`,
