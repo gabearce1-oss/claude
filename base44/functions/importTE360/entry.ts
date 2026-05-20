@@ -90,7 +90,11 @@ function mapArchiveSource(name) {
   if (n.includes('unam') || n.includes('inehrm')) return 'Other';
   if (n.includes('fapecft')) return 'Other';
   if (n.includes('agn')) return 'AGN';
-  if (n.includes('ages')) return 'AGN';
+  // AGES = Archivo General Agrario (held by RAN — Registro Agrario Nacional).
+  // It is NOT the AGN (federal national archive) and is not the AHES (Sonora
+  // state archive). The ArchiveRequest enum has no RAN value, so route to
+  // 'Other' instead of misclassifying as AGN.
+  if (n.includes('ages')) return 'Other';
   if (n.includes('arizona')) return 'U Arizona Special Collections';
   if (n.includes('huntington')) return 'Other';
   if (n.includes('bancroft')) return 'Bancroft';

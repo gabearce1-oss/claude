@@ -95,6 +95,15 @@ async function uploadFile(accessToken, { name, mimeType, parentId, body }) {
       body: payload,
     }
   );
+  // Fail fast on Drive errors. Without this check, an expired token, quota
+  // error, or malformed multipart payload would still be reported as a
+  // successful upload — backups silently lost while automation reports ok.
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(
+      `Drive upload failed for ${name}: ${res.status} ${res.statusText} ${errText}`.trim()
+    );
+  }
   return res.json();
 }
 
