@@ -177,6 +177,12 @@ export default function PlaybookPage() {
               title: 'IBM Think · Machine Learning Algorithms',
               desc: 'IBM Think topic page on ML algorithms. SYSTEM-DESIGN reference, NOT case evidence — practitioner-oriented overview of supervised / unsupervised / reinforcement methods plus the standard families (regression, classification, clustering, decision trees, neural networks). Complements the Sarker 2021 review on the same Technical Reference lane. Opens in a new tab.',
             },
+            {
+              href: 'https://www.geeksforgeeks.org/artificial-intelligence/ai-algorithms/',
+              tag: 'Technical Ref · GeeksforGeeks',
+              title: 'GeeksforGeeks · AI Algorithms',
+              desc: 'GeeksforGeeks reference on AI algorithms (search, optimization, classification, NLP, neural networks). SYSTEM-DESIGN reference, NOT case evidence — practitioner-style overview of the algorithm families useful for the TE360 infrastructure tier (NER on archive responses, semantic search, classifier-assisted pipe tagging). Same Technical Reference lane as Sarker 2021 and IBM Think. Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
