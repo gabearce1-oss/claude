@@ -1,7 +1,55 @@
 # Database Registry
 ## Comprehensive catalog of archival, newspaper, banking, immigration, diplomatic, and mining databases relevant to TE360
 
-Every row is classified by **access pattern** so you know which can become an automated crawler vs. which stay on the paper trail. Pipe relevance is shown where one source obviously anchors a specific TE360 pipe; sources without a marked pipe are general context.
+## STRATEGIC INTELLIGENCE LAYERS
+
+Five organizing layers cut across the 90+ databases below. Each one is composed of specific rows from the catalog and maps to one or more TE360 pipes. Use the layers to decide what to crawl, what to letter-write, and what to merge into the relationship graph; use the categorized tables below as the raw inventory.
+
+### Layer 1 — Diplomatic Intelligence
+
+**Sources:** FRUS · US State Department Office of the Historian · NARA RG 59 + RG 84 (Hermosillo / Nogales consular posts) · LoC Hispanic Reading Room · World Digital Library · National Archives Diplomatic Records · SRE Historical Archives · LoC Digital Collections.
+
+**Pipes anchored:** POL · LEGAL · WF (indirectly via consular bullion / mining reports).
+
+**Why it's a layer, not a row:** the consular cable chain is the *only* contemporaneous outside-state observer of the Sonora regime during 1895–1935. A telegram from the Hermosillo consul about silver shipments or Yaqui deportations independently corroborates (or refutes) the Mexican government record. NARA RG 84 Hermosillo is 11 cu.ft. + Nogales 42 cu.ft. — the largest single addressable source for this layer.
+
+### Layer 2 — Bullion Economics
+
+**Sources:** Banxico SIE API · FRED Precious Metals · LBMA bullion prices · USGS Mineral Resources · SGM (Servicio Geológico Mexicano) · Macrotrends · Cornell Historical Banking · HathiTrust banking texts · IFDP-599 Robitaille (already committed) · Gerber & Passananti 2015 (already committed).
+
+**Pipes anchored:** WF · MIN · LEGAL.
+
+**Why it's a layer:** the 1907 deed-valuation math on the Family Genealogy Generational Displacement calculator depends on a real silver-price series joined to a real peso/gold series joined to the contemporaneous Mexican banking regime. None of those three lives in a single database; together they make Aviana's $3,000 → 2026 calculation defensible.
+
+### Layer 3 — Historical Newspaper
+
+**Sources:** Chronicling America (already wired) · Hemeroteca Nacional Digital de México (HNDM) · California Digital Newspaper Collection · Newspapers.com (paid) · Internet Archive newspaper holdings · LoC Digital Collections.
+
+**Pipes anchored:** WF · POL · LAND · TRADE · IND.
+
+**Why it's a layer:** local newspapers preserved details the federal archives lost or never recorded. The 1912 Wells Fargo complaint, the desafuero coverage, the Bacobampo expropriation reportage, the Yaqui deportation campaign accounts — all of these surface first in newsprint. Local press is *the* compensating channel when the official archive has been culled.
+
+### Layer 4 — Transnational Identity
+
+**Sources:** FamilySearch Mexico parish/civil collections · USCIS Genealogy · NARA Immigration · Ellis Island + Castle Garden · Mexican Catholic Parish archives · AGN Migración · INM · CBP Stats · Selective Service · National Personnel Records Center · UCI Berkeley Bancroft · Smithsonian Indigenous Studies · INAH Fototecas.
+
+**Pipes anchored:** GEN · IND · POL.
+
+**Why it's a layer:** Aviana's daughter Nela was born in San Javier (1910) and died in Ontario CA (2012). That arc crosses parish baptism → civil registration → border-crossing record → US naturalization → death certificate → family knowledge keeper. The *graph* connecting those nodes is the case — no single archive holds it. Merging them is the work.
+
+### Layer 5 — Regime Infrastructure
+
+**Sources:** Banxico Historical Archive · CNBV · INEGI · Registro Agrario Nacional (RAN) · Registro Público de Comercio · INE · SAT · SEC EDGAR · OpenSecrets · AGN PARES · NARA RG 84 mining files · Mining Data Online · USGS · IFDP-599.
+
+**Pipes anchored:** LEGAL · LAND · MIN · WF.
+
+**Why it's a layer:** Porfirian Mexico ran on the railroad–bank–customs–mining-firm–land-registry quintet. Each of those institutions has its own archive. Tied together chronologically (1876 Porfirio → 1888 Bleichroeder loan → 1894 baldíos law → 1897 Limantour banking law → 1907 Panic → 1910 Revolution → 1917 Constitution → 1935 desafuero → 1938 Bacobampo expropriation) they produce the structural-extraction account that the TE360 case rests on.
+
+---
+
+## Raw catalog
+
+Below: 16 categorized tables, 90+ databases. Every row is classified by **access pattern** so you know which can become an automated crawler vs. which stay on the paper trail. Pipe relevance is shown where one source obviously anchors a specific TE360 pipe; sources without a marked pipe are general context.
 
 **Access legend:**
 
