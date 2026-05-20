@@ -44,7 +44,9 @@ async function getItemIds(url, maxItems = 25) {
       if (fmt.includes('collection') || fmt.includes('web page')) continue;
       const id = res.id;
       if (typeof id !== 'string') continue;
-      if (/^https?:\/\/www\.loc\.gov\/(item|resource)/.test(id)) {
+      // Accept both www.loc.gov and bare loc.gov, http or https — the LoC
+      // API mixes these in results[].id across older vs. newer endpoints.
+      if (/^https?:\/\/(?:www\.)?loc\.gov\/(item|resource)/.test(id)) {
         items.push(id);
         if (items.length >= maxItems) break;
       }

@@ -85,11 +85,28 @@ Deno.serve(async (req) => {
       user = await base44.auth.me();
       if (user) trigger = 'manual';
     } catch (_) {
-      // Scheduled invocation — no user context
+      // No user context — must be a real scheduler invocation, not an
+      // anonymous HTTP caller. Require a shared scheduler secret before
+      // proceeding with service-role reads/writes (Drive backup, etc.).
     }
-    // If invoked manually by a non-admin, reject
+    // Manual invocation gate: admin only.
     if (user && user.role !== 'admin') {
       return Response.json({ error: 'Admin only' }, { status: 403 });
+    }
+    // Scheduler invocation gate: shared secret required. Without this an
+    // anonymous HTTP caller could repeatedly force SessionLog writes and
+    // Drive backup activity.
+    if (!user) {
+      const expected = Deno.env.get('SCHEDULER_SECRET');
+      const presented =
+        req.headers.get('x-scheduler-secret') ||
+        (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+      if (!expected || !presented || presented !== expected) {
+        return Response.json(
+          { error: 'Unauthorized — scheduler secret required' },
+          { status: 401 }
+        );
+      }
     }
 
     const sessionDate = pacificDate();

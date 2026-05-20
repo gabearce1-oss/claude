@@ -100,6 +100,30 @@ async function uploadFile(accessToken, { name, mimeType, parentId, body }) {
 
 Deno.serve(async (req) => {
   try {
+    // Trusted-caller gate: this function performs privileged Drive writes
+    // via asServiceRole. Block direct anonymous HTTP invocations that could
+    // craft `{ data: { status: 'verified' } }` to force backup writes into
+    // the connected Drive. Accept either an authenticated admin user OR a
+    // matching automation secret header (set the AUTOMATION_SECRET env var
+    // on the Base44 automation that triggers this hook).
+    const base44 = createClientFromRequest(req);
+    let user = null;
+    try {
+      user = await base44.auth.me();
+    } catch (_) { /* no user context — fall through to secret check */ }
+    if (!user || user.role !== 'admin') {
+      const expected = Deno.env.get('AUTOMATION_SECRET');
+      const presented =
+        req.headers.get('x-automation-secret') ||
+        (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+      if (!expected || !presented || presented !== expected) {
+        return Response.json(
+          { error: 'Unauthorized — admin user or automation secret required' },
+          { status: 401 }
+        );
+      }
+    }
+
     const body = await req.json();
     const evidence = body?.data;
     const oldData = body?.old_data;
@@ -113,7 +137,6 @@ Deno.serve(async (req) => {
       return Response.json({ skipped: 'already_verified' });
     }
 
-    const base44 = createClientFromRequest(req);
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('googledrive');
 
     const rootId = await findOrCreateFolder(accessToken, ROOT_FOLDER_NAME, null);
