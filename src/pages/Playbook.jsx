@@ -127,7 +127,13 @@ export default function PlaybookPage() {
               href: 'https://ww2.tnstate.edu/ganter/B412%20Extra%20PopGrowthModel.html',
               tag: 'Reference · External',
               title: 'Population Growth Model (TSU B412)',
-              desc: 'Tennessee State University reference on population-growth modeling. Useful for sanity-checking demographic estimates against the Sonora / Yaqui / Pima-Bajo cohorts referenced in the IND, GEN, and LAND pipes. Opens in a new tab.',
+              desc: 'Tennessee State University reference on population-growth modeling. Drives the live calculator embedded on the Family Genealogy subpage. Opens in a new tab.',
+            },
+            {
+              href: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5362358/',
+              tag: 'Reference · Peer-Reviewed',
+              title: 'PMC5362358 — NCBI / PubMed Central',
+              desc: 'Peer-reviewed article (NCBI PMC). Use as a corroborating source for the demographic / genetic / displacement analysis. Verify relevance to the specific IND / GEN claim before citing. Opens in a new tab.',
             },
           ].map((nb) => (
             <a
@@ -221,6 +227,13 @@ export default function PlaybookPage() {
               title: 'Research Protocol — Omega Doctrine',
               desc: 'Five-gate admissibility · claim classification · adversarial verification · AI contamination firewall · reference-template integration.',
               band: '#1a1815',
+            },
+            {
+              to: '/playbook/family-genealogy',
+              tag: 'LINEAGE',
+              title: 'Family Genealogy — Audit Disciplined',
+              desc: 'Six generations Terminel–Sagasta with evidentiary status, displacement timeline, and a live TSU B412 generational displacement calculator.',
+              band: '#4a5d3a',
             },
           ].map((p) => (
             <Link

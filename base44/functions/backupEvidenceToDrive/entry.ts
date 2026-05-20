@@ -5,6 +5,39 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 const ROOT_FOLDER_NAME = 'TE360 Backups';
 const SUB_FOLDER_NAME = 'Verified Evidence';
 
+// SSRF guard — only allow file_url downloads from trusted Base44 storage
+// hosts. The Evidence.file_url is normally produced by base44.integrations
+// .Core.UploadFile which returns a URL on the base44.com / base44.app
+// storage domains; anything else in the payload is potentially attacker-
+// controlled, so we reject it before issuing the fetch.
+function isTrustedFileUrl(rawUrl) {
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== 'https:') return false;
+  const host = parsed.hostname.toLowerCase();
+  return (
+    host === 'base44.com' ||
+    host.endsWith('.base44.com') ||
+    host.endsWith('.base44.app')
+  );
+}
+
+// Convert a Uint8Array to base64 without spreading the whole buffer into
+// function arguments. String.fromCharCode(...bytes) blows the engine
+// argument limit on multi-MB evidence files and silently fails the upload.
+function uint8ToBase64(bytes) {
+  let binary = '';
+  const chunkSize = 0x8000; // 32 KiB
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
 async function findOrCreateFolder(accessToken, name, parentId) {
   const parentClause = parentId ? ` and '${parentId}' in parents` : " and 'root' in parents";
   const q = encodeURIComponent(
@@ -46,8 +79,7 @@ async function uploadFile(accessToken, { name, mimeType, parentId, body }) {
 
   let payload;
   if (isBinary) {
-    const b64 = btoa(String.fromCharCode(...body));
-    payload = head + b64 + tail;
+    payload = head + uint8ToBase64(body) + tail;
   } else {
     payload = head + body + tail;
   }
@@ -103,8 +135,10 @@ Deno.serve(async (req) => {
     });
     uploaded.push(metaRes);
 
-    // 2) If the evidence has a file_url, download and upload the original
-    if (evidence.file_url) {
+    // 2) If the evidence has a file_url, download and upload the original.
+    //    Only allow downloads from trusted Base44 storage hosts to prevent
+    //    SSRF via attacker-controlled file_url payloads.
+    if (evidence.file_url && isTrustedFileUrl(evidence.file_url)) {
       const fileRes = await fetch(evidence.file_url);
       if (fileRes.ok) {
         const buf = new Uint8Array(await fileRes.arrayBuffer());

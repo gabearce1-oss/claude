@@ -23,6 +23,7 @@ import PriorityActionPackage from './pages/protocols/PriorityActionPackage';
 import LivingSources from './pages/protocols/LivingSources';
 import ResearchProtocol from './pages/protocols/ResearchProtocol';
 import CatalogProgress from './pages/CatalogProgress';
+import FamilyGenealogy from './pages/protocols/FamilyGenealogy';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
       <Route path="/playbook/living-sources" element={<LivingSources />} />
       <Route path="/playbook/research-protocol" element={<ResearchProtocol />} />
       <Route path="/catalog-progress" element={<CatalogProgress />} />
+      <Route path="/playbook/family-genealogy" element={<FamilyGenealogy />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
