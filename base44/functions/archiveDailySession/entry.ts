@@ -12,6 +12,10 @@ async function findOrCreateFolder(accessToken, name, parentId) {
     `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,
     { headers: { Authorization: `Bearer ${accessToken}` } }
   );
+  if (!searchRes.ok) {
+    const body = await searchRes.text().catch(() => '');
+    throw new Error(`Drive folder search failed: ${searchRes.status} ${searchRes.statusText} ${body}`);
+  }
   const searchData = await searchRes.json();
   if (searchData.files && searchData.files.length > 0) return searchData.files[0].id;
   const createRes = await fetch('https://www.googleapis.com/drive/v3/files?fields=id', {
@@ -23,6 +27,10 @@ async function findOrCreateFolder(accessToken, name, parentId) {
       ...(parentId ? { parents: [parentId] } : {}),
     }),
   });
+  if (!createRes.ok) {
+    const body = await createRes.text().catch(() => '');
+    throw new Error(`Drive folder create failed: ${createRes.status} ${createRes.statusText} ${body}`);
+  }
   const created = await createRes.json();
   return created.id;
 }
@@ -47,6 +55,10 @@ async function uploadJsonToDrive(accessToken, { name, parentId, json }) {
       body,
     }
   );
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Drive upload failed: ${res.status} ${res.statusText} ${body}`);
+  }
   return res.json();
 }
 
