@@ -119,6 +119,13 @@ export default function PlaybookPage() {
               band: '#6b1f1f',
             },
             {
+              to: '/playbook/living-sources',
+              tag: 'ORAL · URGENT',
+              title: 'Living Oral-History Sources',
+              desc: 'Carmelita Terango: oldest niece, first-generation testimony. Consent script + log. Living sources expire.',
+              band: '#6b1f1f',
+            },
+            {
               to: '/playbook/familysearch',
               tag: 'TSK-001 / TSK-002',
               title: 'FamilySearch Browse Protocol',
@@ -202,7 +209,7 @@ export default function PlaybookPage() {
               style={{ color: '#1a1815' }}
             />
           </div>
-          {['all', 'P1', 'P2', 'P3'].map((p) => (
+          {['all', 'P0', 'P1', 'P2', 'P3'].map((p) => (
             <button
               key={p}
               onClick={() => setPriority(p)}

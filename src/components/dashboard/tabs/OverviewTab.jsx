@@ -6,6 +6,7 @@ import DashboardStats from '../DashboardStats';
 import AuditProgress from '../AuditProgress';
 import KeyDocumentsPanel from '../KeyDocumentsPanel';
 import PipesSummary from '../PipesSummary';
+import ComponentStatusGrid from '../ComponentStatusGrid';
 import ReadinessScore from '../../forensic/ReadinessScore';
 import QuarantinePanel from '../../forensic/QuarantinePanel';
 import CustodySummary from '../../custody/CustodySummary';
@@ -32,6 +33,8 @@ export default function OverviewTab({ allEvidence, allClaims, verifiedOnly, setV
       <KeyDocumentsPanel claims={allClaims} links={links} onUnpin={(c) => unpin.mutate(c)} />
 
       <PipesSummary claims={allClaims} />
+
+      <ComponentStatusGrid />
 
       <AuditProgress
         allEvidence={allEvidence}

@@ -318,17 +318,17 @@ export const playbookSources = [
     ],
   },
 
-  // ─── HUNTINGTON LIBRARY (added May 20 2026) ───
+  // ─── HUNTINGTON LIBRARY (reframed P0 May 20 2026 per FINAL Intelligence Report) ───
   {
     id: 'huntington',
     name: 'Huntington Library',
     full_name: 'Huntington Library, San Marino CA — WF Box 34 "Investments in Mexico"',
-    priority: 'P1',
+    priority: 'P0',
     type: 'archive',
     language: 'en',
     auth: 'Free by appointment — (626) 405-2191 · reference@huntington.org',
     description:
-      'PRIMARY Wells Fargo historical records (NOT WF Museum SF). 42 linear feet, 35 boxes, 1839–1911. Box 34 Series 2 = "Investments in Mexico" 1883–1906. Hosmer B. Parsons correspondence re: express operations including Southern Pacific routes through Sonora. Driving distance from Gabriel.',
+      'PRIMARY target for Document C — supersedes Wells Fargo Historical Services as the document-level source per FINAL Intelligence Report (May 20 2026). WF Historical Services likely has no sender records at transaction level; Huntington holds the operational archive. 42 linear feet, 35 boxes, 1839–1911. Box 34 Series 2 = "Investments in Mexico" 1883–1906. Hosmer B. Parsons correspondence re: express operations including Southern Pacific routes through Sonora. Free by appointment; driving distance from Oceanside.',
     search_url: (_q) => 'https://catalog.huntington.org/',
     groups: [
       {

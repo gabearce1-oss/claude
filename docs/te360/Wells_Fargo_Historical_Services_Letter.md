@@ -11,6 +11,8 @@ San Francisco, CA 94104
 
 **Email (confirmed in FINAL Intelligence Report):** history@wellsfargo.com — send the same inquiry by email in parallel with certified mail to shorten the response cycle. Allow 6–12 weeks for a written reply.
 
+> **Reframing note (per FINAL Intelligence Report, May 20 2026):** the primary document-level target for Document C is now the **Huntington Library Box 34** ("Investments in Mexico" 1883–1906, Hosmer B. Parsons correspondence), not Wells Fargo Historical Services. WF Historical Services may not hold sender records at transaction level. This letter remains worth sending as a corroboration / negative-finding channel, but the Huntington appointment is the higher-yield action. See the Playbook → Huntington Library card (Priority 0).
+
 ---
 
 [Date]

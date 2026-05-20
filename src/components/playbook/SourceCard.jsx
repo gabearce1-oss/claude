@@ -4,6 +4,7 @@ import QueryRow from './QueryRow';
 import ChronAmIngestPanel from './ChronAmIngestPanel';
 
 const PRIORITY_COLORS = {
+  P0: { bg: '#f2dcdc', fg: '#6b1f1f', label: 'Priority 0 · PRIMARY' },
   P1: { bg: '#e8efe2', fg: '#4a5d3a', label: 'Priority 1' },
   P2: { bg: '#e8eef2', fg: '#5a6b7a', label: 'Priority 2' },
   P3: { bg: '#f3ead8', fg: '#8a6e3c', label: 'Priority 3' },

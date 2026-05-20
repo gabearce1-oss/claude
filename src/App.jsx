@@ -20,6 +20,7 @@ import FamilySearchProtocol from './pages/protocols/FamilySearchProtocol';
 import SHA256Protocol from './pages/protocols/SHA256Protocol';
 import WellsFargoLetter from './pages/protocols/WellsFargoLetter';
 import PriorityActionPackage from './pages/protocols/PriorityActionPackage';
+import LivingSources from './pages/protocols/LivingSources';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -62,6 +63,7 @@ const AuthenticatedApp = () => {
       <Route path="/playbook/sha256" element={<SHA256Protocol />} />
       <Route path="/playbook/wells-fargo" element={<WellsFargoLetter />} />
       <Route path="/playbook/priority-actions" element={<PriorityActionPackage />} />
+      <Route path="/playbook/living-sources" element={<LivingSources />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
