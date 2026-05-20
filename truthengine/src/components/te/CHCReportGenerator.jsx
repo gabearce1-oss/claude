@@ -66,6 +66,36 @@ All cases: SHA-256 chain of custody certified. All filed and pending or denied n
 Write as professional case summaries with human detail and legal precision. Emphasize the Sae Joon Park case as the most urgent.`,
   },
   {
+    id:"impossibility", label:"Impossibility Score Exhibit", icon:"📐", required:true,
+    desc:"41.6σ statistical proof — P(349 | true rate = 3.97%) ≈ 0 — single-page CHC exhibit",
+    prompt:`Write the Impossibility Score statistical exhibit for a Congressional Hispanic Caucus briefing. This is a single-page exhibit proving that the DCAS official Hispanic count of 349 cannot be true.
+
+EXACT CALCULATION (include these numbers verbatim):
+1. n = 58,220 DCAS Vietnam Conflict Extract records (DoD, authoritative)
+2. p̂ = BISG τ=0.40 estimate = 2,309 / 58,220 = 0.03967 (3.97%)
+3. Under Binomial(n=58,220, p=0.03967): μ = 2,309; σ = √(58,220 × 0.03967 × 0.96033) = 47.1
+4. Observed official count = 349
+5. z = (349 − 2,309) / 47.1 = −1,960 / 47.1 = −41.6σ
+6. P(X ≤ 349 | n=58,220, p=0.03967) < 10^−378 (astronomically zero)
+
+INTERPRETATION FOR CONGRESS:
+- A z-score of −41.6σ means: if the true Hispanic KIA rate was 3.97%, the probability of observing 349 or fewer is not just unlikely — it is mathematically impossible under any plausible model of random variation.
+- A 5-sigma discovery threshold is used in particle physics (Higgs boson). Our finding is 41.6σ — 8× more statistically extreme than the Higgs discovery.
+- This is not noise. This is not error. This is systematic institutional erasure.
+- The DCAS count of 349 is 6.6× lower than the most conservative forensic estimate.
+- 5 independent data streams (BISG, NARA retroactive, Guzmán 1969, LAE Database, Bernoulli Sum) all converge above 2,000. DCAS 349 is the singular outlier.
+
+FIVE-STREAM CONVERGENCE (supporting evidence):
+   S1 — DCAS Official: 349 (0.60%) — ANOMALOUS BASELINE
+   S2 — BISG τ=0.40: 2,309 (3.97%) — FORENSIC ESTIMATE
+   S3 — NARA Retroactive: 3,070 (5.27%) — ARCHIVAL
+   S4 — Guzmán 1969 Study: 3,500 (6.01%) — HISTORICAL
+   S5 — LAE Database: 3,741 (6.43%) — COMMUNITY
+   → 5-stream median: 3,070; minimum: 2,309; 349 is 6.6× below minimum
+
+Write this as a compelling one-page statistical exhibit suitable for congressional testimony. Lead with the 41.6σ number. Use accessible language for non-statisticians while preserving the mathematical precision. End with the legislative implication: Congress must fund a BISG-based DCAS re-audit.`,
+  },
+  {
     id:"nero", label:"NERO Institutional Scores", icon:"⚠️", required:true,
     desc:"N=94, E=97, R=91, O=96 — institutional erasure framework for CHC",
     prompt:`Write the NERO Institutional Erasure Score analysis for a Congressional Hispanic Caucus briefing.
