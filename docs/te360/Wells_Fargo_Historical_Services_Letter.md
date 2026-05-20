@@ -1,13 +1,15 @@
 # Wells Fargo Historical Services — Archival Inquiry Letter
 ## TSK-004 — Mail this week, certified mail, return receipt requested
 
-**Mail to:**
+**Mail to (certified, return receipt requested):**
 Wells Fargo Historical Services
 MAC A0101-017
 420 Montgomery Street
 San Francisco, CA 94104
 
-No public email exists for this department. Allow 6–12 weeks for response.
+**Alternate MAC code (per FINAL Intelligence Report, May 20 2026):** MAC N9305-173 — verify with the archivist before mailing if A0101-017 is returned.
+
+**Email (confirmed in FINAL Intelligence Report):** history@wellsfargo.com — send the same inquiry by email in parallel with certified mail to shorten the response cycle. Allow 6–12 weeks for a written reply.
 
 ---
 
