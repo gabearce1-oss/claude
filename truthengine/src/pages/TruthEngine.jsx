@@ -128,6 +128,7 @@ import ForensicResearchHub from "../components/te/ForensicResearchHub";
 import ShelterMapView from "../components/te/ShelterMapView";
 import IntelReportGenerator from "../components/te/IntelReportGenerator";
 import ExpansionRoadmap from "../components/te/ExpansionRoadmap";
+import DatabaseMasterIndex from "../components/te/DatabaseMasterIndex";
 
 export default function TruthEngine() {
   const [tab, setTab] = useState("home");
@@ -275,6 +276,7 @@ export default function TruthEngine() {
       {tab === "sheltermap2" && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><ShelterMapView /></div>}
       {tab === "intelreport" && <div style={{ padding:"14px 20px", overflowY:"auto", height:"calc(100vh - 118px)" }}><IntelReportGenerator /></div>}
       {tab === "expansionroadmap" && <ExpansionRoadmap />}
+      {tab === "dbmaster" && <DatabaseMasterIndex />}
 
       <NotificationSystem notifications={notifications} onDismiss={dismissNotification} />
       <NavigationChatbox visible={chatboxOpen} onNavigate={t => { setTab(t); setChatboxOpen(false); }} />
