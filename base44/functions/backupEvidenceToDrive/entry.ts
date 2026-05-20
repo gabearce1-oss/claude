@@ -216,21 +216,33 @@ Deno.serve(async (req) => {
 
     // 2) If the evidence has a file_url, download and upload the original.
     //    Only allow downloads from trusted Base44 storage hosts to prevent
-    //    SSRF via attacker-controlled file_url payloads.
-    if (evidence.file_url && isTrustedFileUrl(evidence.file_url)) {
-      const fileRes = await fetch(evidence.file_url);
-      if (fileRes.ok) {
-        const buf = new Uint8Array(await fileRes.arrayBuffer());
-        const ct = fileRes.headers.get('content-type') || 'application/octet-stream';
-        const ext = (evidence.file_url.split('.').pop() || '').split('?')[0].slice(0, 6) || 'bin';
-        const fileUp = await uploadFile(accessToken, {
-          name: `${baseName}.${ext}`,
-          mimeType: ct,
-          parentId: subId,
-          body: buf,
-        });
-        uploaded.push(fileUp);
+    //    SSRF via attacker-controlled file_url payloads. A non-2xx response
+    //    here (expired URL, permission issue, transient storage error) must
+    //    fail the whole backup — otherwise we silently report ok:true for a
+    //    verified-evidence backup whose binary payload is actually missing.
+    if (evidence.file_url) {
+      if (!isTrustedFileUrl(evidence.file_url)) {
+        throw new Error(
+          `Evidence file_url rejected by SSRF guard: ${evidence.file_url}`
+        );
       }
+      const fileRes = await fetch(evidence.file_url);
+      if (!fileRes.ok) {
+        const errBody = await fileRes.text().catch(() => '');
+        throw new Error(
+          `Evidence file download failed: ${fileRes.status} ${fileRes.statusText} ${errBody}`.trim()
+        );
+      }
+      const buf = new Uint8Array(await fileRes.arrayBuffer());
+      const ct = fileRes.headers.get('content-type') || 'application/octet-stream';
+      const ext = (evidence.file_url.split('.').pop() || '').split('?')[0].slice(0, 6) || 'bin';
+      const fileUp = await uploadFile(accessToken, {
+        name: `${baseName}.${ext}`,
+        mimeType: ct,
+        parentId: subId,
+        body: buf,
+      });
+      uploaded.push(fileUp);
     }
 
     return Response.json({ ok: true, evidence_id: evidence.id, uploaded });

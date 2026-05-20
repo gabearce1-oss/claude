@@ -107,15 +107,25 @@ Deno.serve(async (req) => {
     }
     // Scheduler invocation gate: shared secret required. Without this an
     // anonymous HTTP caller could repeatedly force SessionLog writes and
-    // Drive backup activity.
+    // Drive backup activity. Accept either the legacy scheduler header
+    // OR the documented X-Automation-Secret convention so headless n8n
+    // callers can authenticate with the same secret pattern used by the
+    // other crawler functions. Matching env vars: SCHEDULER_SECRET (legacy)
+    // or AUTOMATION_SECRET.
     if (!user) {
-      const expected = Deno.env.get('SCHEDULER_SECRET');
-      const presented =
-        req.headers.get('x-scheduler-secret') ||
-        (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
-      if (!expected || !presented || presented !== expected) {
+      const schedulerExpected = Deno.env.get('SCHEDULER_SECRET');
+      const automationExpected = Deno.env.get('AUTOMATION_SECRET');
+      const bearer = (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+      const schedulerHeader = req.headers.get('x-scheduler-secret') || '';
+      const automationHeader = req.headers.get('x-automation-secret') || '';
+      const matches =
+        (schedulerExpected && schedulerHeader && schedulerHeader === schedulerExpected) ||
+        (schedulerExpected && bearer && bearer === schedulerExpected) ||
+        (automationExpected && automationHeader && automationHeader === automationExpected) ||
+        (automationExpected && bearer && bearer === automationExpected);
+      if (!matches) {
         return Response.json(
-          { error: 'Unauthorized — scheduler secret required' },
+          { error: 'Unauthorized — scheduler or automation secret required' },
           { status: 401 }
         );
       }
