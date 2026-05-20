@@ -171,6 +171,12 @@ export default function PlaybookPage() {
               title: 'Sarker 2021 · Machine Learning Review (SN Computer Science)',
               desc: 'Sarker, I. H. (2021). "Machine Learning: Algorithms, Real-World Applications and Research Directions." SN Computer Science 2:160. DOI 10.1007/s42979-021-00592-x. Springer Nature. SYSTEM-DESIGN reference, NOT case evidence — covers supervised / unsupervised / semi-supervised / reinforcement learning, structured vs semi-structured vs unstructured data, and applications. Anchors the crawler / NER / semantic-search / auto-pipe-tag / drift-detection options discussed for TE360. Bundled in /public/docs/.',
             },
+            {
+              href: 'https://www.ibm.com/think/topics/machine-learning-algorithms',
+              tag: 'Technical Ref · IBM Think',
+              title: 'IBM Think · Machine Learning Algorithms',
+              desc: 'IBM Think topic page on ML algorithms. SYSTEM-DESIGN reference, NOT case evidence — practitioner-oriented overview of supervised / unsupervised / reinforcement methods plus the standard families (regression, classification, clustering, decision trees, neural networks). Complements the Sarker 2021 review on the same Technical Reference lane. Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
