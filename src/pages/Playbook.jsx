@@ -155,9 +155,9 @@ export default function PlaybookPage() {
             },
             {
               href: 'https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-22532015000100002',
-              tag: 'Reference · SciELO MX',
-              title: 'SciELO México — Article S1405-2253-2015-00100002',
-              desc: 'Open-access Mexican academic article (SciELO; ISSN 1405-2253). Currently auth-walled to automated fetch — verify the title, authors, and exact relevance before citing in IND / LEGAL / GEN claims. Opens in a new tab.',
+              tag: 'Reference · Gerber & Passananti 2015',
+              title: 'Economic Consequences of Financial Regimes — Mexico & Brazil 1890–1910',
+              desc: 'Gerber, J. & Passananti, T. (2015). *América Latina en la historia económica* 22(1), 35–58. SDSU. Compares Porfirian Mexican banking restriction (1897 Limantour law, Banamex / Banco de Londres / state banks) with Brazil\'s Encilhamento liberalization (1889). Directly anchors the LEGAL / WF pipes — covers the exact 1890–1910 window of Aviana\'s 1907 asserted deeds, Francisco\'s mining operations, the 1907 Panic, and the agrarian-bank reform that followed. Cites Ludlow on Banamex origins, Marichal on the 1885 crisis, AGES references throughout. PDF and Spanish abstract available on SciELO. Opens in a new tab.',
             },
           ].map((nb) => (
             <a
