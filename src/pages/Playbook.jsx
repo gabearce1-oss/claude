@@ -95,6 +95,83 @@ export default function PlaybookPage() {
         <EntityRegistry />
       </div>
 
+      {/* Protocol Library */}
+      <div className="max-w-7xl mx-auto px-8 pt-10">
+        <h2
+          className="mb-3"
+          style={{
+            color: '#1a1815',
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.72rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Protocol Library
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {[
+            {
+              to: '/playbook/sha256',
+              tag: 'TSK-006 · URGENT',
+              title: 'SHA-256 Chain-of-Custody Protocol',
+              desc: 'Photograph, name, hash, register. Execute before any other action.',
+              band: '#6b1f1f',
+            },
+            {
+              to: '/playbook/familysearch',
+              tag: 'TSK-001 / TSK-002',
+              title: 'FamilySearch Browse Protocol',
+              desc: 'Catalogs 704679 (civil) & 704681 (parish). Indigenous-notation hunt for IND-001.',
+              band: '#4a5d3a',
+            },
+            {
+              to: '/playbook/wells-fargo',
+              tag: 'TSK-004',
+              title: 'Wells Fargo Historical Services Letter',
+              desc: 'Print-ready inquiry. MAC A0101-017, 420 Montgomery St, San Francisco.',
+              band: '#8a6e3c',
+            },
+            {
+              to: '/playbook/priority-actions',
+              tag: 'Master Brief',
+              title: 'Priority Action Execution Package',
+              desc: 'TSK-001/002, TSK-004, TSK-005, TSK-006 + LAND-004/005. Model letters included.',
+              band: '#1a1815',
+            },
+          ].map((p) => (
+            <Link
+              key={p.to}
+              to={p.to}
+              className="block p-4 rounded hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#ffffff', border: `1px solid ${p.band}` }}
+            >
+              <div
+                className="text-xs mb-2 inline-block px-1.5 py-0.5 rounded"
+                style={{
+                  backgroundColor: p.band,
+                  color: '#f4ede0',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  letterSpacing: '0.1em',
+                  fontSize: '0.65rem',
+                }}
+              >
+                {p.tag}
+              </div>
+              <h3
+                className="text-lg mb-1 font-light"
+                style={{ color: '#1a1815', fontFamily: 'Cormorant Garamond' }}
+              >
+                {p.title}
+              </h3>
+              <p className="text-xs" style={{ color: '#6b6559', lineHeight: 1.55 }}>
+                {p.desc}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Source filter + search */}
       <div className="max-w-7xl mx-auto px-8 pt-10">
         <h2

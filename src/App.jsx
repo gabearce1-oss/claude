@@ -16,6 +16,10 @@ import Verify from './pages/Verify';
 import Custody from './pages/Custody';
 import Playbook from './pages/Playbook';
 import Workflow from './pages/Workflow';
+import FamilySearchProtocol from './pages/protocols/FamilySearchProtocol';
+import SHA256Protocol from './pages/protocols/SHA256Protocol';
+import WellsFargoLetter from './pages/protocols/WellsFargoLetter';
+import PriorityActionPackage from './pages/protocols/PriorityActionPackage';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -54,6 +58,10 @@ const AuthenticatedApp = () => {
       <Route path="/verify/:evidenceId" element={<Verify />} />
       <Route path="/custody" element={<Custody />} />
       <Route path="/playbook" element={<Playbook />} />
+      <Route path="/playbook/familysearch" element={<FamilySearchProtocol />} />
+      <Route path="/playbook/sha256" element={<SHA256Protocol />} />
+      <Route path="/playbook/wells-fargo" element={<WellsFargoLetter />} />
+      <Route path="/playbook/priority-actions" element={<PriorityActionPackage />} />
       <Route path="/workflow" element={<Workflow />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
