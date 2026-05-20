@@ -153,6 +153,12 @@ export default function PlaybookPage() {
               title: 'Minneapolis Fed — History of Central Banking',
               desc: 'Minneapolis Fed primer on central-banking history. Cross-reference for the comparative framing of the Robitaille / IFDP-599 analysis (Suffolk Bank of Boston, free-banking era, etc.). Opens in a new tab.',
             },
+            {
+              href: 'https://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S1405-22532015000100002',
+              tag: 'Reference · SciELO MX',
+              title: 'SciELO México — Article S1405-2253-2015-00100002',
+              desc: 'Open-access Mexican academic article (SciELO; ISSN 1405-2253). Currently auth-walled to automated fetch — verify the title, authors, and exact relevance before citing in IND / LEGAL / GEN claims. Opens in a new tab.',
+            },
           ].map((nb) => (
             <a
               key={nb.href}
