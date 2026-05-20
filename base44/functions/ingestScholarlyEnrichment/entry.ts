@@ -69,6 +69,20 @@ async function semanticScholarByDOI(doi) {
   };
 }
 
+async function listAllKnowledgeDocs(base44) {
+  const all = [];
+  const limit = 200;
+  let skip = 0;
+  for (let i = 0; i < 100; i++) {
+    const batch = await base44.asServiceRole.entities.KnowledgeDocument.list(null, limit, skip);
+    if (!batch || batch.length === 0) break;
+    all.push(...batch);
+    if (batch.length < limit) break;
+    skip += limit;
+  }
+  return all;
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -80,8 +94,23 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Provide { dois: [...] } in body' }, { status: 400 });
     }
 
+    // Build a dedupe set keyed on the doi:<value> tag so re-runs with the
+    // same DOI list don't insert duplicate KnowledgeDocument rows.
+    let existingDoiTags = new Set();
+    if (writeToKnowledge) {
+      const existing = await listAllKnowledgeDocs(base44);
+      for (const d of existing) {
+        for (const t of d.tags || []) {
+          if (t && t.startsWith('doi:')) existingDoiTags.add(t.toLowerCase());
+        }
+      }
+    }
+
     const results = [];
     const errors = [];
+    const created = [];
+    const skipped = [];
+
     for (const doi of dois) {
       try {
         const [cr, ss] = await Promise.allSettled([crossrefByDOI(doi), semanticScholarByDOI(doi)]);
@@ -93,14 +122,20 @@ Deno.serve(async (req) => {
         results.push(merged);
 
         if (writeToKnowledge && cr.status === 'fulfilled') {
-          await base44.asServiceRole.entities.KnowledgeDocument.create({
+          const tag = `doi:${doi}`.toLowerCase();
+          if (existingDoiTags.has(tag)) {
+            skipped.push({ doi, reason: 'duplicate DOI tag' });
+            continue;
+          }
+          // doc_type / trust_tier come from KnowledgeDocument.jsonc enums.
+          const doc = await base44.asServiceRole.entities.KnowledgeDocument.create({
             case_id: caseId,
             title: (cr.value.title || `DOI ${doi}`).slice(0, 300),
-            doc_type: 'scholarly_literature',
+            doc_type: 'archival_research',
             summary:
               (ss.status === 'fulfilled' && ss.value.abstract ? ss.value.abstract.slice(0, 800) : '') +
               ` Citations: Crossref ${cr.value.citation_count}, Semantic Scholar ${ss.status === 'fulfilled' ? ss.value.citation_count : 'n/a'}.`,
-            trust_tier: 'secondary',
+            trust_tier: 'plausible',
             file_url: `https://doi.org/${doi}`,
             file_type: 'other',
             language: 'en',
@@ -109,13 +144,15 @@ Deno.serve(async (req) => {
             related_archives: ['Crossref', 'Semantic Scholar'],
             ingested_at: new Date().toISOString(),
           });
+          existingDoiTags.add(tag);
+          created.push({ id: doc.id, doi });
         }
       } catch (e) {
         errors.push({ doi, error: e.message });
       }
     }
 
-    return Response.json({ ok: true, dois: dois.length, results, errors });
+    return Response.json({ ok: true, dois: dois.length, created_count: created.length, skipped_count: skipped.length, results, created, skipped, errors });
   } catch (error) {
     if (error instanceof Response) return error;
     console.error('ingestScholarlyEnrichment failed:', error.message, error.stack);

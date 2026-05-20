@@ -98,10 +98,13 @@ Deno.serve(async (req) => {
           const doc = await base44.asServiceRole.entities.KnowledgeDocument.create({
             case_id: caseId,
             title: String(title).slice(0, 300),
-            doc_type: 'nara_catalog_record',
+            // doc_type / trust_tier come from KnowledgeDocument.jsonc enums.
+            // NARA hits are official records → official_records_search /
+            // verified.
+            doc_type: 'official_records_search',
             summary: String(description).slice(0, 1000),
             key_findings: [],
-            trust_tier: 'primary',
+            trust_tier: 'verified',
             file_url: `https://catalog.archives.gov/id/${naId}`,
             file_type: 'other',
             language: 'en',

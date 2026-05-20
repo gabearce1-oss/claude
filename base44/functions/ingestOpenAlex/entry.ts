@@ -99,19 +99,23 @@ Deno.serve(async (req) => {
           const venue = w.host_venue && (w.host_venue.display_name || w.host_venue.publisher);
           const concepts = (w.concepts || []).slice(0, 4).map((c) => c.display_name).filter(Boolean);
 
+          const lang = (w.language || 'en').toLowerCase();
           const doc = await base44.asServiceRole.entities.KnowledgeDocument.create({
             case_id: caseId,
             title: title.slice(0, 300),
-            doc_type: 'scholarly_literature',
+            // doc_type / trust_tier / language MUST come from the enums in
+            // base44/entities/KnowledgeDocument.jsonc — any other value
+            // fails schema validation and the create() throws.
+            doc_type: 'archival_research',
             summary: (w.abstract_inverted_index ? '' : (w.cited_by_count ? `${w.cited_by_count} citations.` : ''))
               + (authors.length ? ` Authors: ${authors.join(', ')}.` : '')
               + (venue ? ` Venue: ${venue}.` : '')
               + (w.publication_year ? ` Year: ${w.publication_year}.` : ''),
             key_findings: [],
-            trust_tier: 'secondary',
+            trust_tier: 'plausible',
             file_url: w.doi ? `https://doi.org/${String(w.doi).replace(/^https?:\/\/(dx\.)?doi\.org\//i, '')}` : (w.id || ''),
             file_type: 'other',
-            language: w.language || 'en',
+            language: lang === 'es' ? 'es' : lang === 'bilingual' ? 'bilingual' : 'en',
             author_source: authors.join('; ') || 'OpenAlex',
             tags: ['openalex', ...concepts, q.slice(0, 60)].filter(Boolean),
             related_archives: ['OpenAlex'],

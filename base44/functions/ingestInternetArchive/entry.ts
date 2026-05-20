@@ -102,16 +102,21 @@ Deno.serve(async (req) => {
           const creator = Array.isArray(item.creator) ? item.creator.join('; ') : (item.creator || 'Internet Archive');
           const description = Array.isArray(item.description) ? item.description[0] : (item.description || '');
 
+          const rawLang = (Array.isArray(item.language) ? item.language[0] : item.language || 'en').toLowerCase();
           const doc = await base44.asServiceRole.entities.KnowledgeDocument.create({
             case_id: caseId,
             title: String(title).slice(0, 300),
-            doc_type: 'internet_archive_item',
+            // KnowledgeDocument.doc_type enum doesn't include
+            // 'internet_archive_item'; archival_research is the right
+            // match for a catalog-search-derived item. trust_tier
+            // mapped to 'plausible' (secondary catalog discovery).
+            doc_type: 'archival_research',
             summary: String(description).slice(0, 1000),
             key_findings: [],
-            trust_tier: 'secondary',
+            trust_tier: 'plausible',
             file_url: `https://archive.org/details/${ia}`,
             file_type: 'other',
-            language: Array.isArray(item.language) ? item.language[0] : (item.language || 'en'),
+            language: rawLang === 'es' || rawLang === 'spa' ? 'es' : rawLang === 'bilingual' ? 'bilingual' : 'en',
             author_source: creator,
             tags: ['internet-archive', tag, item.mediatype || null, q.slice(0, 60)].filter(Boolean),
             related_archives: ['Internet Archive'],
