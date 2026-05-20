@@ -1,19 +1,22 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 // Page through Base44 list() until the server returns less than a full
-// page. Without this, totals reflect only the first page once the
-// underlying entity grows past the default page size.
+// page. Base44's SDK signature is list(sort, limit, skip) where the
+// third argument is a record-offset, NOT a page index. Advancing skip
+// by `limit` each iteration produces non-overlapping batches; the
+// previous "page++" loop was offsetting by one record per call and
+// duplicating ~199 of every 200 rows.
 async function listAll(entity) {
   const all = [];
-  let page = 1;
   const limit = 200;
+  let skip = 0;
   // Cap iterations to defend against runaway loops on bad SDK responses.
   for (let i = 0; i < 100; i++) {
-    const batch = await entity.list(null, limit, page);
+    const batch = await entity.list(null, limit, skip);
     if (!batch || batch.length === 0) break;
     all.push(...batch);
     if (batch.length < limit) break;
-    page++;
+    skip += limit;
   }
   return all;
 }

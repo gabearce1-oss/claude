@@ -119,19 +119,21 @@ Deno.serve(async (req) => {
 
     // 5. Load existing claims keyed by subject (source ID).
     //    Must paginate — the v3 matrix alone has 75 claims, which is past
-    //    Base44 list()'s default first page. Without pagination, claims
-    //    beyond page 1 are not indexed and get re-created on rerun,
-    //    breaking idempotency and producing duplicate rows.
+    //    Base44 list()'s default first page. Base44 SDK signature is
+    //    list(sort, limit, skip) where skip is a record-offset, NOT a
+    //    page index, so advance by `limit` per iteration; otherwise
+    //    batches overlap and claimBySubject is missing rows that the
+    //    upsert then re-creates as duplicates.
     const existingClaims = [];
     {
-      let page = 1;
       const limit = 200;
+      let skip = 0;
       for (let i = 0; i < 100; i++) {
-        const batch = await base44.asServiceRole.entities.Claim.list(null, limit, page);
+        const batch = await base44.asServiceRole.entities.Claim.list(null, limit, skip);
         if (!batch || batch.length === 0) break;
         existingClaims.push(...batch);
         if (batch.length < limit) break;
-        page++;
+        skip += limit;
       }
     }
     const claimBySubject = {};
