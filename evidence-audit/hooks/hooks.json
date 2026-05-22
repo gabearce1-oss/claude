@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'f=$(jq -r \".tool_input.file_path\"); [ -n \"$f\" ] && [ -f \"$f\" ] && grep -Eil \"wells.fargo.*sonora|fabricated.transaction|restitution.award|\\$639M\" \"$f\" >/dev/null 2>&1 && echo \"evidence-audit: edit target ($f) references material flagged as fabricated in the audit. Confirm provenance before propagating into new documents.\" >&2'"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "evidence-audit",
+  "description": "Forensic evidentiary discipline for historical and genealogical case files. Classifies documents by provenance, flags AI-generated synthetic content, and structures archive research.",
+  "version": "0.1.0",
+  "author": "NELA / Terminel-Sagasta Case File"
+}

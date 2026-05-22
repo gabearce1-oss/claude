@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terminel-Sagasta Case File — Evidence Audit Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:         #1a1815;
+  --ink-soft:    #3a3530;
+  --paper:       #f4ede0;
+  --paper-dark:  #ebe1ce;
+  --paper-edge:  #d4c9b3;
+  --rule:        #2a2520;
+  --rule-soft:   #b8ad97;
+
+  --verified:       #4a5d3a;
+  --partial:        #7a8a5d;
+  --circumstantial: #8a6e3c;
+  --oral:           #a08a5d;
+  --inference:      #5a6b7a;
+  --fabricated:     #6b1f1f;
+  --speculation:    #5a5550;
+  --derivative:     #8a4a4a;
+  --tertiary:       #7a7570;
+  --not-evidence:   #9a9590;
+
+  --stamp:    #c44536;
+  --shadow:   rgba(26, 24, 21, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 32px 20px 80px;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(180, 160, 120, 0.08), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(180, 160, 120, 0.06), transparent 50%);
+}
+
+.container { max-width: 1280px; margin: 0 auto; }
+
+h1, h2, h3, .display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 2.6rem; line-height: 1.05; }
+h2 { font-size: 1.5rem; line-height: 1.15; margin-top: 8px; }
+h3 { font-size: 1.1rem; line-height: 1.2; }
+
+.label-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.label-mono.tight { letter-spacing: 0.08em; }
+.body-text { font-size: 0.85rem; line-height: 1.55; color: var(--ink-soft); }
+
+/* Classification strip */
+.classification-strip {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -32px -20px 32px;
+  border-bottom: 3px double var(--paper-edge);
+}
+.classification-strip .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--stamp);
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+/* Header */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+.header .title-block .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.header .title-block h1 { font-style: italic; }
+.header .meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.header .meta .row { display: flex; gap: 12px; justify-content: flex-end; }
+.header .meta .row .k { letter-spacing: 0.1em; }
+.header .meta .row .v { color: var(--ink); font-weight: 500; }
+
+/* Warning banner */
+.warning-banner {
+  background: var(--paper-dark);
+  border-left: 6px solid var(--stamp);
+  padding: 24px 28px 24px 32px;
+  margin-bottom: 36px;
+  position: relative;
+  box-shadow: 0 2px 0 var(--paper-edge);
+}
+.warning-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 4px,
+    rgba(196, 69, 54, 0.025) 4px, rgba(196, 69, 54, 0.025) 8px
+  );
+  pointer-events: none;
+}
+.warning-banner .stamp-label {
+  display: inline-block;
+  background: var(--stamp);
+  color: var(--paper);
+  padding: 4px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.warning-banner h2 { font-style: italic; margin-bottom: 8px; color: var(--ink); }
+.warning-banner p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 80ch;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 40px;
+}
+.stat {
+  background: var(--paper);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat .label-mono { color: var(--ink-soft); }
+.stat .value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ink);
+}
+.stat .value .denom { font-size: 1.4rem; color: var(--ink-soft); font-weight: 400; }
+.stat .annotation { font-size: 0.72rem; color: var(--ink-soft); margin-top: 4px; font-style: italic; }
+.stat.readiness .value { color: var(--stamp); }
+.stat-bar {
+  height: 6px;
+  background: var(--paper-edge);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--w, 0%);
+  background: var(--stamp);
+}
+
+/* Section headers */
+.section { margin-bottom: 56px; }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.section-header .lead { display: flex; align-items: baseline; gap: 18px; }
+.section-header .section-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--ink-soft);
+}
+.section-header h2 { font-style: italic; }
+.section-header .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Buttons */
+button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+button:hover { background: var(--ink); color: var(--paper); }
+button.primary { background: var(--ink); color: var(--paper); }
+button.primary:hover { background: var(--ink-soft); }
+button.ghost { background: transparent; border-color: var(--rule-soft); color: var(--ink-soft); }
+button.danger:hover { background: var(--fabricated); color: var(--paper); border-color: var(--fabricated); }
+button.small { padding: 4px 8px; font-size: 0.62rem; }
+
+/* Filter + search */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+.search-input {
+  flex: 1 1 240px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 7px 10px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  min-width: 200px;
+  max-width: 360px;
+}
+.search-input:focus { outline: none; background: #fffaf0; }
+.filter-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  background: var(--paper-dark);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  color: var(--ink-soft);
+}
+.filter-chip:hover { border-color: var(--rule); color: var(--ink); }
+.filter-chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.filter-chip .count { margin-left: 6px; opacity: 0.6; font-size: 0.62rem; }
+
+/* Document table */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+.doc-table thead { background: var(--ink); color: var(--paper); }
+.doc-table th {
+  text-align: left;
+  padding: 11px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.doc-table th[data-sort] { cursor: pointer; user-select: none; }
+.doc-table th[data-sort]:hover { background: var(--ink-soft); }
+.doc-table th .sort-indicator { display: inline-block; margin-left: 4px; opacity: 0.5; font-size: 0.7rem; }
+.doc-table th.sorted .sort-indicator { opacity: 1; }
+.doc-table tbody tr { border-bottom: 1px solid var(--rule-soft); transition: background 0.15s; }
+.doc-table tbody tr:hover { background: var(--paper-dark); }
+.doc-table td { padding: 12px 14px; vertical-align: top; line-height: 1.45; }
+.doc-table .doc-name { font-weight: 500; color: var(--ink); max-width: 260px; }
+.doc-table .doc-type { color: var(--ink-soft); font-size: 0.72rem; max-width: 200px; }
+.doc-table .doc-source { color: var(--ink-soft); font-size: 0.72rem; font-style: italic; }
+.doc-table .modified-stamp {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink-soft);
+  opacity: 0.7;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+.doc-table .doc-actions { display: flex; gap: 4px; white-space: nowrap; }
+
+.status-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  color: var(--paper);
+  white-space: nowrap;
+  border-radius: 1px;
+}
+.status-badge[data-status="verified"]       { background: var(--verified); }
+.status-badge[data-status="partial"]        { background: var(--partial); }
+.status-badge[data-status="circumstantial"] { background: var(--circumstantial); }
+.status-badge[data-status="oral"]           { background: var(--oral); }
+.status-badge[data-status="inference"]      { background: var(--inference); }
+.status-badge[data-status="fabricated"]     {
+  background: var(--fabricated);
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 3px,
+    rgba(244, 237, 224, 0.15) 3px, rgba(244, 237, 224, 0.15) 6px
+  );
+}
+.status-badge[data-status="speculation"]    { background: var(--speculation); }
+.status-badge[data-status="derivative"]     { background: var(--derivative); }
+.status-badge[data-status="tertiary"]       { background: var(--tertiary); }
+.status-badge[data-status="not_evidence"]   { background: var(--not-evidence); color: var(--ink); }
+
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+}
+
+/* Dimensions */
+.dimensions { display: grid; gap: 14px; }
+.dimension-row {
+  display: grid;
+  grid-template-columns: 240px 1fr 60px 60px;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.dimension-row:last-child { border-bottom: none; }
+.dimension-row .name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.dimension-row .name .note {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.dimension-bar {
+  position: relative;
+  height: 24px;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule-soft);
+}
+.dimension-bar .fill {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  background: var(--ink);
+  transition: width 0.6s ease;
+}
+.dimension-bar .fill[data-band="high"]    { background: var(--verified); }
+.dimension-bar .fill[data-band="mid"]     { background: var(--circumstantial); }
+.dimension-bar .fill[data-band="low"]     { background: var(--fabricated); }
+.dimension-bar .ticks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  pointer-events: none;
+}
+.dimension-bar .tick { border-right: 1px solid rgba(26, 24, 21, 0.08); }
+.dimension-bar .tick:last-child { border-right: none; }
+.dimension-bar .tick:nth-child(5) { border-right: 1px solid rgba(26, 24, 21, 0.18); }
+.dimension-row .score {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: right;
+}
+.dimension-row .score .denom { font-size: 0.85rem; color: var(--ink-soft); }
+
+/* Archive targets */
+.targets { display: grid; gap: 0; border: 1px solid var(--rule); }
+.target {
+  display: grid;
+  grid-template-columns: 50px 1fr 130px 110px 50px;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: center;
+}
+.target:last-child { border-bottom: none; }
+.target[data-status="completed"] { background: rgba(74, 93, 58, 0.05); }
+.target[data-status="completed"] .archive { text-decoration: line-through; opacity: 0.65; }
+.target[data-status="blocked"] { background: rgba(107, 31, 31, 0.04); }
+.target .step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.target .body .archive {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.target .body .action { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.5; }
+.target .cost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+.target select.status-select {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 8px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Discipline panel */
+.discipline { background: var(--ink); color: var(--paper); padding: 32px 36px; margin-bottom: 0; }
+.discipline h2 { color: var(--paper); font-style: italic; margin-bottom: 18px; }
+.discipline .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.discipline .col h3 {
+  color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(244, 237, 224, 0.3);
+}
+.discipline .rule-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(244, 237, 224, 0.12);
+}
+.discipline .rule-item:last-child { border-bottom: none; }
+.discipline .rule-item .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0.75;
+  padding-top: 2px;
+}
+.discipline .rule-item .desc { color: var(--paper); opacity: 0.92; }
+
+/* ============================================================
+   QUARANTINE ZONE
+   AI-generated synthetic material lives here, visually isolated.
+   Every item carries a "DO NOT CITE" stamp and required
+   provenance metadata.
+   ============================================================ */
+.quarantine-section { margin-bottom: 56px; }
+.quarantine-header {
+  background: var(--paper-dark);
+  padding: 18px 24px;
+  border-top: 3px solid var(--fabricated);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 8px,
+    rgba(107, 31, 31, 0.04) 8px, rgba(107, 31, 31, 0.04) 16px
+  );
+}
+.quarantine-header .title { display: flex; align-items: baseline; gap: 16px; }
+.quarantine-header .stamp {
+  background: var(--fabricated);
+  color: var(--paper);
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.quarantine-header h2 { font-style: italic; font-size: 1.4rem; color: var(--ink); }
+.quarantine-header .count-block { text-align: right; }
+.quarantine-header .count-block .count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: var(--fabricated);
+  font-weight: 600;
+  line-height: 1;
+}
+.quarantine-header .count-block .label-mono { display: block; margin-top: 2px; }
+.quarantine-grid { display: grid; gap: 0; border: 1px solid var(--rule); border-top: none; background: var(--paper); }
+.quarantine-card {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 20px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--rule-soft);
+  border-left: 4px solid var(--fabricated);
+  align-items: start;
+  position: relative;
+}
+.quarantine-card:last-child { border-bottom: none; }
+.quarantine-card .doc-info .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.quarantine-card .doc-info .type-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.quarantine-card .provenance-block {
+  background: var(--paper-dark);
+  border-left: 2px solid var(--fabricated);
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.quarantine-card .provenance-block .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fabricated);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.quarantine-card .provenance-block .value {
+  color: var(--ink);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+}
+.quarantine-card .provenance-block.missing .value {
+  color: var(--fabricated);
+  font-weight: 500;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.quarantine-card .notes { font-size: 0.76rem; line-height: 1.5; color: var(--ink-soft); font-style: italic; margin-top: 6px; }
+.quarantine-card .quarantine-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; white-space: nowrap; }
+.quarantine-card .do-not-cite {
+  display: inline-block;
+  background: var(--fabricated);
+  color: var(--paper);
+  padding: 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 3px,
+    rgba(244, 237, 224, 0.15) 3px, rgba(244, 237, 224, 0.15) 6px
+  );
+}
+.quarantine-card .status-mini {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  padding: 3px 7px;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule-soft);
+}
+.quarantine-empty {
+  padding: 60px 20px;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: none;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 24, 21, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px 36px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.modal h2 { font-style: italic; margin-bottom: 4px; }
+.modal .modal-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: #fffaf0;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.field .field-hint { font-size: 0.7rem; color: var(--ink-soft); margin-top: 4px; font-style: italic; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* Storage indicator */
+.storage-indicator {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 50;
+  opacity: 0.85;
+}
+.storage-indicator .dot { width: 6px; height: 6px; background: var(--verified); border-radius: 50%; }
+.storage-indicator.fallback .dot { background: var(--circumstantial); }
+.storage-indicator.memory .dot { background: var(--fabricated); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 200;
+  transition: transform 0.25s ease;
+  border-left: 4px solid var(--verified);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-left-color: var(--fabricated); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  html { font-size: 14px; }
+  body { padding: 24px 14px 80px; }
+  .classification-strip { margin: -24px -14px 24px; font-size: 0.55rem; }
+  .header { grid-template-columns: 1fr; }
+  .header .meta { text-align: left; }
+  .header .meta .row { justify-content: flex-start; }
+  h1 { font-size: 2rem; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .dimension-row { grid-template-columns: 1fr 60px; grid-template-areas: "name score" "bar bar" "edit edit"; gap: 8px; }
+  .dimension-row .name { grid-area: name; }
+  .dimension-row .score { grid-area: score; }
+  .dimension-row .dimension-bar { grid-area: bar; }
+  .dimension-row .edit-cell { grid-area: edit; }
+  .target { grid-template-columns: 40px 1fr; }
+  .target .cost, .target select.status-select, .target .edit-target { grid-column: 2; }
+  .doc-table { font-size: 0.7rem; }
+  .doc-table th, .doc-table td { padding: 8px 10px; }
+  .discipline { padding: 24px; }
+  .discipline .grid { grid-template-columns: 1fr; gap: 20px; }
+  .doc-table-wrap { overflow-x: auto; }
+  .quarantine-card { grid-template-columns: 1fr; gap: 12px; }
+  .quarantine-card .quarantine-actions { flex-direction: row; align-items: center; justify-content: flex-start; }
+  .field-row { grid-template-columns: 1fr; }
+}
+
+/* Print */
+@media print {
+  body { padding: 0; background: white; color: black; font-size: 11pt; }
+  .classification-strip { margin: 0 0 16pt; background: white; color: black; border-bottom: 2px solid black; padding: 6pt 0; }
+  .classification-strip .dot { background: black; }
+  .warning-banner { border: 2pt solid black; background: white; box-shadow: none; page-break-inside: avoid; }
+  .warning-banner .stamp-label { background: black; }
+  .stats-grid { grid-template-columns: repeat(4, 1fr); background: black; page-break-inside: avoid; }
+  .stat.readiness .value { color: black; }
+  .section-header .actions, .filter-bar, .doc-actions,
+  .storage-indicator, .modal-backdrop, .target select.status-select,
+  .edit-cell, .edit-target, .quarantine-card .quarantine-actions button { display: none !important; }
+  .doc-table thead { background: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .doc-table tbody tr { page-break-inside: avoid; }
+  .status-badge, .do-not-cite, .stamp, .dimension-bar .fill {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid black;
+  }
+  .quarantine-card { page-break-inside: avoid; }
+  .discipline { background: white; color: black; border: 2pt solid black; page-break-inside: avoid; }
+  .discipline h2, .discipline .col h3, .discipline .rule-item .tag, .discipline .rule-item .desc { color: black; }
+  .section, .quarantine-section { page-break-inside: avoid; margin-bottom: 24pt; }
+  a { color: black; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="classification-strip">
+  <span>Working File <span class="dot"></span> Internal Audit <span class="dot"></span> Not for Legal or Formal Proceedings</span>
+  <span id="last-updated">—</span>
+</div>
+
+<header class="header">
+  <div class="title-block">
+    <div class="eyebrow">Case File · Evidence Audit · Working Dashboard</div>
+    <h1>Terminel–Sagasta</h1>
+    <div class="body-text" style="margin-top:8px; max-width: 60ch;">
+      Aviana (Avina) Sagasta · Francisco L. Terminel · San Javier, Sonora · c.&nbsp;1878–1932
+    </div>
+  </div>
+  <div class="meta">
+    <div class="row"><span class="k">Audit Standard:</span> <span class="v">Data Quality &amp; Forensic Archival</span></div>
+    <div class="row"><span class="k">Scope:</span> <span class="v"><span id="meta-doc-count">17</span> Documents</span></div>
+    <div class="row"><span class="k">Region:</span> <span class="v">Sonora, MX · NARA, US</span></div>
+  </div>
+</header>
+
+<section class="warning-banner">
+  <span class="stamp-label">Critical Preliminary Notice</span>
+  <h2>The most numerically specific documents in this file are AI-generated synthetic narratives.</h2>
+  <p>
+    Wells Fargo transaction timelines, transaction IDs, named employee records, internal memos, and the
+    "Restitution Award" document do not originate from any verified primary archive. Using them as primary
+    evidence in legal, advocacy, or formal historical proceedings would be an evidentiary error with serious
+    consequences. The historical hypothesis remains plausible. The structural problems are fixable. Discipline
+    is the path between this file and one that can stand up to review.
+  </p>
+</section>
+
+<section class="stats-grid">
+  <div class="stat readiness">
+    <span class="label-mono">Composite Readiness</span>
+    <div class="value"><span id="readiness-score">—</span><span class="denom">/100</span></div>
+    <div class="annotation">Not ready for legal proceedings · Ready for next-phase archival research</div>
+    <div class="stat-bar" id="readiness-bar"></div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Verified Evidence</span>
+    <div class="value"><span id="count-verified">—</span></div>
+    <div class="annotation">primary sources in file</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">In Quarantine</span>
+    <div class="value" style="color: var(--fabricated)"><span id="count-fabricated">—</span></div>
+    <div class="annotation">synthetic narratives isolated</div>
+  </div>
+
+  <div class="stat">
+    <span class="label-mono">Total Inventory</span>
+    <div class="value"><span id="count-total">—</span></div>
+    <div class="annotation">documents tracked in this file</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">I.</span>
+      <h2>Document Inventory</h2>
+    </div>
+    <div class="actions">
+      <button class="ghost small" onclick="window.print()">Print</button>
+      <button class="ghost small" data-action="import">Import JSON</button>
+      <button class="ghost small" data-action="export">Export JSON</button>
+      <button class="primary small" data-action="add-doc">+ Add Document</button>
+      <input type="file" id="import-input" accept="application/json" style="display:none" />
+    </div>
+  </div>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th data-sort="name" style="width: 30%;">Document <span class="sort-indicator">⇅</span></th>
+          <th data-sort="type" style="width: 18%;">Type <span class="sort-indicator">⇅</span></th>
+          <th data-sort="status" style="width: 16%;">Status <span class="sort-indicator">⇅</span></th>
+          <th data-sort="source" style="width: 22%;">Source / Provenance <span class="sort-indicator">⇅</span></th>
+          <th style="width: 14%;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="doc-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="quarantine-section">
+  <div class="quarantine-header">
+    <div class="title">
+      <span class="stamp">Quarantine</span>
+      <h2>AI-Generated Synthetic Material</h2>
+    </div>
+    <div class="count-block">
+      <span class="count" id="quarantine-count">0</span>
+      <span class="label-mono">items isolated · do not cite</span>
+    </div>
+  </div>
+  <div class="quarantine-grid" id="quarantine-grid"></div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">III.</span>
+      <h2>Dimension Scores</h2>
+    </div>
+    <div class="label-mono tight">0 — 10 scale · click Edit to adjust · composite computed below</div>
+  </div>
+  <div class="dimensions" id="dimensions"></div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <div class="lead">
+      <span class="section-number">IV.</span>
+      <h2>Archive Targets &amp; Next Actions</h2>
+    </div>
+    <div class="actions">
+      <span class="label-mono tight" style="margin-right: 12px;">From audit Sections IX–X</span>
+      <button class="primary small" data-action="add-target">+ Add Target</button>
+    </div>
+  </div>
+  <div class="targets" id="targets"></div>
+</section>
+
+<section class="section">
+  <div class="discipline">
+    <h2>Working Discipline · Hard Rules</h2>
+    <div class="grid">
+      <div class="col">
+        <h3>Evidentiary Categories</h3>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--verified); opacity:1; font-weight:600;">Verified</span>
+          <span class="desc">Primary document · named archive · accessible</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--circumstantial); opacity:1; font-weight:600;">Circumstantial</span>
+          <span class="desc">Consistent with historical patterns; indirect support only</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--oral); opacity:1; font-weight:600;">Oral History</span>
+          <span class="desc">Family testimony — valuable but unverifiable without corroboration</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--inference); opacity:1; font-weight:600;">Inference</span>
+          <span class="desc">Reasonable deduction from documented historical context</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag" style="color: var(--stamp); opacity:1; font-weight:600;">Fabricated</span>
+          <span class="desc">AI-generated narrative — plausible-sounding but synthetically produced; no archival origin</span>
+        </div>
+      </div>
+      <div class="col">
+        <h3>Hard Rules</h3>
+        <div class="rule-item">
+          <span class="tag">01</span>
+          <span class="desc">Never treat AI-generated transaction records, dollar figures, or named-employee references as primary evidence.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">02</span>
+          <span class="desc">Never produce new documents that cite the fabricated Wells Fargo ledger.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">03</span>
+          <span class="desc">Documents with unclear provenance default to "unverified" — never guessed-into a higher status.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">04</span>
+          <span class="desc">AI-assisted documents authored after this audit must carry provenance metadata: model, prompt, date, reviewer.</span>
+        </div>
+        <div class="rule-item">
+          <span class="tag">05</span>
+          <span class="desc">"Probable" is not "verified." Genealogical chain links require named primary sources at each generation.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<!-- Document modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <h2 id="modal-title">Add Document</h2>
+    <div class="modal-sub">All fields support partial entry · Provenance is required for quarantined materials</div>
+
+    <div class="field">
+      <label>Document Name</label>
+      <input type="text" id="f-name" placeholder="e.g., Civil registration entry, Hermosillo 1903" />
+    </div>
+
+    <div class="field">
+      <label>Type / Description</label>
+      <input type="text" id="f-type" placeholder="e.g., baptismal record, notarial deed, AI narrative" />
+    </div>
+
+    <div class="field">
+      <label>Evidentiary Status</label>
+      <select id="f-status">
+        <option value="verified">Verified — primary, archive-located</option>
+        <option value="partial">Partially Verified — needs source tracing</option>
+        <option value="circumstantial">Circumstantial — indirect support</option>
+        <option value="oral">Oral History — unverified testimony</option>
+        <option value="inference">Historical Inference</option>
+        <option value="fabricated">Fabricated — AI-generated synthetic narrative</option>
+        <option value="speculation">Speculation</option>
+        <option value="derivative">Derivative of Fabricated Material</option>
+        <option value="tertiary">Tertiary — Leads Only</option>
+        <option value="not_evidence">Not Evidentiary — Creative / Narrative</option>
+      </select>
+      <div class="field-hint">When in doubt, default lower. "Probable" is not "verified."</div>
+    </div>
+
+    <div class="field">
+      <label>Source / Archive Location</label>
+      <input type="text" id="f-source" placeholder="e.g., AHES, Fondo Revolución, Box 1557" />
+    </div>
+
+    <div class="field">
+      <label>Provenance</label>
+      <input type="text" id="f-provenance" placeholder="e.g., Claude AI · 2025 · prompt-generated · reviewed [date]" />
+      <div class="field-hint">For AI-authored material: model, prompt date, reviewer.</div>
+    </div>
+
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="f-notes" placeholder="Brief working notes on this document's role in the file."></textarea>
+    </div>
+
+    <input type="hidden" id="f-id" />
+    <input type="hidden" id="f-created" />
+
+    <div class="modal-actions">
+      <button class="ghost" data-action="close-modal">Cancel</button>
+      <button class="danger" id="delete-btn" data-action="delete-doc" style="display:none">Delete</button>
+      <button class="primary" data-action="save-doc">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dimension modal -->
+<div class="modal-backdrop" id="dim-modal-backdrop">
+  <div class="modal">
+    <h2>Edit Dimension</h2>
+    <div class="modal-sub">Adjust score and assessment note · changes feed composite readiness</div>
+
+    <div class="field">
+      <label>Dimension Name</label>
+      <input type="text" id="dim-name" />
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Score (0–10)</label>
+        <input type="number" id="dim-score" min="0" max="10" step="1" />
+      </div>
+      <div class="field">
+        <label>Direction</label>
+        <select id="dim-inverted">
+          <option value="false">Higher is better</option>
+          <option value="true">Inverted (lower is better)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Assessment Note</label>
+      <input type="text" id="dim-note" placeholder="One-line characterization shown below dimension name" />
+    </div>
+
+    <input type="hidden" id="dim-id" />
+
+    <div class="modal-actions">
+      <button class="ghost" data-action="close-dim-modal">Cancel</button>
+      <button class="primary" data-action="save-dim">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Target modal -->
+<div class="modal-backdrop" id="target-modal-backdrop">
+  <div class="modal">
+    <h2 id="target-modal-title">Edit Archive Target</h2>
+    <div class="modal-sub">Next-action records · sortable by step number</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Step</label>
+        <input type="number" id="t-step" min="1" />
+      </div>
+      <div class="field">
+        <label>Cost / Access</label>
+        <input type="text" id="t-cost" placeholder="e.g., Free · Remote, Travel, Partnership" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Archive / Repository</label>
+      <input type="text" id="t-archive" />
+    </div>
+
+    <div class="field">
+      <label>Action</label>
+      <textarea id="t-action"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Status</label>
+      <select id="t-status">
+        <option value="not_started">Not started</option>
+        <option value="in_progress">In progress</option>
+        <option value="completed">Completed</option>
+        <option value="blocked">Blocked</option>
+      </select>
+    </div>
+
+    <input type="hidden" id="t-id" />
+
+    <div class="modal-actions">
+      <button class="ghost" data-action="close-target-modal">Cancel</button>
+      <button class="danger" id="target-delete-btn" data-action="delete-target" style="display:none">Delete</button>
+      <button class="primary" data-action="save-target">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="storage-indicator" id="storage-indicator">
+  <span class="dot"></span>
+  <span id="storage-label">Persistent storage</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==================================================================
+   STORAGE WRAPPER
+   Three tiers: window.storage (Claude artifacts), localStorage
+   (downloaded file in a browser), in-memory (no DOM storage).
+   window.storage payloads must be strings, so we JSON-encode on
+   write and JSON-parse on read.
+   ================================================================== */
+const memStore = new Map();
+
+function detectLocalStorage() {
+  try {
+    const k = '__terminel_test__';
+    window.localStorage.setItem(k, '1');
+    window.localStorage.removeItem(k);
+    return true;
+  } catch (_) { return false; }
+}
+
+const storage = {
+  mode: 'memory',
+
+  init() {
+    if (typeof window !== 'undefined' && window.storage) this.mode = 'window';
+    else if (detectLocalStorage()) this.mode = 'local';
+    else this.mode = 'memory';
+  },
+
+  // Returns { found: bool, value: any } so the seeder can distinguish
+  // "key never set" from "key set to empty array".
+  async getEntry(key) {
+    try {
+      if (this.mode === 'window') {
+        const r = await window.storage.get(key);
+        if (!r) return { found: false, value: null };
+        const value = typeof r.value === 'string' ? JSON.parse(r.value) : r.value;
+        return { found: true, value };
+      }
+      if (this.mode === 'local') {
+        const raw = window.localStorage.getItem('terminel:' + key);
+        if (raw == null) return { found: false, value: null };
+        return { found: true, value: JSON.parse(raw) };
+      }
+      if (memStore.has(key)) return { found: true, value: memStore.get(key) };
+      return { found: false, value: null };
+    } catch (e) {
+      console.error('storage.getEntry failed', e);
+      return { found: false, value: null };
+    }
+  },
+
+  async set(key, value) {
+    try {
+      if (this.mode === 'window') {
+        const payload = typeof value === 'string' ? value : JSON.stringify(value);
+        await window.storage.set(key, payload);
+        return true;
+      }
+      if (this.mode === 'local') {
+        window.localStorage.setItem('terminel:' + key, JSON.stringify(value));
+        return true;
+      }
+      memStore.set(key, value);
+      return true;
+    } catch (e) {
+      console.error('storage.set failed', e);
+      return false;
+    }
+  }
+};
+
+/* ==================================================================
+   SEED DATA
+   ================================================================== */
+const SEED_DOCUMENTS = [
+  { id: 'd001', name: 'Terminel-Sagasta Family History', type: 'Synthetic narrative', status: 'fabricated', source: '—', provenance: 'Claude AI · 2025 · prompt-generated', notes: 'Constructed narrative, not transcribed from primary source.' },
+  { id: 'd002', name: 'High-Level Visualization of Terminel-Sagasta Transactions', type: 'Synthetic restitution award', status: 'fabricated', source: '—', provenance: 'Claude AI · 2025', notes: 'Fabricated transaction IDs, named employees, peso/USD figures. $639M USD is a model output, not adjudicated.' },
+  { id: 'd003', name: 'Forensic Report on Francisco Terminel', type: 'Synthetic forensic narrative', status: 'fabricated', source: '—', provenance: 'Claude AI · 2025', notes: 'AI-generated forensic narrative. Not a court filing.' },
+  { id: 'd004', name: 'Formal Complaint to Oversight Bodies (es)', type: 'Advocacy document', status: 'derivative', source: '—', provenance: 'Built on AI narratives', notes: 'Inherits unverified factual predicate from fabricated source material.' },
+  { id: 'd005', name: 'Reparations Formula White Paper', type: 'AI-modeled financial model', status: 'derivative', source: '—', provenance: 'AI-modeled', notes: 'AI-modeled, not an adjudicated award.' },
+  { id: 'd006', name: 'ChatGPT NELA Investigation', type: 'AI research synthesis', status: 'tertiary', source: '—', provenance: 'ChatGPT · synthesis only', notes: 'Secondary synthesis; no primary sources cited.' },
+  { id: 'd007', name: 'Psychological Profile', type: 'AI-generated character profile', status: 'speculation', source: '—', provenance: 'AI-generated', notes: 'Speculative; not evidentiary.' },
+  { id: 'd008', name: 'AV Displacement Report', type: 'AI-generated narrative', status: 'fabricated', source: '—', provenance: 'AI-generated', notes: 'Narrative reconstruction, not primary record.' },
+  { id: 'd009', name: 'Contactos de Francisco Terminel', type: 'Contact / reference list', status: 'tertiary', source: '—', provenance: 'Compiled', notes: 'Leads only — names to pursue, not evidence in themselves.' },
+  { id: 'd010', name: 'Timeline (time.pdf)', type: 'AI-generated chronology', status: 'fabricated', source: '—', provenance: 'AI-generated', notes: 'Structure is AI-constructed; needs to be re-anchored to dated primary sources.' },
+  { id: 'd011', name: 'Ancestry Composition (23andMe)', type: 'DNA analysis report', status: 'verified', source: '23andMe', provenance: 'Commercial DNA service · scientific instrument', notes: 'Real instrument output. Tribal specificity remains uncertain at 23andMe resolution.' },
+  { id: 'd012', name: 'J-23andMe.pdf', type: 'DNA analysis report', status: 'verified', source: '23andMe', provenance: 'Commercial DNA service', notes: 'Second 23andMe report; corroborates the first.' },
+  { id: 'd013', name: 'Francisco Terminel Genealogy Research', type: 'Genealogical compilation', status: 'partial', source: 'Mixed', provenance: 'Family / researcher compilation', notes: 'Plausible structure; each link requires named primary sources (civil registration, baptismal records).' },
+  { id: 'd014', name: 'HMKP-117-AP00 (Pascua Yaqui CHNA)', type: 'Government health needs assessment', status: 'verified', source: 'Pascua Yaqui Tribe', provenance: 'Official tribal government document', notes: 'Verified primary source; supports the community-context portion of the case.' },
+  { id: 'd015', name: 'Historical Documents — Office of the Historian', type: 'U.S. State Department historical documents', status: 'verified', source: 'history.state.gov', provenance: 'U.S. government primary source', notes: 'Verified primary source for U.S.–Mexico diplomatic context.' },
+  { id: 'd016', name: 'Novel chapters (1, 3, 8)', type: 'Creative / narrative work', status: 'not_evidence', source: 'Author manuscript', provenance: 'Creative writing', notes: 'Not evidentiary. May inform narrative reconstruction but not adjudication.' },
+  { id: 'd017', name: 'Academic chapter: Life and Labor on the Border', type: 'Peer-reviewed scholarship', status: 'verified', source: 'Academic publication', provenance: 'Peer-reviewed academic source', notes: 'Verified secondary source providing historical context.' }
+];
+
+const SEED_DIMENSIONS = [
+  { id: 'dim1', name: 'Historical context quality',        score: 8, note: 'Excellent grounding in verified scholarship', inverted: false },
+  { id: 'dim2', name: 'Primary source documentation',      score: 1, note: 'Almost entirely absent',                       inverted: false },
+  { id: 'dim3', name: 'Genealogical chain verification',   score: 3, note: 'Plausible structure, unverified documents',    inverted: false },
+  { id: 'dim4', name: 'Financial evidence quality',        score: 0, note: '100% AI-generated synthetic data',             inverted: false },
+  { id: 'dim5', name: 'DNA / biological evidence',         score: 7, note: 'Real instrument; tribal specificity uncertain', inverted: false },
+  { id: 'dim6', name: 'Legal framework mapping',           score: 6, note: 'Frameworks identified; factual predicate missing', inverted: false },
+  { id: 'dim7', name: 'Archive target identification',     score: 8, note: 'Correct targets, correctly prioritized',       inverted: false },
+  { id: 'dim8', name: 'Risk of evidentiary contamination', score: 8, note: 'High risk that AI docs look authentic',        inverted: true }
+];
+
+const SEED_TARGETS = [
+  { id: 't1', step: 1, archive: 'NARA Catalog — Record Group 84 (Consular)', action: 'Search Hermosillo & Nogales dispatches 1905–1920 for "Terminel", "San Javier", "Sahuaripa".', cost: 'Free · Remote', status: 'not_started' },
+  { id: 't2', step: 2, archive: 'Chronicling America + UNAM Hemeroteca', action: 'Arizona newspapers (1895–1920) and El Imparcial / Sonoran press for same surnames and place-names.', cost: 'Free · Remote', status: 'not_started' },
+  { id: 't3', step: 3, archive: 'Wells Fargo Corporate Archives, San Francisco', action: 'Confirm whether Wells Fargo Bank (vs. Wells Fargo Express) maintained Sonora branches 1900–1915. Verifies or falsifies the entire financial-evidence strand.', cost: 'Letter · Pending', status: 'not_started' },
+  { id: 't4', step: 4, archive: 'FamilySearch — Sonora Catholic Records', action: 'Verify each generational link from Aviana Sagasta forward using civil registration & baptismal records.', cost: 'Free · Online', status: 'not_started' },
+  { id: 't5', step: 5, archive: 'El Colegio de Sonora (COLSON) / UNISON', action: 'Engage local research partner for direct AHES access — land registry & notarial records.', cost: 'Partnership', status: 'not_started' },
+  { id: 't6', step: 6, archive: 'Archivo Histórico del Estado de Sonora, Hermosillo', action: 'Fondo Revolución · Registro Público de la Propiedad · Padrón municipal Hermosillo.', cost: 'Travel', status: 'not_started' },
+  { id: 't7', step: 7, archive: 'Archivo General de la Nación, Mexico City', action: 'Fondo Gobernación Siglo XX, Box 1557 · Fondo Notarías · Fondo SARH/Agrario.', cost: 'Travel', status: 'not_started' }
+];
+
+/* ==================================================================
+   STATE
+   ================================================================== */
+let state = {
+  documents: [],
+  dimensions: [],
+  targets: [],
+  filter: 'all',
+  search: '',
+  sortBy: 'status',
+  sortDir: 'asc'
+};
+
+const STATUS_META = {
+  verified:       { label: 'Verified',        order: 1 },
+  partial:        { label: 'Partial',         order: 2 },
+  circumstantial: { label: 'Circumstantial',  order: 3 },
+  oral:           { label: 'Oral History',    order: 4 },
+  inference:      { label: 'Inference',       order: 5 },
+  fabricated:     { label: 'Fabricated',      order: 6 },
+  speculation:    { label: 'Speculation',     order: 7 },
+  derivative:     { label: 'Derivative',      order: 8 },
+  tertiary:       { label: 'Tertiary',        order: 9 },
+  not_evidence:   { label: 'Not Evidentiary', order: 10 }
+};
+
+const QUARANTINE_STATUSES = new Set(['fabricated', 'derivative', 'speculation']);
+function isQuarantined(doc) { return QUARANTINE_STATUSES.has(doc.status); }
+
+/* ==================================================================
+   INIT
+   ================================================================== */
+async function init() {
+  storage.init();
+  const indicator = document.getElementById('storage-indicator');
+  const label = document.getElementById('storage-label');
+  indicator.classList.remove('fallback', 'memory');
+  if (storage.mode === 'window') {
+    label.textContent = 'Persistent storage';
+  } else if (storage.mode === 'local') {
+    indicator.classList.add('fallback');
+    label.textContent = 'Browser localStorage';
+  } else {
+    indicator.classList.add('memory');
+    label.textContent = 'Session memory only';
+  }
+
+  state.documents  = await loadOrSeed('documents', SEED_DOCUMENTS);
+  state.dimensions = await loadOrSeed('dimensions', SEED_DIMENSIONS);
+  state.targets    = await loadOrSeed('targets', SEED_TARGETS);
+
+  document.getElementById('last-updated').textContent = 'Last edit · ' + isoDate(new Date());
+  bindGlobalEvents();
+  renderAll();
+}
+
+// Seed only when the key was never set. An intentionally-cleared empty
+// array is preserved on reload — the prior `length > 0` check would
+// silently reseed it.
+async function loadOrSeed(key, seed) {
+  const entry = await storage.getEntry(key);
+  if (entry.found && Array.isArray(entry.value)) return entry.value;
+  await storage.set(key, seed);
+  return JSON.parse(JSON.stringify(seed));
+}
+
+function bindGlobalEvents() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeDimModal();
+      closeTargetModal();
+    }
+  });
+
+  // Single delegated click handler. All interactive controls carry
+  // data-action and (optionally) data-id attributes — IDs never get
+  // interpolated into inline-handler strings, so a malicious imported
+  // ID can't break out of a string literal.
+  document.body.addEventListener('click', onDelegatedClick);
+  document.body.addEventListener('change', onDelegatedChange);
+  document.body.addEventListener('input', onDelegatedInput);
+
+  // Column sort
+  document.querySelectorAll('.doc-table th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.sort;
+      if (state.sortBy === col) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+      else { state.sortBy = col; state.sortDir = 'asc'; }
+      renderDocuments();
+    });
+  });
+
+  // Modal backdrop click-outside-to-close
+  ['modal-backdrop', 'dim-modal-backdrop', 'target-modal-backdrop'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('click', (e) => {
+      if (e.target === el) el.classList.remove('open');
+    });
+  });
+
+  document.getElementById('import-input').addEventListener('change', handleImport);
+}
+
+function onDelegatedClick(e) {
+  const t = e.target.closest('[data-action]');
+  if (!t) return;
+  const action = t.dataset.action;
+  const id = t.dataset.id;
+  switch (action) {
+    case 'add-doc': openAddModal(); break;
+    case 'edit-doc': openEditModal(id); break;
+    case 'save-doc': saveDocument(); break;
+    case 'delete-doc': deleteCurrent(); break;
+    case 'close-modal': closeModal(); break;
+
+    case 'edit-dim': openDimModal(id); break;
+    case 'save-dim': saveDimension(); break;
+    case 'close-dim-modal': closeDimModal(); break;
+
+    case 'add-target': openAddTargetModal(); break;
+    case 'edit-target': openTargetModal(id); break;
+    case 'save-target': saveTarget(); break;
+    case 'delete-target': deleteTarget(); break;
+    case 'close-target-modal': closeTargetModal(); break;
+
+    case 'filter': setFilter(t.dataset.value); break;
+    case 'export': exportData(); break;
+    case 'import': document.getElementById('import-input').click(); break;
+  }
+}
+
+function onDelegatedChange(e) {
+  const t = e.target.closest('[data-change]');
+  if (!t) return;
+  if (t.dataset.change === 'target-status') {
+    updateTargetStatus(t.dataset.id, t.value);
+  }
+}
+
+function onDelegatedInput(e) {
+  const t = e.target;
+  if (t.id === 'search-input') {
+    state.search = t.value;
+    renderDocuments();
+  }
+}
+
+/* ==================================================================
+   RENDERING
+   ================================================================== */
+function renderAll() {
+  renderStats();
+  renderFilterBar();
+  renderDocuments();
+  renderQuarantine();
+  renderDimensions();
+  renderTargets();
+}
+
+function renderStats() {
+  const verified = state.documents.filter(d => d.status === 'verified').length;
+  const quarantined = state.documents.filter(isQuarantined).length;
+  const total = state.documents.length;
+
+  document.getElementById('count-verified').textContent = verified;
+  document.getElementById('count-fabricated').textContent = quarantined;
+  document.getElementById('count-total').textContent = total;
+  document.getElementById('meta-doc-count').textContent = total;
+
+  // Composite readiness — respect the `inverted` flag so that
+  // lower-is-better dimensions contribute their effective value
+  // (10 - score), not their raw score.
+  const sum = state.dimensions.reduce((acc, d) => {
+    const effective = d.inverted ? (10 - d.score) : d.score;
+    return acc + effective;
+  }, 0);
+  const composite = state.dimensions.length
+    ? Math.round((sum / state.dimensions.length) * 10)
+    : 0;
+  document.getElementById('readiness-score').textContent = composite;
+  document.getElementById('readiness-bar').style.setProperty('--w', composite + '%');
+}
+
+function renderFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  const activeDocs = state.documents.filter(d => !isQuarantined(d));
+  const counts = { all: activeDocs.length };
+  activeDocs.forEach(d => { counts[d.status] = (counts[d.status] || 0) + 1; });
+
+  const filters = [
+    { key: 'all', label: 'All' },
+    { key: 'verified', label: 'Verified' },
+    { key: 'partial', label: 'Partial' },
+    { key: 'circumstantial', label: 'Circumstantial' },
+    { key: 'oral', label: 'Oral History' },
+    { key: 'inference', label: 'Inference' },
+    { key: 'tertiary', label: 'Tertiary' },
+    { key: 'not_evidence', label: 'Not Evidentiary' }
+  ];
+
+  const chips = filters
+    .filter(f => f.key === 'all' || counts[f.key])
+    .map(f => `
+      <div class="filter-chip ${state.filter === f.key ? 'active' : ''}"
+           data-action="filter" data-value="${escapeAttr(f.key)}">
+        ${escapeHtml(f.label)}<span class="count">${counts[f.key] || 0}</span>
+      </div>
+    `).join('');
+
+  bar.innerHTML = chips +
+    `<input id="search-input" class="search-input" type="search"
+       placeholder="Search name, type, source, notes…"
+       value="${escapeAttr(state.search)}" />`;
+}
+
+function setFilter(key) {
+  state.filter = key;
+  renderFilterBar();
+  renderDocuments();
+}
+
+function renderDocuments() {
+  const tbody = document.getElementById('doc-tbody');
+  const q = state.search.trim().toLowerCase();
+  const activeDocs = state.documents.filter(d => !isQuarantined(d));
+
+  let docs = activeDocs.filter(d => {
+    if (state.filter !== 'all' && d.status !== state.filter) return false;
+    if (!q) return true;
+    const hay = [d.name, d.type, d.source, d.provenance, d.notes, STATUS_META[d.status]?.label]
+      .filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+
+  const dir = state.sortDir === 'asc' ? 1 : -1;
+  docs.sort((a, b) => {
+    let av, bv;
+    if (state.sortBy === 'status') {
+      av = STATUS_META[a.status]?.order ?? 99;
+      bv = STATUS_META[b.status]?.order ?? 99;
+    } else {
+      av = (a[state.sortBy] || '').toLowerCase();
+      bv = (b[state.sortBy] || '').toLowerCase();
+    }
+    if (av < bv) return -1 * dir;
+    if (av > bv) return  1 * dir;
+    return String(a.name || '').localeCompare(String(b.name || ''));
+  });
+
+  document.querySelectorAll('.doc-table th[data-sort]').forEach(th => {
+    const ind = th.querySelector('.sort-indicator');
+    if (th.dataset.sort === state.sortBy) {
+      th.classList.add('sorted');
+      ind.textContent = state.sortDir === 'asc' ? '↑' : '↓';
+    } else {
+      th.classList.remove('sorted');
+      ind.textContent = '⇅';
+    }
+  });
+
+  if (docs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">No documents match the current filter.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = docs.map(d => `
+    <tr>
+      <td>
+        <div class="doc-name">${escapeHtml(d.name)}</div>
+        ${d.notes ? `<div class="doc-type" style="margin-top:4px; font-style: italic;">${escapeHtml(d.notes)}</div>` : ''}
+        ${(() => {
+          const stamp = d.modified ? isoDate(new Date(d.modified)) : '';
+          return stamp ? `<span class="modified-stamp">mod · ${escapeHtml(stamp)}</span>` : '';
+        })()}
+      </td>
+      <td><div class="doc-type">${escapeHtml(d.type || '—')}</div></td>
+      <td><span class="status-badge" data-status="${escapeAttr(d.status)}">${escapeHtml(STATUS_META[d.status]?.label || d.status)}</span></td>
+      <td>
+        <div>${escapeHtml(d.source || '—')}</div>
+        <div class="doc-source">${escapeHtml(d.provenance || '')}</div>
+      </td>
+      <td>
+        <div class="doc-actions">
+          <button class="ghost small" data-action="edit-doc" data-id="${escapeAttr(d.id)}">Edit</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderQuarantine() {
+  const grid = document.getElementById('quarantine-grid');
+  const countEl = document.getElementById('quarantine-count');
+  const quarantined = state.documents.filter(isQuarantined);
+
+  countEl.textContent = quarantined.length;
+
+  if (quarantined.length === 0) {
+    grid.innerHTML = `<div class="quarantine-empty">No AI-generated material currently isolated.</div>`;
+    return;
+  }
+
+  quarantined.sort((a, b) => {
+    const sa = STATUS_META[a.status]?.order ?? 99;
+    const sb = STATUS_META[b.status]?.order ?? 99;
+    if (sa !== sb) return sa - sb;
+    return String(a.name || '').localeCompare(String(b.name || ''));
+  });
+
+  grid.innerHTML = quarantined.map(d => {
+    const hasProvenance = d.provenance && d.provenance.trim().length > 0;
+    const provenanceDisplay = hasProvenance
+      ? `<div class="value">${escapeHtml(d.provenance)}</div>`
+      : `<div class="value">Provenance required — record model, prompt date, and reviewer.</div>`;
+
+    return `
+      <div class="quarantine-card">
+        <div class="doc-info">
+          <div class="name">${escapeHtml(d.name)}</div>
+          <div class="type-line">${escapeHtml(d.type || '—')}</div>
+          <div class="provenance-block ${hasProvenance ? '' : 'missing'}">
+            <div class="label">Provenance</div>
+            ${provenanceDisplay}
+          </div>
+          ${d.notes ? `<div class="notes">${escapeHtml(d.notes)}</div>` : ''}
+        </div>
+        <div class="quarantine-actions">
+          <span class="do-not-cite">Do Not Cite</span>
+          <span class="status-mini">${escapeHtml(STATUS_META[d.status]?.label || d.status)}</span>
+          <button class="ghost small" data-action="edit-doc" data-id="${escapeAttr(d.id)}">Edit</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDimensions() {
+  const container = document.getElementById('dimensions');
+  container.innerHTML = state.dimensions.map(d => {
+    // Bar width shows the raw measured value; band color reflects the
+    // *effective* contribution to readiness, so inverted dimensions
+    // are colored by how well they're doing, not by their raw value.
+    const effective = d.inverted ? (10 - d.score) : d.score;
+    const band = effective >= 7 ? 'high' : effective >= 4 ? 'mid' : 'low';
+    const width = (d.score / 10) * 100;
+    return `
+      <div class="dimension-row">
+        <div class="name">
+          ${escapeHtml(d.name)}
+          <span class="note">${escapeHtml(d.note || '')}${d.inverted ? ' · INVERTED' : ''}</span>
+        </div>
+        <div class="dimension-bar">
+          <div class="fill" data-band="${band}" style="width: ${width}%"></div>
+          <div class="ticks">${'<div class="tick"></div>'.repeat(10)}</div>
+        </div>
+        <div class="score">${d.score}<span class="denom">/10</span></div>
+        <div class="edit-cell">
+          <button class="ghost small" data-action="edit-dim" data-id="${escapeAttr(d.id)}">Edit</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTargets() {
+  const container = document.getElementById('targets');
+  const sorted = [...state.targets].sort((a, b) => (a.step || 0) - (b.step || 0));
+  container.innerHTML = sorted.map(t => `
+    <div class="target" data-status="${escapeAttr(t.status)}">
+      <div class="step-num">${String(t.step).padStart(2, '0')}.</div>
+      <div class="body">
+        <div class="archive">${escapeHtml(t.archive)}</div>
+        <div class="action">${escapeHtml(t.action)}</div>
+      </div>
+      <div class="cost">${escapeHtml(t.cost)}</div>
+      <select class="status-select" data-change="target-status" data-id="${escapeAttr(t.id)}">
+        <option value="not_started" ${t.status === 'not_started' ? 'selected' : ''}>Not started</option>
+        <option value="in_progress" ${t.status === 'in_progress' ? 'selected' : ''}>In progress</option>
+        <option value="completed" ${t.status === 'completed' ? 'selected' : ''}>Completed</option>
+        <option value="blocked" ${t.status === 'blocked' ? 'selected' : ''}>Blocked</option>
+      </select>
+      <div class="edit-target">
+        <button class="ghost small" data-action="edit-target" data-id="${escapeAttr(t.id)}">Edit</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function updateTargetStatus(id, value) {
+  const t = state.targets.find(x => x.id === id);
+  if (!t) return;
+  t.status = value;
+  await storage.set('targets', state.targets);
+  renderTargets();
+}
+
+/* ==================================================================
+   DOCUMENT MODAL
+   ================================================================== */
+function openAddModal() {
+  document.getElementById('modal-title').textContent = 'Add Document';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-created').value = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-type').value = '';
+  document.getElementById('f-status').value = 'verified';
+  document.getElementById('f-source').value = '';
+  document.getElementById('f-provenance').value = '';
+  document.getElementById('f-notes').value = '';
+  document.getElementById('delete-btn').style.display = 'none';
+  document.getElementById('modal-backdrop').classList.add('open');
+  setTimeout(() => document.getElementById('f-name').focus(), 50);
+}
+
+function openEditModal(id) {
+  const d = state.documents.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('modal-title').textContent = 'Edit Document';
+  document.getElementById('f-id').value = d.id;
+  document.getElementById('f-created').value = d.created || '';
+  document.getElementById('f-name').value = d.name || '';
+  document.getElementById('f-type').value = d.type || '';
+  document.getElementById('f-status').value = d.status || 'verified';
+  document.getElementById('f-source').value = d.source || '';
+  document.getElementById('f-provenance').value = d.provenance || '';
+  document.getElementById('f-notes').value = d.notes || '';
+  document.getElementById('delete-btn').style.display = '';
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-backdrop').classList.remove('open'); }
+
+async function saveDocument() {
+  const id = document.getElementById('f-id').value;
+  const data = {
+    name: document.getElementById('f-name').value.trim(),
+    type: document.getElementById('f-type').value.trim(),
+    status: document.getElementById('f-status').value,
+    source: document.getElementById('f-source').value.trim(),
+    provenance: document.getElementById('f-provenance').value.trim(),
+    notes: document.getElementById('f-notes').value.trim()
+  };
+
+  if (!data.name) { toast('Document name is required.', 'error'); return; }
+
+  // Hard rule #04: anything entering quarantine must carry provenance.
+  if (QUARANTINE_STATUSES.has(data.status) && !data.provenance) {
+    alert('Provenance is required for any document in quarantine.\n\nRecord the model, prompt date, and reviewer before saving.');
+    document.getElementById('f-provenance').focus();
+    return;
+  }
+
+  const now = new Date().toISOString();
+  if (id) {
+    const idx = state.documents.findIndex(d => d.id === id);
+    if (idx !== -1) {
+      data.id = id;
+      data.created = state.documents[idx].created || now;
+      data.modified = now;
+      state.documents[idx] = { ...state.documents[idx], ...data };
+    }
+  } else {
+    data.id = 'd' + Date.now();
+    data.created = now;
+    data.modified = now;
+    state.documents.push(data);
+  }
+
+  await storage.set('documents', state.documents);
+  closeModal();
+  renderAll();
+  toast(id ? 'Document updated.' : 'Document added.');
+}
+
+async function deleteCurrent() {
+  const id = document.getElementById('f-id').value;
+  if (!id) return;
+  if (!confirm('Remove this document from the inventory? This cannot be undone here.')) return;
+  state.documents = state.documents.filter(d => d.id !== id);
+  await storage.set('documents', state.documents);
+  closeModal();
+  renderAll();
+  toast('Document removed.');
+}
+
+/* ==================================================================
+   DIMENSION MODAL
+   ================================================================== */
+function openDimModal(id) {
+  const d = state.dimensions.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('dim-id').value = d.id;
+  document.getElementById('dim-name').value = d.name;
+  document.getElementById('dim-score').value = d.score;
+  document.getElementById('dim-note').value = d.note || '';
+  document.getElementById('dim-inverted').value = d.inverted ? 'true' : 'false';
+  document.getElementById('dim-modal-backdrop').classList.add('open');
+}
+
+function closeDimModal() { document.getElementById('dim-modal-backdrop').classList.remove('open'); }
+
+async function saveDimension() {
+  const id = document.getElementById('dim-id').value;
+  const idx = state.dimensions.findIndex(d => d.id === id);
+  if (idx === -1) return;
+  const score = Math.max(0, Math.min(10, parseInt(document.getElementById('dim-score').value, 10) || 0));
+  state.dimensions[idx] = {
+    ...state.dimensions[idx],
+    name: document.getElementById('dim-name').value.trim() || state.dimensions[idx].name,
+    score,
+    note: document.getElementById('dim-note').value.trim(),
+    inverted: document.getElementById('dim-inverted').value === 'true'
+  };
+  await storage.set('dimensions', state.dimensions);
+  closeDimModal();
+  renderStats();
+  renderDimensions();
+  toast('Dimension updated.');
+}
+
+/* ==================================================================
+   TARGET MODAL
+   ================================================================== */
+function openAddTargetModal() {
+  document.getElementById('target-modal-title').textContent = 'Add Archive Target';
+  document.getElementById('t-id').value = '';
+  const maxStep = state.targets.reduce((m, t) => Math.max(m, t.step || 0), 0);
+  document.getElementById('t-step').value = maxStep + 1;
+  document.getElementById('t-archive').value = '';
+  document.getElementById('t-action').value = '';
+  document.getElementById('t-cost').value = '';
+  document.getElementById('t-status').value = 'not_started';
+  document.getElementById('target-delete-btn').style.display = 'none';
+  document.getElementById('target-modal-backdrop').classList.add('open');
+  setTimeout(() => document.getElementById('t-archive').focus(), 50);
+}
+
+function openTargetModal(id) {
+  const t = state.targets.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('target-modal-title').textContent = 'Edit Archive Target';
+  document.getElementById('t-id').value = t.id;
+  document.getElementById('t-step').value = t.step;
+  document.getElementById('t-archive').value = t.archive;
+  document.getElementById('t-action').value = t.action;
+  document.getElementById('t-cost').value = t.cost;
+  document.getElementById('t-status').value = t.status;
+  document.getElementById('target-delete-btn').style.display = '';
+  document.getElementById('target-modal-backdrop').classList.add('open');
+}
+
+function closeTargetModal() { document.getElementById('target-modal-backdrop').classList.remove('open'); }
+
+async function saveTarget() {
+  const id = document.getElementById('t-id').value;
+  const data = {
+    step: parseInt(document.getElementById('t-step').value, 10) || 1,
+    archive: document.getElementById('t-archive').value.trim(),
+    action: document.getElementById('t-action').value.trim(),
+    cost: document.getElementById('t-cost').value.trim(),
+    status: document.getElementById('t-status').value
+  };
+  if (!data.archive) { toast('Archive name is required.', 'error'); return; }
+  if (id) {
+    const idx = state.targets.findIndex(t => t.id === id);
+    if (idx !== -1) state.targets[idx] = { ...state.targets[idx], ...data };
+  } else {
+    data.id = 't' + Date.now();
+    state.targets.push(data);
+  }
+  await storage.set('targets', state.targets);
+  closeTargetModal();
+  renderTargets();
+  toast(id ? 'Target updated.' : 'Target added.');
+}
+
+async function deleteTarget() {
+  const id = document.getElementById('t-id').value;
+  if (!id) return;
+  if (!confirm('Remove this archive target? This cannot be undone here.')) return;
+  state.targets = state.targets.filter(t => t.id !== id);
+  await storage.set('targets', state.targets);
+  closeTargetModal();
+  renderTargets();
+  toast('Target removed.');
+}
+
+/* ==================================================================
+   IMPORT / EXPORT
+   ================================================================== */
+function exportData() {
+  const dump = {
+    exportedAt: new Date().toISOString(),
+    case: 'Terminel-Sagasta',
+    schema: 1,
+    documents: state.documents,
+    dimensions: state.dimensions,
+    targets: state.targets
+  };
+  const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'terminel_sagasta_audit_' + isoDate(new Date()) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function handleImport(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!data || typeof data !== 'object') throw new Error('Invalid JSON');
+
+    const docs = Array.isArray(data.documents) ? data.documents : null;
+    const dims = Array.isArray(data.dimensions) ? data.dimensions : null;
+    const targets = Array.isArray(data.targets) ? data.targets : null;
+    if (!docs && !dims && !targets) throw new Error('No documents/dimensions/targets fields found.');
+
+    if (!confirm('Replace current inventory with the imported file?\n\nThis overwrites all unsaved data. Export first if you need a backup.')) return;
+
+    // Defense in depth on import: coerce all fields to safe types,
+    // drop unknown enum values, deduplicate IDs within each collection.
+    // A pure-regex check is insufficient because duplicate-but-valid
+    // IDs cause edit/delete actions to operate on the wrong row.
+    const makeIdAllocator = (prefix) => {
+      const seen = new Set();
+      return (idx, raw) => {
+        const ok = typeof raw === 'string' && /^[A-Za-z0-9._-]+$/.test(raw);
+        let id = ok ? raw : prefix + Date.now() + '_' + idx;
+        while (seen.has(id)) id = prefix + Date.now() + '_' + idx + '_' + seen.size;
+        seen.add(id);
+        return id;
+      };
+    };
+    const str = (v) => (v == null ? '' : String(v));
+    const safeStatus = (v) => (STATUS_META[v] ? v : 'partial');
+    const safeTargetStatus = (v) => (
+      ['not_started','in_progress','completed','blocked'].includes(v) ? v : 'not_started'
+    );
+
+    // Reject obviously bad timestamps so renderDocuments doesn't blow
+    // up on RangeError. Empty string means "no modified date".
+    const safeTimestamp = (v) => {
+      if (!v) return '';
+      const t = new Date(String(v));
+      return Number.isNaN(t.getTime()) ? '' : t.toISOString();
+    };
+
+    if (docs) {
+      const allocId = makeIdAllocator('d');
+      state.documents = docs.filter(d => d && typeof d === 'object').map((d, i) => ({
+        id: allocId(i, d.id),
+        name: str(d.name),
+        type: str(d.type),
+        status: safeStatus(d.status),
+        source: str(d.source),
+        provenance: str(d.provenance),
+        notes: str(d.notes),
+        created: safeTimestamp(d.created) || undefined,
+        modified: safeTimestamp(d.modified) || undefined
+      }));
+      await storage.set('documents', state.documents);
+    }
+    if (dims) {
+      const allocId = makeIdAllocator('dim');
+      state.dimensions = dims.filter(d => d && typeof d === 'object').map((d, i) => ({
+        id: allocId(i, d.id),
+        name: str(d.name),
+        score: Math.max(0, Math.min(10, parseInt(d.score, 10) || 0)),
+        note: str(d.note),
+        inverted: d.inverted === true
+      }));
+      await storage.set('dimensions', state.dimensions);
+    }
+    if (targets) {
+      const allocId = makeIdAllocator('t');
+      state.targets = targets.filter(t => t && typeof t === 'object').map((t, i) => ({
+        id: allocId(i, t.id),
+        step: parseInt(t.step, 10) || (i + 1),
+        archive: str(t.archive),
+        action: str(t.action),
+        cost: str(t.cost),
+        status: safeTargetStatus(t.status)
+      }));
+      await storage.set('targets', state.targets);
+    }
+
+    renderAll();
+    toast('Imported successfully.');
+  } catch (e) {
+    console.error(e);
+    toast('Import failed: ' + e.message, 'error');
+  }
+}
+
+/* ==================================================================
+   UTILITIES
+   ================================================================== */
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function escapeAttr(s) { return escapeHtml(s); }
+
+function isoDate(d) {
+  if (!(d instanceof Date) || Number.isNaN(d.getTime())) return '';
+  return d.toISOString().slice(0, 10);
+}
+
+let toastTimer = null;
+function toast(msg, kind) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.toggle('error', kind === 'error');
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+init();
+</script>
+
+</body>
+</html>
